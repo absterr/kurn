@@ -1,6 +1,14 @@
 import { Injectable, OnModuleDestroy, OnModuleInit } from "@nestjs/common";
 import playwright, { Browser } from "playwright";
 
+export interface Leads {
+  name: string;
+  mapLink: string;
+  address: string;
+  phone: string;
+  website: string;
+}
+
 @Injectable()
 export class ScraperService implements OnModuleInit, OnModuleDestroy {
   private browser: Browser;
@@ -25,27 +33,45 @@ export class ScraperService implements OnModuleInit, OnModuleDestroy {
     await page.goto(searchUrl, { waitUntil: "networkidle" });
 
     try {
-      const leads = await page.evaluate(() => {
-        const elements = Array.from(document.querySelectorAll(".Nv2PK"));
+      const cards = await page.$$(".Nv2PK");
+      const results: Leads[] = [];
 
-        return elements
-          .map((el) => {
-            const name = el.querySelector(".qBF1Pd")?.textContent.trim() || "";
-            const address =
-              el.querySelector(".rllt__details span")?.textContent.trim() || "";
-            const website = el.querySelector("a")?.getAttribute("href") || "";
-            const phone =
-              el
-                .querySelector(".rllt__details span:nth-child(2)")
-                ?.textContent.trim() || "";
-            const isAds = !!el.querySelector(".H931be");
+      for (const card of cards) {
+        const isAd = await card.$(".H931be");
+        if (isAd) continue;
 
-            return { name, address, website, phone, isAds };
-          })
-          .filter((lead) => lead.name && !lead.isAds);
-      });
+        const nameEl = await card.$(".qBF1Pd");
+        const linkEl = await card.$("a");
 
-      return leads;
+        const leadDetails = {
+          name: (await nameEl?.textContent())?.trim() || "",
+          mapLink: (await linkEl?.getAttribute("href"))?.trim() || "",
+          address: "",
+          phone: "",
+          website: "",
+        };
+
+        await card.click();
+        await page.waitForSelector(".AeaXub");
+
+        const items = await page.$$(".AeaXub");
+
+        for (const item of items) {
+          const iconEl = await item.$("span.google-symbols");
+          const valueEl = await item.$(".Io6YTe");
+
+          const icon = await iconEl?.textContent();
+          const value = (await valueEl?.textContent())?.trim();
+
+          if (icon?.includes("")) leadDetails.address = value?.trim() || "";
+          if (icon?.includes("")) leadDetails.phone = value?.trim() || "";
+          if (icon?.includes("")) leadDetails.website = value?.trim() || "";
+        }
+
+        results.push(leadDetails);
+      }
+
+      return results;
     } finally {
       await context.close();
     }
