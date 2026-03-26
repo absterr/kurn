@@ -30,9 +30,15 @@ export class ScraperService implements OnModuleInit, OnModuleDestroy {
     await page.route("**/*.{png,jpg,jpeg,css,svg}", (route) => route.abort());
 
     const searchUrl = `https://www.google.com/maps/search/${encodeURIComponent(keyword)}+${encodeURIComponent(location)}`;
-    await page.goto(searchUrl, { waitUntil: "networkidle" });
+    await page.goto(searchUrl);
 
     try {
+      await page
+        .waitForSelector(".Nv2PK", {
+          state: "visible",
+        })
+        .catch(() => null);
+
       const cards = await page.$$(".Nv2PK");
       const results: Leads[] = [];
 
