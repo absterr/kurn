@@ -66,6 +66,32 @@ export class LinkedinService implements OnModuleInit, OnModuleDestroy {
         page = await context.newPage();
         await page.goto(searchUrl);
       }
+
+      await page.waitForSelector("body");
+
+      const leads = await page.evaluate(() => {
+        const cards = Array.from(
+          document.querySelectorAll(
+            'li div[data-view-name="search-entity-result-universal-template"]',
+          ),
+        );
+
+        return cards
+          .map((card) => {
+            const linkEl = card.querySelector('a[href*="/company/"]');
+            const nameEl = linkEl;
+            const metaEl = card.querySelector(".t-14.t-black.t-normal");
+
+            return {
+              name: nameEl?.textContent?.trim() || "",
+              linkedinUrl: linkEl?.getAttribute("href")?.split("?")[0] || "",
+              location: metaEl?.textContent?.trim() || "",
+            };
+          })
+          .filter((l) => l.name && l.linkedinUrl);
+      });
+
+      return leads;
     } finally {
       await context.close();
     }
