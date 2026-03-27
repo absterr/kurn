@@ -40,7 +40,8 @@ lerna-debug.log*
 *.local
 !.env.sample
 
-# Sessions
+# Context storage
+/user_data
 *-session.json
 
 # temp directory
