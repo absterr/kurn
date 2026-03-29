@@ -52,16 +52,13 @@ export class LinkedinService implements OnModuleInit, OnModuleDestroy {
   }
 
   async scrapeLinkedIn(keyword: string, location?: string) {
-    const searchUrl = location
-      ? `https://www.linkedin.com/search/results/companies/?keywords=${encodeURIComponent(`${keyword} ${location}`)}`
-      : `https://www.linkedin.com/search/results/companies/?keywords=${encodeURIComponent(keyword)}`;
+    const searchQuery = location ? `${keyword} ${location}` : keyword;
+    const searchUrl = `https://www.linkedin.com/search/results/companies/?keywords=${encodeURIComponent(searchQuery)}`;
 
     mkdirSync(dirname(this.sessionPath), { recursive: true });
-
     if (!existsSync(this.sessionPath)) await this.loginLinkedIn();
 
     let context = await this.ctx();
-
     let page = await context.newPage();
 
     try {
@@ -77,25 +74,80 @@ export class LinkedinService implements OnModuleInit, OnModuleDestroy {
         await page.goto(searchUrl);
       }
 
-      await page.waitForSelector("body");
+      const searchInput = page.locator(".search-global-typeahead__input");
+      await searchInput.waitFor({ state: "visible" });
+      await searchInput.click();
+      await searchInput.fill(location ? `${keyword} ${location}` : keyword);
+      await page.keyboard.press("Enter");
+      await page.waitForLoadState("load");
+
+      const companiesTab = page.locator('button[aria-label*="Companies"]');
+      if (await companiesTab.isVisible().catch(() => false)) {
+        await companiesTab.click();
+      }
+
+      await page.waitForSelector(
+        'div[data-view-name="search-entity-result-universal-template"]',
+      );
+
+      const scrollTries = 10;
+      let prevHeight = 0;
+
+      // BOUNDED SCROLL (Address content lazy load)
+      for (let i = 0; i < scrollTries; i++) {
+        const currHeight = await page.evaluate(
+          () => document.body.scrollHeight,
+        );
+
+        if (currHeight === prevHeight) break;
+        prevHeight = currHeight;
+
+        await page.mouse.wheel(0, 2000);
+        await page.waitForTimeout(1000);
+      }
 
       const leads = await page.evaluate(() => {
         const cards = Array.from(
           document.querySelectorAll(
-            'li div[data-view-name="search-entity-result-universal-template"]',
+            'div[data-view-name="search-entity-result-universal-template"], div[data-chameleon-result-urn]',
           ),
         );
 
         return cards
           .map((card) => {
-            const linkEl = card.querySelector('a[href*="/company/"]');
-            const nameEl = linkEl;
-            const metaEl = card.querySelector(".t-14.t-black.t-normal");
+            const anchors = card.querySelectorAll('a[href*="/company/"]');
+            const linkEl =
+              anchors.length > 0 ? anchors[anchors.length - 1] : null;
+
+            const name = linkEl?.textContent?.trim() || "";
+            const linkedinUrl =
+              linkEl?.getAttribute("href")?.split("?")[0] || "";
+
+            let companyLocation = "";
+            let meta =
+              card
+                .querySelector(".t-14.t-black.t-normal")
+                ?.textContent.trim() || "";
+
+            if (meta.includes("•")) {
+              companyLocation = meta.split("•").pop()?.trim() || "";
+            } else {
+              const metaBlocks = Array.from(card.querySelectorAll("div.t-14"));
+              meta =
+                metaBlocks
+                  .find((el) => el.textContent?.includes(","))
+                  ?.textContent?.trim() || "";
+
+              if (meta.includes("•")) {
+                companyLocation = meta.split("•").pop()?.trim() || "";
+              }
+            }
 
             return {
-              name: nameEl?.textContent?.trim() || "",
-              linkedinUrl: linkEl?.getAttribute("href")?.split("?")[0] || "",
-              location: metaEl?.textContent?.trim() || "",
+              name,
+              linkedinUrl,
+              companyLocation,
+              meta,
             };
           })
           .filter((l) => l.name && l.linkedinUrl);
