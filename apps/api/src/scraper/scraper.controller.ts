@@ -1,13 +1,13 @@
 import { Body, Controller, Post } from "@nestjs/common";
-import { GoogleMapsDto } from "./google-maps.dto";
-import { ScraperService } from "./scraper.service";
+import { LeadsService } from "./providers/leads.service";
+import { LeadsDto } from "./scraper.dto";
 
 @Controller("scraper")
 export class ScraperController {
-  constructor(private readonly scraperService: ScraperService) {}
+  constructor(private readonly leadsService: LeadsService) {}
 
-  @Post("google-maps")
-  async(@Body() dto: GoogleMapsDto) {
-    return this.scraperService.ScrapeGoogleMaps(dto.keyword, dto.location);
+  @Post("leads")
+  async(@Body() dto: LeadsDto) {
+    return this.leadsService.findLeads(dto.keyword, dto.location);
   }
 }

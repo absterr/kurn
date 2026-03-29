@@ -1,5 +1,5 @@
-import { Injectable, OnModuleDestroy, OnModuleInit } from "@nestjs/common";
-import playwright, { Browser } from "playwright";
+import { Injectable } from "@nestjs/common";
+import { Browser } from "playwright";
 
 export interface Leads {
   name: string;
@@ -10,18 +10,9 @@ export interface Leads {
 }
 
 @Injectable()
-export class ScraperService implements OnModuleInit, OnModuleDestroy {
-  private browser: Browser;
-
-  async onModuleInit() {
-    this.browser = await playwright.chromium.launch({
-      headless: true,
-      args: ["--no-sandbox", "--disabled-setuid-sandbox"],
-    });
-  }
-
-  async ScrapeGoogleMaps(keyword: string, location: string) {
-    const context = await this.browser.newContext({
+export class GoogleMapsScraper {
+  async Scrape(browser: Browser, keyword: string, location: string) {
+    const context = await browser.newContext({
       userAgent:
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36...",
     });
@@ -81,9 +72,5 @@ export class ScraperService implements OnModuleInit, OnModuleDestroy {
     } finally {
       await context.close();
     }
-  }
-
-  async onModuleDestroy() {
-    await this.browser.close();
   }
 }

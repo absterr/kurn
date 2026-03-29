@@ -1,6 +1,6 @@
 import { IsString, MinLength } from "class-validator";
 
-export class GoogleMapsDto {
+export class LeadsDto {
   @IsString()
   @MinLength(1)
   keyword: string;
