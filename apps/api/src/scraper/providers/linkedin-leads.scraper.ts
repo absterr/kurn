@@ -1,23 +1,11 @@
 import { existsSync, mkdirSync } from "node:fs";
 import { dirname } from "node:path";
-import { Injectable, OnModuleDestroy, OnModuleInit } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import playwright, { Browser } from "playwright";
-import { chromium } from "playwright-extra";
-import stealth from "puppeteer-extra-plugin-stealth";
-
-chromium.use(stealth());
 
 @Injectable()
-export class LinkedinService implements OnModuleInit, OnModuleDestroy {
-  private scraperBrowser: Browser;
+export class LinkedinLeadsScraper {
   private sessionPath = "user_data/linkedin-session.json";
-
-  async onModuleInit() {
-    this.scraperBrowser = await chromium.launch({
-      headless: true,
-      args: ["--no-sandbox", "--disabled-setuid-sandbox"],
-    });
-  }
 
   async loginLinkedIn() {
     const authBrowser = await playwright.chromium.launch({
@@ -40,8 +28,8 @@ export class LinkedinService implements OnModuleInit, OnModuleDestroy {
     }
   }
 
-  private ctx() {
-    return this.scraperBrowser.newContext({
+  private ctx(browser: Browser) {
+    return browser.newContext({
       storageState: this.sessionPath,
       userAgent:
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
@@ -51,14 +39,18 @@ export class LinkedinService implements OnModuleInit, OnModuleDestroy {
     });
   }
 
-  async scrapeLinkedIn(keyword: string, location?: string) {
-    const searchQuery = location ? `${keyword} ${location}` : keyword;
+  async scrapeLinkedinSearch(
+    scraperBrowser: Browser,
+    name: string,
+    location: string,
+  ) {
+    const searchQuery = `"${name}" ${location}`;
     const searchUrl = `https://www.linkedin.com/search/results/companies/?keywords=${encodeURIComponent(searchQuery)}`;
 
     mkdirSync(dirname(this.sessionPath), { recursive: true });
     if (!existsSync(this.sessionPath)) await this.loginLinkedIn();
 
-    let context = await this.ctx();
+    let context = await this.ctx(scraperBrowser);
     let page = await context.newPage();
 
     try {
@@ -68,7 +60,7 @@ export class LinkedinService implements OnModuleInit, OnModuleDestroy {
         await context.close();
         await this.loginLinkedIn();
 
-        context = await this.ctx();
+        context = await this.ctx(scraperBrowser);
 
         page = await context.newPage();
         await page.goto(searchUrl);
@@ -77,7 +69,7 @@ export class LinkedinService implements OnModuleInit, OnModuleDestroy {
       const searchInput = page.locator(".search-global-typeahead__input");
       await searchInput.waitFor({ state: "visible" });
       await searchInput.click();
-      await searchInput.fill(location ? `${keyword} ${location}` : keyword);
+      await searchInput.fill(name);
       await page.keyboard.press("Enter");
       await page.waitForLoadState("load");
 
@@ -86,11 +78,22 @@ export class LinkedinService implements OnModuleInit, OnModuleDestroy {
         await companiesTab.click();
       }
 
-      await page.waitForSelector(
-        'div[data-view-name="search-entity-result-universal-template"]',
-      );
+      const resultsFound = await Promise.race([
+        page
+          .waitForSelector('div[data-view-name*="result"]', { timeout: 5000 })
+          .then(() => "FOUND"),
+        page
+          .waitForSelector('[data-view-name="search-results-no-results"]', {
+            timeout: 5000,
+          })
+          .then(() => "EMPTY"),
+      ]).catch(() => "TIMEOUT");
 
-      const scrollTries = 10;
+      if (resultsFound !== "FOUND") {
+        return "";
+      }
+
+      const scrollTries = 2;
       let prevHeight = 0;
 
       // BOUNDED SCROLL (Address content lazy load)
@@ -106,60 +109,61 @@ export class LinkedinService implements OnModuleInit, OnModuleDestroy {
         await page.waitForTimeout(1000);
       }
 
-      const leads = await page.evaluate(() => {
-        const cards = Array.from(
-          document.querySelectorAll(
-            'div[data-view-name="search-entity-result-universal-template"], div[data-chameleon-result-urn]',
-          ),
-        );
+      const { linkedinUrl } = await page.evaluate(
+        ({ targetName, targetLocation }) => {
+          const cards = Array.from(
+            document.querySelectorAll(
+              'div[data-view-name="search-entity-result-universal-template"], div[data-chameleon-result-urn]',
+            ),
+          );
 
-        return cards
-          .map((card) => {
+          for (const card of cards) {
             const anchors = card.querySelectorAll('a[href*="/company/"]');
             const linkEl =
               anchors.length > 0 ? anchors[anchors.length - 1] : null;
 
-            const name = linkEl?.textContent?.trim() || "";
+            const companyName = linkEl?.textContent?.trim() || "";
             const linkedinUrl =
               linkEl?.getAttribute("href")?.split("?")[0] || "";
-
-            let companyLocation = "";
             let meta =
               card
                 .querySelector(".t-14.t-black.t-normal")
                 ?.textContent.trim() || "";
 
-            if (meta.includes("•")) {
-              companyLocation = meta.split("•").pop()?.trim() || "";
-            } else {
+            if (!meta || !meta.includes("•")) {
               const metaBlocks = Array.from(card.querySelectorAll("div.t-14"));
               meta =
                 metaBlocks
                   .find((el) => el.textContent?.includes(","))
                   ?.textContent?.trim() || "";
-
-              if (meta.includes("•")) {
-                companyLocation = meta.split("•").pop()?.trim() || "";
-              }
             }
 
-            return {
-              name,
-              linkedinUrl,
-              companyLocation,
-              meta,
-            };
-          })
-          .filter((l) => l.name && l.linkedinUrl);
-      });
+            const companyLocation = meta.split("•").pop()?.trim() || "";
 
-      return leads;
+            const isSameName = companyName
+              .toLowerCase()
+              .includes(targetName.toLowerCase());
+            const isSameLocation = companyLocation
+              .toLowerCase()
+              .includes(targetLocation.toLowerCase());
+
+            if (isSameName && isSameLocation) {
+              return {
+                linkedinUrl,
+              };
+            }
+          }
+
+          return {
+            linkedinUrl: "",
+          };
+        },
+        { targetName: name, targetLocation: location },
+      );
+
+      return linkedinUrl;
     } finally {
       await context.close();
     }
-  }
-
-  async onModuleDestroy() {
-    await this.scraperBrowser.close();
   }
 }

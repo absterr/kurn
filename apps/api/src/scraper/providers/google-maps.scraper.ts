@@ -11,7 +11,7 @@ export interface Leads {
 
 @Injectable()
 export class GoogleMapsScraper {
-  async Scrape(browser: Browser, keyword: string, location: string) {
+  async scrape(browser: Browser, keyword: string, location: string) {
     const context = await browser.newContext({
       userAgent:
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36...",
@@ -20,7 +20,8 @@ export class GoogleMapsScraper {
     const page = await context.newPage();
     await page.route("**/*.{png,jpg,jpeg,css,svg}", (route) => route.abort());
 
-    const searchUrl = `https://www.google.com/maps/search/${encodeURIComponent(keyword)}+${encodeURIComponent(location)}`;
+    const searchQuery = `${keyword} ${location}`;
+    const searchUrl = `https://www.google.com/maps/search/${encodeURIComponent(searchQuery)}`;
     await page.goto(searchUrl);
 
     try {
