@@ -3,7 +3,7 @@ import { BrowserProvider } from "./providers/browser-provider";
 import { GoogleMapsScraper } from "./providers/google-maps.scraper";
 import { LeadsService } from "./providers/leads.service";
 import { LinkedinLeadsScraper } from "./providers/linkedin-leads.scraper";
-import { ScraperController } from "./scraper.controller";
+import { ScraperController } from "./scraper.v1.controller";
 
 @Module({
   providers: [
