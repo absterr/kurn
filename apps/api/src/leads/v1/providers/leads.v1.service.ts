@@ -14,7 +14,7 @@ export class LeadsV1Service {
   async findLeads(keyword: string, location: string) {
     const limit = pLimit(2);
     const scraperBrowser = this.browserProvider.getBrowser();
-    const googleMapsLeads = await this.googleMapsScraper.scrape(
+    const googleMapsLeads = await this.googleMapsScraper.fallbackScrape(
       scraperBrowser,
       keyword,
       location,
@@ -24,12 +24,11 @@ export class LeadsV1Service {
       googleMapsLeads.map((lead) =>
         limit(async () => {
           try {
-            const linkedinUrl =
-              await this.linkedinLeadsScraper.scrapeLinkedinSearch(
-                scraperBrowser,
-                lead.name,
-                location,
-              );
+            const linkedinUrl = await this.linkedinLeadsScraper.scrape(
+              scraperBrowser,
+              lead.name,
+              location,
+            );
 
             return { ...lead, linkedinUrl };
           } catch (err) {

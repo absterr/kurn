@@ -107,4 +107,19 @@ export class GoogleMapsScraper {
       await context.close();
     }
   }
+
+  // Because sometimes the scrape method returns an empty array
+  async fallbackScrape(browser: Browser, keyword: string, location: string) {
+    const maxRetries = 3;
+
+    for (let i = 0; i < maxRetries; i++) {
+      const results = await this.scrape(browser, keyword, location);
+
+      if (results.length > 0) return results;
+
+      await new Promise((r) => setTimeout(r, 1000 * (i + 1)));
+    }
+
+    return [];
+  }
 }
