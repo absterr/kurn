@@ -1,8 +1,8 @@
 import { Body, Controller, Post } from "@nestjs/common";
 import { LeadsService } from "./providers/leads.service";
-import { LeadsDto } from "./scraper.dto";
+import { LeadsDto } from "./scraper.v1.dto";
 
-@Controller("scraper")
+@Controller({ path: "scraper", version: "1" })
 export class ScraperController {
   constructor(private readonly leadsService: LeadsService) {}
 
