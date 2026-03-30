@@ -1,8 +1,8 @@
 import { Module } from "@nestjs/common";
-import { ScraperModule } from "./scraper/v1/scraper.v1.module";
+import { LeadsV1Module } from "./leads/v1/leads.v1.module";
 import { TestModule } from "./test/test.module";
 
 @Module({
-  imports: [ScraperModule, TestModule],
+  imports: [LeadsV1Module, TestModule],
 })
 export class AppModule {}
