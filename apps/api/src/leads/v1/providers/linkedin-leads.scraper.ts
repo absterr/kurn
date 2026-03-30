@@ -39,11 +39,7 @@ export class LinkedinLeadsScraper {
     });
   }
 
-  async scrapeLinkedinSearch(
-    scraperBrowser: Browser,
-    name: string,
-    location: string,
-  ) {
+  async scrape(scraperBrowser: Browser, name: string, location: string) {
     const searchQuery = `"${name}" ${location}`;
     const searchUrl = `https://www.linkedin.com/search/results/companies/?keywords=${encodeURIComponent(searchQuery)}`;
 
