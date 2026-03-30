@@ -1,18 +1,18 @@
 import { Module } from "@nestjs/common";
+import { LeadsV1Controller } from "./leads.v1.controller";
 import { BrowserProvider } from "./providers/browser-provider";
 import { GoogleMapsScraper } from "./providers/google-maps.scraper";
-import { LeadsService } from "./providers/leads.service";
+import { LeadsV1Service } from "./providers/leads.v1.service";
 import { LinkedinLeadsScraper } from "./providers/linkedin-leads.scraper";
-import { ScraperController } from "./scraper.v1.controller";
 
 @Module({
   providers: [
     BrowserProvider,
     GoogleMapsScraper,
-    LeadsService,
+    LeadsV1Service,
     LinkedinLeadsScraper,
   ],
-  controllers: [ScraperController],
-  exports: [LeadsService],
+  controllers: [LeadsV1Controller],
+  exports: [LeadsV1Service],
 })
-export class ScraperModule {}
+export class LeadsV1Module {}

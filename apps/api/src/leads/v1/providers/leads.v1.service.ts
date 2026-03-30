@@ -5,7 +5,7 @@ import { GoogleMapsScraper } from "./google-maps.scraper";
 import { LinkedinLeadsScraper } from "./linkedin-leads.scraper";
 
 @Injectable()
-export class LeadsService {
+export class LeadsV1Service {
   constructor(
     private readonly browserProvider: BrowserProvider,
     private readonly googleMapsScraper: GoogleMapsScraper,
