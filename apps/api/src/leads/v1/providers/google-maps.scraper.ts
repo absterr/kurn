@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
-import { Browser } from "playwright";
+import { Browser, Page } from "playwright";
 
-export interface Leads {
+export interface Lead {
   name: string;
   mapLink: string;
   address: string;
@@ -11,6 +11,32 @@ export interface Leads {
 
 @Injectable()
 export class GoogleMapsScraper {
+  private async parseItems(page: Page) {
+    const nameEl = await page.$(".DUwDvf");
+    const linkEl = await page.$("a");
+    const name = (await nameEl?.textContent())?.trim() || "";
+    const mapLink = (await linkEl?.getAttribute("href"))?.trim() || page.url();
+    const items = await page.$$(".AeaXub");
+
+    const lead: Lead = {
+      name,
+      mapLink,
+      address: "",
+      phone: "",
+      website: "",
+    };
+
+    for (const item of items) {
+      const icon = await (await item.$("span.google-symbols"))?.textContent();
+      const value = (await (await item.$(".Io6YTe"))?.textContent())?.trim();
+      if (icon?.includes("")) lead.address = value || "";
+      if (icon?.includes("")) lead.phone = value || "";
+      if (icon?.includes("")) lead.website = value || "";
+    }
+
+    return lead;
+  }
+
   async scrape(browser: Browser, keyword: string, location: string) {
     const context = await browser.newContext({
       userAgent:
@@ -24,63 +50,56 @@ export class GoogleMapsScraper {
 
     const searchQuery = `${keyword} ${location}`;
     const searchUrl = `https://www.google.com/maps/search/${encodeURIComponent(searchQuery)}`;
+    const results: Lead[] = [];
+
     await page.goto(searchUrl);
 
     try {
-      const feed = await page.$('.m6QErb[role="feed"]');
-      const maxResults = 8;
-      const results: Leads[] = [];
+      await page
+        .waitForSelector(".Nv2PK, .DUwDvf", { timeout: 5000 })
+        .catch(() => null);
 
-      while (feed && results.length < maxResults) {
-        const cards = await page.$$(".Nv2PK");
-        let prevName = "";
+      const isList = await page.$(".Nv2PK");
+      const isSingle = await page.$(".DUwDvf");
 
-        for (const card of cards) {
-          const isAd = await card.$(".H931be");
-          if (isAd) continue;
+      if (isList) {
+        const feed = await page.$('.m6QErb[role="feed"]');
+        const maxResults = 8;
+        const prevNames = new Set<string>();
 
-          const nameEl = await card.$(".qBF1Pd");
-          const linkEl = await card.$("a");
-          const name = (await nameEl?.textContent())?.trim() || "";
-          const mapLink = (await linkEl?.getAttribute("href"))?.trim() || "";
+        while (feed && results.length < maxResults) {
+          const cards = await page.$$(".Nv2PK");
 
-          await card.click();
+          for (const card of cards) {
+            const isAd = await card.$(".H931be");
+            if (isAd) continue;
 
-          await page.waitForFunction((prev) => {
-            const el = document.querySelector(".DUwDvf");
-            return el?.textContent && el.textContent.trim() !== prev;
-          }, prevName);
+            const nameEl = await card.$(".qBF1Pd");
+            const name = (await nameEl?.textContent())?.trim() || "";
+            if (prevNames.has(name)) continue;
 
-          prevName = name;
+            await card.click();
 
-          const leadDetails = {
-            name,
-            mapLink,
-            address: "",
-            phone: "",
-            website: "",
-          };
+            const loaded = await page
+              .waitForFunction((curr) => {
+                const el = document.querySelector(".DUwDvf");
+                return el?.textContent && el.textContent.trim() === curr;
+              }, name)
+              .catch(() => null);
 
-          const items = await page.$$(".AeaXub");
-
-          for (const item of items) {
-            const iconEl = await item.$("span.google-symbols");
-            const valueEl = await item.$(".Io6YTe");
-
-            const icon = await iconEl?.textContent();
-            const value = (await valueEl?.textContent())?.trim();
-
-            if (icon?.includes("")) leadDetails.address = value?.trim() || "";
-            if (icon?.includes("")) leadDetails.phone = value?.trim() || "";
-            if (icon?.includes("")) leadDetails.website = value?.trim() || "";
+            if (loaded) {
+              const lead = await this.parseItems(page);
+              results.push(lead);
+              prevNames.add(name);
+            }
           }
-
-          results.push(leadDetails);
-          if (results.length > maxResults) break;
 
           await feed.evaluate((el) => el.scrollBy(0, 1000));
           await page.waitForTimeout(1000);
         }
+      } else if (isSingle) {
+        const lead = await this.parseItems(page);
+        results.push(lead);
       }
 
       return results;
