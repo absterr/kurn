@@ -27,57 +27,60 @@ export class GoogleMapsScraper {
     await page.goto(searchUrl);
 
     try {
-      await page
-        .waitForSelector(".Nv2PK", {
-          state: "visible",
-        })
-        .catch(() => null);
-
-      const cards = await page.$$(".Nv2PK");
+      const feed = await page.$('.m6QErb[role="feed"]');
+      const maxResults = 8;
       const results: Leads[] = [];
-      let prevName = "";
 
-      for (const card of cards) {
-        const isAd = await card.$(".H931be");
-        if (isAd) continue;
+      while (feed && results.length < maxResults) {
+        const cards = await page.$$(".Nv2PK");
+        let prevName = "";
 
-        const nameEl = await card.$(".qBF1Pd");
-        const linkEl = await card.$("a");
-        const name = (await nameEl?.textContent())?.trim() || "";
-        const mapLink = (await linkEl?.getAttribute("href"))?.trim() || "";
+        for (const card of cards) {
+          const isAd = await card.$(".H931be");
+          if (isAd) continue;
 
-        await card.click();
+          const nameEl = await card.$(".qBF1Pd");
+          const linkEl = await card.$("a");
+          const name = (await nameEl?.textContent())?.trim() || "";
+          const mapLink = (await linkEl?.getAttribute("href"))?.trim() || "";
 
-        await page.waitForFunction((prev) => {
-          const el = document.querySelector(".DUwDvf");
-          return el?.textContent && el.textContent.trim() !== prev;
-        }, prevName);
+          await card.click();
 
-        prevName = name;
+          await page.waitForFunction((prev) => {
+            const el = document.querySelector(".DUwDvf");
+            return el?.textContent && el.textContent.trim() !== prev;
+          }, prevName);
 
-        const leadDetails = {
-          name,
-          mapLink,
-          address: "",
-          phone: "",
-          website: "",
-        };
+          prevName = name;
 
-        const items = await page.$$(".AeaXub");
+          const leadDetails = {
+            name,
+            mapLink,
+            address: "",
+            phone: "",
+            website: "",
+          };
 
-        for (const item of items) {
-          const iconEl = await item.$("span.google-symbols");
-          const valueEl = await item.$(".Io6YTe");
+          const items = await page.$$(".AeaXub");
 
-          const icon = await iconEl?.textContent();
-          const value = (await valueEl?.textContent())?.trim();
+          for (const item of items) {
+            const iconEl = await item.$("span.google-symbols");
+            const valueEl = await item.$(".Io6YTe");
 
-          if (icon?.includes("")) leadDetails.address = value?.trim() || "";
-          if (icon?.includes("")) leadDetails.phone = value?.trim() || "";
-          if (icon?.includes("")) leadDetails.website = value?.trim() || "";
+            const icon = await iconEl?.textContent();
+            const value = (await valueEl?.textContent())?.trim();
+
+            if (icon?.includes("")) leadDetails.address = value?.trim() || "";
+            if (icon?.includes("")) leadDetails.phone = value?.trim() || "";
+            if (icon?.includes("")) leadDetails.website = value?.trim() || "";
+          }
+
+          results.push(leadDetails);
+          if (results.length > maxResults) break;
+
+          await feed.evaluate((el) => el.scrollBy(0, 1000));
+          await page.waitForTimeout(1000);
         }
-
-        results.push(leadDetails);
       }
 
       return results;
