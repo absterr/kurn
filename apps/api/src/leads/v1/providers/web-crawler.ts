@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
-import { BrowserProvider } from "src/leads/v1/providers/browser-provider";
+import { BrowserProvider } from "./browser-provider";
 
 @Injectable()
-export class CrawlerService {
+export class WebCrawler {
   constructor(private readonly browserProvider: BrowserProvider) {}
 
   private readonly emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}/gi;
@@ -26,7 +26,6 @@ export class CrawlerService {
 
     let depth = 0;
     let currentUrls = new Set([this.normalizeUrl(website)]);
-
     const emails = new Set<string>();
     const visitedUrls = new Set<string>();
 

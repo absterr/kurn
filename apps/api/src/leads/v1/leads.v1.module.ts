@@ -4,6 +4,7 @@ import { BrowserProvider } from "./providers/browser-provider";
 import { GoogleMapsScraper } from "./providers/google-maps.scraper";
 import { LeadsV1Service } from "./providers/leads.v1.service";
 import { LinkedinLeadsScraper } from "./providers/linkedin-leads.scraper";
+import { WebCrawler } from "./providers/web-crawler";
 
 @Module({
   providers: [
@@ -11,6 +12,7 @@ import { LinkedinLeadsScraper } from "./providers/linkedin-leads.scraper";
     GoogleMapsScraper,
     LeadsV1Service,
     LinkedinLeadsScraper,
+    WebCrawler,
   ],
   controllers: [LeadsV1Controller],
   exports: [LeadsV1Service],
