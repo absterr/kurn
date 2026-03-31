@@ -1,7 +1,14 @@
 import { existsSync, mkdirSync } from "node:fs";
 import { dirname } from "node:path";
 import { Injectable } from "@nestjs/common";
-import playwright, { Browser } from "playwright";
+import playwright, { Browser, Page } from "playwright";
+
+interface Job {
+  title: string;
+  link: string;
+  location: string;
+  posted: string;
+}
 
 @Injectable()
 export class LinkedinLeadsScraper {
@@ -37,6 +44,70 @@ export class LinkedinLeadsScraper {
       locale: "en-US",
       timezoneId: "Africa/Lagos",
     });
+  }
+
+  async scrapeJobOpenings(companyUrl: string, page: Page) {
+    const jobsUrl = `${companyUrl}/jobs`;
+    await page.goto(jobsUrl);
+
+    const results = await Promise.race([
+      page
+        .waitForSelector(".org-jobs-recently-posted-jobs-module", {
+          timeout: 5000,
+        })
+        .then(() => "FOUND"),
+      page
+        .waitForSelector(".org-jobs-empty-jobs-module", { timeout: 5000 })
+        .then(() => "EMPTY"),
+    ]).catch(() => "TIMEOUT");
+
+    if (results !== "FOUND") return [];
+
+    const recentJobs: Job[] = [];
+
+    while (true) {
+      const recentPageJobs = await page.$$eval(
+        ".org-jobs-recently-posted-job-card__container",
+        (cards) =>
+          cards.map((card) => {
+            const title =
+              card
+                .querySelector(".job-card-square__title span strong")
+                ?.textContent?.trim() || "";
+
+            const link =
+              (
+                card.querySelector(
+                  'a[href*="currentJobId"]',
+                ) as HTMLAnchorElement
+              )?.href || "";
+
+            const location =
+              card
+                .querySelector(".job-card-container__metadata-wrapper span")
+                ?.textContent?.trim() || "";
+
+            const posted =
+              card.querySelector("time")?.textContent?.trim() || "";
+
+            return { title, link, location, posted };
+          }),
+      );
+
+      recentJobs.push(...recentPageJobs);
+
+      const nextBtn = page.locator(
+        'button[aria-label*="Next set of recently posted jobs"]',
+      );
+
+      const disabled = await nextBtn.isDisabled().catch(() => true);
+      if (disabled) break;
+
+      await nextBtn.click();
+      await page.waitForTimeout(1000);
+    }
+
+    return recentJobs;
   }
 
   async scrape(scraperBrowser: Browser, name: string, location: string) {
@@ -105,7 +176,7 @@ export class LinkedinLeadsScraper {
         await page.waitForTimeout(1000);
       }
 
-      const { linkedinUrl } = await page.evaluate(
+      const linkedinUrl = await page.evaluate(
         ({ targetName, targetLocation }) => {
           const cards = Array.from(
             document.querySelectorAll(
@@ -145,20 +216,17 @@ export class LinkedinLeadsScraper {
               .includes(targetLocation.toLowerCase());
 
             if (isSameName && isSameLocation) {
-              return {
-                linkedinUrl,
-              };
+              return linkedinUrl;
             }
           }
 
-          return {
-            linkedinUrl: "",
-          };
+          return "";
         },
         { targetName: name, targetLocation: location },
       );
 
-      return linkedinUrl;
+      const jobs = await this.scrapeJobOpenings(linkedinUrl, page);
+      return { linkedinUrl, jobs };
     } finally {
       await context.close();
     }
