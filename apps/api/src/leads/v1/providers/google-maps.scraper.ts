@@ -11,11 +11,9 @@ export interface Lead {
 
 @Injectable()
 export class GoogleMapsScraper {
-  private async parseItems(page: Page) {
+  private async parseItems(page: Page, mapLink: string) {
     const nameEl = await page.$(".DUwDvf");
-    const linkEl = await page.$("a");
     const name = (await nameEl?.textContent())?.trim() || "";
-    const mapLink = (await linkEl?.getAttribute("href"))?.trim() || page.url();
     const items = await page.$$(".AeaXub");
 
     const lead: Lead = {
@@ -68,17 +66,23 @@ export class GoogleMapsScraper {
         const prevNames = new Set<string>();
 
         while (feed && results.length < maxResults) {
-          const cards = await page.$$(".Nv2PK");
+          const cards = page.locator(".Nv2PK");
+          const cardCount = await cards.count();
 
-          for (const card of cards) {
-            const isAd = await card.$(".H931be");
+          for (let i = 0; i < Math.min(cardCount, maxResults); i++) {
+            const card = cards.nth(i);
+
+            const isAd = await card.locator(".H931be").count();
             if (isAd) continue;
 
-            const nameEl = await card.$(".qBF1Pd");
-            const name = (await nameEl?.textContent())?.trim() || "";
+            const name =
+              (await card.locator(".qBF1Pd").textContent())?.trim() || "";
             if (prevNames.has(name)) continue;
 
-            await card.click();
+            await Promise.all([
+              await card.click(),
+              await page.waitForURL((url) => url.href.includes("/maps/place")),
+            ]);
 
             const loaded = await page
               .waitForFunction((curr) => {
@@ -88,7 +92,11 @@ export class GoogleMapsScraper {
               .catch(() => null);
 
             if (loaded) {
-              const lead = await this.parseItems(page);
+              const linkEl = card.locator('a[href*="/maps/place"]').first();
+              const mapLink =
+                (await linkEl.getAttribute("href"))?.split("?")[0] ||
+                page.url().split("?")[0];
+              const lead = await this.parseItems(page, mapLink);
               results.push(lead);
               prevNames.add(name);
             }
@@ -98,7 +106,9 @@ export class GoogleMapsScraper {
           await page.waitForTimeout(1000);
         }
       } else if (isSingle) {
-        const lead = await this.parseItems(page);
+        await page.waitForURL((url) => url.href.includes("/maps/place"));
+        const mapLink = page.url().split("?")[0];
+        const lead = await this.parseItems(page, mapLink);
         results.push(lead);
       }
 

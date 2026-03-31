@@ -136,9 +136,10 @@ export class LinkedinLeadsScraper {
 
             const companyLocation = meta.split("•").pop()?.trim() || "";
 
-            const isSameName = companyName
-              .toLowerCase()
-              .includes(targetName.toLowerCase());
+            const isSameName =
+              companyName.toLowerCase().includes(targetName.toLowerCase()) ||
+              targetName.toLowerCase().includes(companyName.toLowerCase());
+
             const isSameLocation = companyLocation
               .toLowerCase()
               .includes(targetLocation.toLowerCase());
