@@ -25,11 +25,11 @@ export class LeadsV1Service {
     const leads = await Promise.all(
       googleMapsLeads.map((lead) =>
         limit(async () => {
-          let linkedinUrl = "";
+          let linkedinLead = {};
           let emails: string[] = [];
 
           try {
-            linkedinUrl = await this.linkedinLeadsScraper.scrape(
+            linkedinLead = await this.linkedinLeadsScraper.scrape(
               scraperBrowser,
               lead.name,
               location,
@@ -48,7 +48,7 @@ export class LeadsV1Service {
             console.log(`Crawl error for ${lead.website}: ${err.message}`);
           }
 
-          return { ...lead, linkedinUrl, emails };
+          return { ...lead, ...linkedinLead, emails };
         }),
       ),
     );
