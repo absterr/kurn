@@ -64,6 +64,7 @@ export class LinkedinLeadsScraper {
     if (results !== "FOUND") return [];
 
     const recentJobs: Job[] = [];
+    const seenJobIds = new Set<string>();
 
     while (true) {
       const recentPageJobs = await page.$$eval(
@@ -94,7 +95,14 @@ export class LinkedinLeadsScraper {
           }),
       );
 
-      recentJobs.push(...recentPageJobs);
+      for (const job of recentPageJobs) {
+        const idMatch = job.link.match(/currentJobId=(\d+)/);
+        const jobId = idMatch?.[1];
+
+        if (!jobId || seenJobIds.has(jobId)) continue;
+        seenJobIds.add(jobId);
+        recentJobs.push(job);
+      }
 
       const nextBtn = page.locator(
         'button[aria-label*="Next set of recently posted jobs"]',

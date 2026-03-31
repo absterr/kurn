@@ -48,7 +48,7 @@ export class LeadsV1Service {
             console.log(`Crawl error for ${lead.website}: ${err.message}`);
           }
 
-          return { ...lead, ...linkedinLead, emails };
+          return { ...lead, emails, ...linkedinLead };
         }),
       ),
     );
