@@ -1,4 +1,6 @@
+import { resolveMx } from "node:dns/promises";
 import { Injectable } from "@nestjs/common";
+import { validate } from "email-validator";
 import { BrowserProvider } from "./browser-provider";
 
 @Injectable()
@@ -13,6 +15,20 @@ export class WebCrawler {
     if (!newLink.startsWith("http")) newLink = `https://${newLink}`;
 
     return newLink.endsWith("/") ? newLink.slice(0, -1) : newLink;
+  }
+
+  private async verifyEmail(email: string) {
+    const isValid = validate(email);
+    if (!isValid) return false;
+
+    const domain = email.split("@")[1];
+
+    try {
+      const mx = await resolveMx(domain);
+      return mx.length > 0;
+    } catch {
+      return false;
+    }
   }
 
   async extractEmails(website: string, maxDepth = 1) {
@@ -97,7 +113,19 @@ export class WebCrawler {
         depth++;
       }
 
-      return Array.from(emails);
+      const emailList = Array.from(emails);
+      const verifiedEmails: string[] = [];
+      const verified = await Promise.all(
+        emailList.map((email) => this.verifyEmail(email)),
+      );
+
+      for (let i = 0; i < emailList.length; i++) {
+        if (verified[i]) {
+          verifiedEmails.push(emailList[i]);
+        }
+      }
+
+      return verifiedEmails;
     } finally {
       await context.close();
     }
