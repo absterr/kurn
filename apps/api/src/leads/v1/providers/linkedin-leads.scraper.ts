@@ -1,7 +1,8 @@
 import { existsSync, mkdirSync } from "node:fs";
 import { dirname } from "node:path";
 import { Injectable } from "@nestjs/common";
-import playwright, { Browser, Page } from "playwright";
+import playwright, { Page } from "playwright";
+import { BrowserContextProvider } from "./browser-context-provider";
 
 interface Job {
   title: string;
@@ -12,6 +13,10 @@ interface Job {
 
 @Injectable()
 export class LinkedinLeadsScraper {
+  constructor(
+    private readonly browserContextProvider: BrowserContextProvider,
+  ) {}
+
   private sessionPath = "user_data/linkedin-session.json";
 
   async loginLinkedIn() {
@@ -33,17 +38,6 @@ export class LinkedinLeadsScraper {
     } finally {
       await authBrowser.close();
     }
-  }
-
-  private ctx(browser: Browser) {
-    return browser.newContext({
-      storageState: this.sessionPath,
-      userAgent:
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-      viewport: { width: 1920, height: 1080 },
-      locale: "en-US",
-      timezoneId: "Africa/Lagos",
-    });
   }
 
   async scrapeJobOpenings(companyUrl: string, page: Page) {
@@ -118,14 +112,16 @@ export class LinkedinLeadsScraper {
     return recentJobs;
   }
 
-  async scrape(scraperBrowser: Browser, name: string, location: string) {
+  async scrape(name: string, location: string) {
     const searchQuery = `"${name}" ${location}`;
     const searchUrl = `https://www.linkedin.com/search/results/companies/?keywords=${encodeURIComponent(searchQuery)}`;
 
     mkdirSync(dirname(this.sessionPath), { recursive: true });
     if (!existsSync(this.sessionPath)) await this.loginLinkedIn();
 
-    let context = await this.ctx(scraperBrowser);
+    let context = await this.browserContextProvider.getContext(
+      this.sessionPath,
+    );
     let page = await context.newPage();
 
     try {
@@ -135,7 +131,9 @@ export class LinkedinLeadsScraper {
         await context.close();
         await this.loginLinkedIn();
 
-        context = await this.ctx(scraperBrowser);
+        context = await this.browserContextProvider.getContext(
+          this.sessionPath,
+        );
 
         page = await context.newPage();
         await page.goto(searchUrl);

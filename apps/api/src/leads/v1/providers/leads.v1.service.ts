@@ -1,6 +1,5 @@
 import { Injectable } from "@nestjs/common";
 import pLimit from "p-limit";
-import { BrowserProvider } from "./browser-provider";
 import { GoogleMapsScraper } from "./google-maps.scraper";
 import { LinkedinLeadsScraper } from "./linkedin-leads.scraper";
 import { WebCrawler } from "./web-crawler";
@@ -8,16 +7,13 @@ import { WebCrawler } from "./web-crawler";
 @Injectable()
 export class LeadsV1Service {
   constructor(
-    private readonly browserProvider: BrowserProvider,
     private readonly googleMapsScraper: GoogleMapsScraper,
     private readonly linkedinLeadsScraper: LinkedinLeadsScraper,
     private readonly webCrawler: WebCrawler,
   ) {}
   async findLeads(keyword: string, location: string) {
     const limit = pLimit(2);
-    const scraperBrowser = this.browserProvider.getBrowser();
     const googleMapsLeads = await this.googleMapsScraper.fallbackScrape(
-      scraperBrowser,
       keyword,
       location,
     );
@@ -30,7 +26,6 @@ export class LeadsV1Service {
 
           try {
             linkedinLead = await this.linkedinLeadsScraper.scrape(
-              scraperBrowser,
               lead.name,
               location,
             );
@@ -40,12 +35,12 @@ export class LeadsV1Service {
             );
           }
 
-          try {
-            if (lead.website) {
+          if (lead.website) {
+            try {
               emails = await this.webCrawler.extractEmails(lead.website);
+            } catch (err) {
+              console.log(`Crawl error for ${lead.website}: ${err.message}`);
             }
-          } catch (err) {
-            console.log(`Crawl error for ${lead.website}: ${err.message}`);
           }
 
           return { ...lead, emails, ...linkedinLead };
