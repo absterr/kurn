@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
-import { Browser, Page } from "playwright";
+import { Page } from "playwright";
+import { BrowserContextProvider } from "./browser-context-provider";
 
 export interface Lead {
   name: string;
@@ -11,6 +12,10 @@ export interface Lead {
 
 @Injectable()
 export class GoogleMapsScraper {
+  constructor(
+    private readonly browserContextProvider: BrowserContextProvider,
+  ) {}
+
   private async parseItems(page: Page, mapLink: string) {
     const nameEl = await page.$(".DUwDvf");
     const name = (await nameEl?.textContent())?.trim() || "";
@@ -35,14 +40,8 @@ export class GoogleMapsScraper {
     return lead;
   }
 
-  async scrape(browser: Browser, keyword: string, location: string) {
-    const context = await browser.newContext({
-      userAgent:
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-      viewport: { width: 1920, height: 1080 },
-      locale: "en-US",
-    });
-
+  async scrape(keyword: string, location: string) {
+    const context = await this.browserContextProvider.getContext();
     const page = await context.newPage();
     await page.route("**/*.{png,jpg,jpeg,css,svg}", (route) => route.abort());
 
@@ -119,11 +118,11 @@ export class GoogleMapsScraper {
   }
 
   // Because sometimes the scrape method returns an empty array
-  async fallbackScrape(browser: Browser, keyword: string, location: string) {
+  async fallbackScrape(keyword: string, location: string) {
     const maxRetries = 3;
 
     for (let i = 0; i < maxRetries; i++) {
-      const results = await this.scrape(browser, keyword, location);
+      const results = await this.scrape(keyword, location);
 
       if (results.length > 0) return results;
 

@@ -1,11 +1,13 @@
 import { resolveMx } from "node:dns/promises";
 import { Injectable } from "@nestjs/common";
 import { validate } from "email-validator";
-import { BrowserProvider } from "./browser-provider";
+import { BrowserContextProvider } from "./browser-context-provider";
 
 @Injectable()
 export class WebCrawler {
-  constructor(private readonly browserProvider: BrowserProvider) {}
+  constructor(
+    private readonly browserContextProvider: BrowserContextProvider,
+  ) {}
 
   private readonly emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}/gi;
   private readonly MAX_PAGES = 10;
@@ -32,13 +34,7 @@ export class WebCrawler {
   }
 
   async extractEmails(website: string, maxDepth = 1) {
-    const browser = this.browserProvider.getBrowser();
-    const context = await browser.newContext({
-      userAgent:
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-      viewport: { width: 1920, height: 1080 },
-      locale: "en-US",
-    });
+    const context = await this.browserContextProvider.getContext();
 
     let depth = 0;
     let currentUrls = new Set([this.normalizeUrl(website)]);
