@@ -19,7 +19,7 @@ export class LinkedinLeadsScraper {
 
   private sessionPath = "user_data/linkedin-session.json";
 
-  async loginLinkedIn() {
+  private async loginLinkedIn() {
     const authBrowser = await playwright.chromium.launch({
       headless: false,
     });
@@ -40,7 +40,62 @@ export class LinkedinLeadsScraper {
     }
   }
 
-  async scrapeJobOpenings(companyUrl: string, page: Page) {
+  private async getLinkedinUrl(
+    page: Page,
+    targetName: string,
+    targetLocation: string,
+  ) {
+    const linkedinUrl = await page.evaluate(
+      ({ targetName, targetLocation }) => {
+        const cards = Array.from(
+          document.querySelectorAll(
+            'div[data-view-name="search-entity-result-universal-template"], div[data-chameleon-result-urn]',
+          ),
+        );
+
+        for (const card of cards) {
+          const anchors = card.querySelectorAll('a[href*="/company/"]');
+          const linkEl =
+            anchors.length > 0 ? anchors[anchors.length - 1] : null;
+
+          const companyName = linkEl?.textContent?.trim() || "";
+          const linkedinUrl = linkEl?.getAttribute("href")?.split("?")[0] || "";
+          let meta =
+            card.querySelector(".t-14.t-black.t-normal")?.textContent.trim() ||
+            "";
+
+          if (!meta || !meta.includes("•")) {
+            const metaBlocks = Array.from(card.querySelectorAll("div.t-14"));
+            meta =
+              metaBlocks
+                .find((el) => el.textContent?.includes(","))
+                ?.textContent?.trim() || "";
+          }
+
+          const companyLocation = meta.split("•").pop()?.trim() || "";
+
+          const isSameName =
+            companyName.toLowerCase().includes(targetName.toLowerCase()) ||
+            targetName.toLowerCase().includes(companyName.toLowerCase());
+
+          const isSameLocation = companyLocation
+            .toLowerCase()
+            .includes(targetLocation.toLowerCase());
+
+          if (isSameName && isSameLocation) {
+            return linkedinUrl;
+          }
+        }
+
+        return "";
+      },
+      { targetName, targetLocation },
+    );
+
+    return linkedinUrl;
+  }
+
+  private async getJobOpenings(companyUrl: string, page: Page) {
     const jobsUrl = `${companyUrl}/jobs`;
     await page.goto(jobsUrl);
 
@@ -110,6 +165,31 @@ export class LinkedinLeadsScraper {
     }
 
     return recentJobs;
+  }
+
+  private async getOverview(companyUrl: string, page: Page) {
+    const jobsUrl = `${companyUrl}/about`;
+    await page.goto(jobsUrl);
+
+    try {
+      await page.waitForSelector(".org-about-module__margin-bottom p", {
+        timeout: 5000,
+      });
+    } catch {
+      return "";
+    }
+
+    const overview = await page.$eval(
+      ".org-about-module__margin-bottom p",
+      (el) => {
+        const text = el.textContent || "";
+        const firstParagraph = text.split("\n\n")[0].trim();
+
+        return firstParagraph.replace(/^[^\w]+/, "");
+      },
+    );
+
+    return overview;
   }
 
   async scrape(name: string, location: string) {
@@ -182,57 +262,15 @@ export class LinkedinLeadsScraper {
         await page.waitForTimeout(1000);
       }
 
-      const linkedinUrl = await page.evaluate(
-        ({ targetName, targetLocation }) => {
-          const cards = Array.from(
-            document.querySelectorAll(
-              'div[data-view-name="search-entity-result-universal-template"], div[data-chameleon-result-urn]',
-            ),
-          );
+      const linkedinUrl = await this.getLinkedinUrl(page, name, location);
+      if (linkedinUrl.trim()) {
+        const overview = await this.getOverview(linkedinUrl, page);
+        const jobs = await this.getJobOpenings(linkedinUrl, page);
 
-          for (const card of cards) {
-            const anchors = card.querySelectorAll('a[href*="/company/"]');
-            const linkEl =
-              anchors.length > 0 ? anchors[anchors.length - 1] : null;
+        return { linkedinUrl, overview, jobs };
+      }
 
-            const companyName = linkEl?.textContent?.trim() || "";
-            const linkedinUrl =
-              linkEl?.getAttribute("href")?.split("?")[0] || "";
-            let meta =
-              card
-                .querySelector(".t-14.t-black.t-normal")
-                ?.textContent.trim() || "";
-
-            if (!meta || !meta.includes("•")) {
-              const metaBlocks = Array.from(card.querySelectorAll("div.t-14"));
-              meta =
-                metaBlocks
-                  .find((el) => el.textContent?.includes(","))
-                  ?.textContent?.trim() || "";
-            }
-
-            const companyLocation = meta.split("•").pop()?.trim() || "";
-
-            const isSameName =
-              companyName.toLowerCase().includes(targetName.toLowerCase()) ||
-              targetName.toLowerCase().includes(companyName.toLowerCase());
-
-            const isSameLocation = companyLocation
-              .toLowerCase()
-              .includes(targetLocation.toLowerCase());
-
-            if (isSameName && isSameLocation) {
-              return linkedinUrl;
-            }
-          }
-
-          return "";
-        },
-        { targetName: name, targetLocation: location },
-      );
-
-      const jobs = await this.scrapeJobOpenings(linkedinUrl, page);
-      return { linkedinUrl, jobs };
+      return { linkedinUrl };
     } finally {
       await context.close();
     }
