@@ -89,10 +89,20 @@ export class GoogleMapsScraper {
         const feed = await page.$('.m6QErb[role="feed"]');
         const maxResults = 8;
         const prevNames = new Set<string>();
+        let prevCardCount = 0;
+        let idleScrolls = 0;
 
         while (feed && results.length < maxResults) {
           const cards = page.locator(".Nv2PK");
           const cardCount = await cards.count();
+
+          if (cardCount === prevCardCount) {
+            idleScrolls++;
+            if (idleScrolls > 2) break;
+          } else {
+            idleScrolls = 0;
+            prevCardCount = cardCount;
+          }
 
           for (let i = 0; i < Math.min(cardCount, maxResults); i++) {
             const card = cards.nth(i);
@@ -100,9 +110,9 @@ export class GoogleMapsScraper {
             const isAd = await card.locator(".H931be").count();
             if (isAd) continue;
 
-            const name =
+            const targetName =
               (await card.locator(".qBF1Pd").textContent())?.trim() || "";
-            if (prevNames.has(name)) continue;
+            if (prevNames.has(targetName)) continue;
 
             await Promise.all([
               await card.click(),
@@ -110,11 +120,12 @@ export class GoogleMapsScraper {
             ]);
 
             const loaded = await page
-              .waitForFunction((curr) => {
-                const el = document.querySelector(".DUwDvf");
-                return el?.textContent && el.textContent.trim() === curr;
-              }, name)
-              .catch(() => null);
+              .waitForFunction((targetName) => {
+                const currName =
+                  document.querySelector(".DUwDvf")?.textContent.trim() || "";
+                return currName === targetName;
+              }, targetName)
+              .catch(() => false);
 
             if (loaded) {
               const linkEl = card.locator('a[href*="/maps/place"]').first();
@@ -123,7 +134,7 @@ export class GoogleMapsScraper {
                 page.url().split("?")[0];
               const lead = await this.parseItems(page, mapLink);
               results.push(lead);
-              prevNames.add(name);
+              prevNames.add(targetName);
             }
           }
 
