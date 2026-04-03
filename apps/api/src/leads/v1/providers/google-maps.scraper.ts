@@ -16,6 +16,23 @@ export class GoogleMapsScraper {
     private readonly browserContextProvider: BrowserContextProvider,
   ) {}
 
+  private async handleConsentScreen(page: Page) {
+    const consentBtn = page
+      .locator('button:has-text("Accept all"), button:has-text("Reject all")')
+      .first();
+
+    try {
+      await consentBtn.waitFor({ state: "visible", timeout: 5000 });
+      await consentBtn.click().catch((err) => {
+        if (err.name !== "TimeoutError") {
+          throw err;
+        }
+      });
+    } catch (err) {
+      console.log(`Consent screen not found or timed out: ${err}`);
+    }
+  }
+
   private async parseItems(page: Page, mapLink: string) {
     const nameEl = await page.$(".DUwDvf");
     const name = (await nameEl?.textContent())?.trim() || "";
@@ -42,14 +59,23 @@ export class GoogleMapsScraper {
 
   async scrape(keyword: string, location: string) {
     const context = await this.browserContextProvider.getContext();
-    const page = await context.newPage();
-    await page.route("**/*.{png,jpg,jpeg,css,svg}", (route) => route.abort());
-
     const searchQuery = `${keyword} ${location}`;
     const searchUrl = `https://www.google.com/maps/search/${encodeURIComponent(searchQuery)}`;
     const results: Lead[] = [];
+    const page = await context.newPage();
 
+    await page.route("**/*.{png,jpg,jpeg,css,svg}", (route) => route.abort());
     await page.goto(searchUrl);
+
+    const isConsentScreen = await page
+      .locator("text=Before you continue to Google")
+      .isVisible()
+      .catch(() => false);
+
+    if (isConsentScreen) {
+      await this.handleConsentScreen(page);
+      await page.goto(searchUrl);
+    }
 
     try {
       await page
