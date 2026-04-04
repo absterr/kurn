@@ -96,7 +96,7 @@ export class LinkedinLeadsScraper {
   }
 
   private async getJobOpenings(companyUrl: string, page: Page) {
-    const jobsUrl = `${companyUrl}/jobs`;
+    const jobsUrl = `${companyUrl.replace(/\/$/, "")}/jobs`;
     await page.goto(jobsUrl);
 
     const results = await Promise.race([
@@ -168,28 +168,51 @@ export class LinkedinLeadsScraper {
   }
 
   private async getOverview(companyUrl: string, page: Page) {
-    const jobsUrl = `${companyUrl}/about`;
-    await page.goto(jobsUrl);
+    const aboutUrl = `${companyUrl.replace(/\/$/, "")}/about`;
+    await page.goto(aboutUrl);
 
     try {
-      await page.waitForSelector(".org-about-module__margin-bottom p", {
-        timeout: 5000,
-      });
+      const isVisible = await page
+        .waitForFunction(
+          () => {
+            const p =
+              document
+                .querySelector("section.org-about-module__margin-bottom p")
+                ?.textContent.trim() || "";
+
+            return p.length > 0;
+          },
+          { timeout: 5000 },
+        )
+        .catch(() => false);
+
+      if (!isVisible) return "";
+
+      const overview = await page.$eval(
+        "section.org-about-module__margin-bottom p",
+        (el) => {
+          const rawText = el.textContent || "";
+          const blocks = rawText
+            .split(/\n/)
+            .map((b) => b.trim())
+            .filter((b) => b.length > 0);
+
+          // Find the first non stylized/bold unicode character
+          const firstText = blocks.find(
+            (b) => !/^[\u{1D400}-\u{1D7FF}]/u.test(b),
+          );
+          const text = (firstText || blocks[0])
+            .replace(/^[^a-zA-Z0-9]+/, "")
+            .trim();
+
+          return text;
+        },
+      );
+
+      return overview;
     } catch {
       return "";
     }
-
-    const overview = await page.$eval(
-      ".org-about-module__margin-bottom p",
-      (el) => {
-        const text = el.textContent || "";
-        const firstParagraph = text.split("\n\n")[0].trim();
-
-        return firstParagraph.replace(/^[^\w]+/, "");
-      },
-    );
-
-    return overview;
   }
 
   async scrape(name: string, location: string) {
