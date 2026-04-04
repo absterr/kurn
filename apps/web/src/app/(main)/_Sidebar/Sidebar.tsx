@@ -5,6 +5,8 @@ import {
   ChevronLeft,
   LayoutDashboard,
 } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "./SidebarProvider";
 
@@ -28,8 +30,8 @@ const AppIcon = ({ className }: { className?: string }) => (
     <path
       d="M80 150 L95 60 M100 150 L100 55 M120 150 L105 60"
       stroke="currentColor"
-      stroke-width="6"
-      stroke-linecap="round"
+      strokeWidth="6"
+      strokeLinecap="round"
     />
     <g fill="currentColor">
       <ellipse cx="95" cy="60" rx="6" ry="9" />
@@ -49,15 +51,23 @@ const NavItem = ({
   label: string;
   href: string;
 }) => {
+  const pathname = usePathname();
   const { isCollapsed } = useSidebar();
+  const isActive = pathname === href;
+
   return (
-    <a
+    <Link
       href={href}
-      className="flex items-center gap-3 px-4 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+      className={cn(
+        "flex items-center gap-3 px-4 py-2 rounded-lg text-sm font-medium  transition-colors",
+        isActive
+          ? "text-foreground"
+          : "text-muted-foreground hover:text-foreground",
+      )}
     >
       <div className="shrink-0">{icon}</div>
       {!isCollapsed && <span className="truncate">{label}</span>}
-    </a>
+    </Link>
   );
 };
 
@@ -99,7 +109,7 @@ export default function Sidebar() {
             <NavItem
               icon={<LayoutDashboard size={20} />}
               label="Dashboard"
-              href="#"
+              href="/dashboard"
             />
             <NavItem icon={<CheckSquare size={20} />} label="Leads" href="#" />
             <NavItem icon={<Bookmark size={20} />} label="Saved" href="#" />
@@ -109,7 +119,7 @@ export default function Sidebar() {
           <button
             type="button"
             onClick={toggle}
-            className="flex gap-x-3 items-center px-4 md:px-6 outline-0"
+            className="w-full flex gap-x-3 items-center py-1 px-4 md:px-6 outline-0"
           >
             <ChevronLeft
               size={20}

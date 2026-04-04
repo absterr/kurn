@@ -9,9 +9,9 @@ const Topbar = () => {
           type="text"
           name="search"
           placeholder="Search"
-          className="bg-transparent outline-none text-foreground/80 placeholder-foreground/40 flex-1 text-xs md:text-sm"
+          className="bg-transparent outline-none text-foreground placeholder-muted-foreground flex-1 text-xs md:text-sm"
         />
-        <span className="text-foreground/40 text-xs md:text-sm hidden lg:inline p-1 rounded-md bg-foreground/5">
+        <span className="text-muted-foreground text-xs md:text-sm hidden lg:inline p-1 rounded-md bg-foreground/5">
           ⌘ F
         </span>
       </div>
