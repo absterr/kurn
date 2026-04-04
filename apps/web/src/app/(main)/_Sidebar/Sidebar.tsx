@@ -51,46 +51,61 @@ export default function Sidebar() {
   const { isCollapsed, toggle } = useSidebar();
 
   return (
-    <aside
-      className={cn(
-        "py-4 sm:py-6 flex h-auto flex-col  justify-between overflow-hidden rounded-xl bg-foreground/5 transition-[width, transform] duration-300 ease-in-out shrink-0",
-        isCollapsed
-          ? "items-center w-13 sm:w-17.5"
-          : "items-start w-56 md:w-42 lg:w-64",
+    <>
+      {!isCollapsed && (
+        <button
+          type="button"
+          aria-label="Close sidebar"
+          className="fixed inset-0 z-40 bg-background/50 backdrop-blur-md md:hidden"
+          onClick={toggle}
+        />
       )}
-    >
-      <div>
-        <div className="flex items-center md:items-left py-1 px-4 md:py-3 shrink-0">
+
+      <aside
+        className={cn(
+          "py-4 sm:py-6 flex h-auto flex-col  justify-between overflow-hidden rounded-xl bg-foreground/5 transition-[width, transform] duration-300 ease-in-out shrink-0",
+          isCollapsed
+            ? "items-center w-13 sm:w-17.5"
+            : "items-start w-56 md:w-42 lg:w-64 max-md:fixed max-md:top-4 max-md:bottom-4 max-md:left-4 max-md:z-50 ",
+        )}
+      >
+        <div>
+          <div className="flex items-center md:items-left py-1 px-4 md:py-3 shrink-0">
+            <button
+              type="button"
+              onClick={toggle}
+              className="p-1 cursor-default flex items-center gap-2"
+            >
+              <AppIcon />
+              {!isCollapsed && <span className="text-lg truncate">Kurn</span>}
+            </button>
+          </div>
+
+          <nav className="flex-1 px-2 py-6 md:py-10 flex flex-col gap-y-5 md:gap-y-6">
+            <NavItem
+              icon={<LayoutDashboard size={20} />}
+              label="Dashboard"
+              href="#"
+            />
+            <NavItem icon={<CheckSquare size={20} />} label="Leads" href="#" />
+            <NavItem icon={<Bookmark size={20} />} label="Saved" href="#" />
+          </nav>
+        </div>
+        <div>
           <button
             type="button"
             onClick={toggle}
-            className="p-1 cursor-default flex items-center gap-2"
+            className="flex gap-x-1 items-center px-2 outline-0"
           >
-            <AppIcon />
-            {!isCollapsed && <span className="text-lg truncate">Kurn</span>}
+            {isCollapsed ? (
+              <ChevronRight size={20} />
+            ) : (
+              <ChevronLeft size={20} />
+            )}
+            {!isCollapsed && <span className="truncate text-sm">Collapse</span>}
           </button>
         </div>
-
-        <nav className="flex-1 px-2 py-6 md:py-10 flex flex-col gap-y-5 md:gap-y-6">
-          <NavItem
-            icon={<LayoutDashboard size={20} />}
-            label="Dashboard"
-            href="#"
-          />
-          <NavItem icon={<CheckSquare size={20} />} label="Leads" href="#" />
-          <NavItem icon={<Bookmark size={20} />} label="Saved" href="#" />
-        </nav>
-      </div>
-      <div>
-        <button
-          type="button"
-          onClick={toggle}
-          className="flex gap-x-1 items-center px-2 outline-0"
-        >
-          {isCollapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
-          {!isCollapsed && <span className="truncate text-sm">Collapse</span>}
-        </button>
-      </div>
-    </aside>
+      </aside>
+    </>
   );
 }
