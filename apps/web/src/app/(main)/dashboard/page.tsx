@@ -1,3 +1,7 @@
-export default function Home() {
-  return <div className="p-4 sm:p-6">Yare yare.</div>;
+export default function Dashboard() {
+  return (
+    <div className="p-2 sm:p-4">
+      <h1>Dashboard</h1>
+    </div>
+  );
 }

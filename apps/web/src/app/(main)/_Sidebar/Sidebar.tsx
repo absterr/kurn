@@ -1,9 +1,9 @@
 "use client";
 import {
   Bookmark,
-  CheckSquare,
-  ChevronLeft,
+  ChevronRight,
   LayoutDashboard,
+  TextSearch,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -111,7 +111,11 @@ export default function Sidebar() {
               label="Dashboard"
               href="/dashboard"
             />
-            <NavItem icon={<CheckSquare size={20} />} label="Leads" href="#" />
+            <NavItem
+              icon={<TextSearch size={20} />}
+              label="Leads"
+              href="/leads"
+            />
             <NavItem icon={<Bookmark size={20} />} label="Saved" href="#" />
           </nav>
         </div>
@@ -121,7 +125,7 @@ export default function Sidebar() {
             onClick={toggle}
             className="w-full flex gap-x-3 items-center py-1 px-4 md:px-6 outline-0"
           >
-            <ChevronLeft
+            <ChevronRight
               size={20}
               className={`transition-transform duration-200 ${isCollapsed ? "rotate-0" : "rotate-180"}`}
             />
