@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import pLimit from "p-limit";
 import { GoogleMapsScraper } from "./google-maps.scraper";
+import { LinkedinAuth } from "./linkedin-auth";
 import { LinkedinLeadsScraper } from "./linkedin-leads.scraper";
 import { WebCrawler } from "./web-crawler";
 
@@ -8,6 +9,7 @@ import { WebCrawler } from "./web-crawler";
 export class LeadsV1Service {
   constructor(
     private readonly googleMapsScraper: GoogleMapsScraper,
+    private readonly linkedinAuth: LinkedinAuth,
     private readonly linkedinLeadsScraper: LinkedinLeadsScraper,
     private readonly webCrawler: WebCrawler,
   ) {}
@@ -17,6 +19,10 @@ export class LeadsV1Service {
       keyword,
       location,
     );
+
+    if (googleMapsLeads.length === 0) return [];
+
+    await this.linkedinAuth.confirmSession();
 
     const leads = await Promise.all(
       googleMapsLeads.map((lead) =>

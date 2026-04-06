@@ -9,6 +9,8 @@ chromium.use(stealth());
 export class BrowserContextProvider implements OnModuleInit, OnModuleDestroy {
   private browser: Browser;
 
+  linkedinSessionPath = "user_data/linkedin-session.json";
+
   async onModuleInit() {
     this.browser = await chromium.launch({
       headless: true,
