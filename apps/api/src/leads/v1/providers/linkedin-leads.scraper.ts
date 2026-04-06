@@ -1,7 +1,5 @@
-import { existsSync, mkdirSync } from "node:fs";
-import { dirname } from "node:path";
 import { Injectable } from "@nestjs/common";
-import playwright, { Page } from "playwright";
+import { Page } from "playwright";
 import { BrowserContextProvider } from "./browser-context-provider";
 
 interface Job {
@@ -16,29 +14,6 @@ export class LinkedinLeadsScraper {
   constructor(
     private readonly browserContextProvider: BrowserContextProvider,
   ) {}
-
-  private sessionPath = "user_data/linkedin-session.json";
-
-  private async loginLinkedIn() {
-    const authBrowser = await playwright.chromium.launch({
-      headless: false,
-    });
-
-    const context = await authBrowser.newContext();
-    const page = await context.newPage();
-
-    try {
-      await page.goto("https://www.linkedin.com/login");
-      await page.waitForURL(/linkedin\.com\/feed/, {
-        timeout: 0,
-      });
-      await context.storageState({ path: this.sessionPath });
-    } catch {
-      throw new Error("Login aborted");
-    } finally {
-      await authBrowser.close();
-    }
-  }
 
   private async getLinkedinUrl(
     page: Page,
@@ -216,33 +191,18 @@ export class LinkedinLeadsScraper {
   }
 
   async scrape(name: string, location: string) {
+    const sesssionPath = this.browserContextProvider.linkedinSessionPath;
     const searchQuery = `"${name}" ${location}`;
     const searchUrl = `https://www.linkedin.com/search/results/companies/?keywords=${encodeURIComponent(searchQuery)}`;
 
-    mkdirSync(dirname(this.sessionPath), { recursive: true });
-    if (!existsSync(this.sessionPath)) await this.loginLinkedIn();
-
-    let context = await this.browserContextProvider.getContext(
-      this.sessionPath,
-    );
-    let page = await context.newPage();
+    const context = await this.browserContextProvider.getContext(sesssionPath);
+    const page = await context.newPage();
 
     try {
       await page.goto(searchUrl);
 
-      if (page.url().includes("login")) {
-        await context.close();
-        await this.loginLinkedIn();
-
-        context = await this.browserContextProvider.getContext(
-          this.sessionPath,
-        );
-
-        page = await context.newPage();
-        await page.goto(searchUrl);
-      }
-
       const searchInput = page.locator(".search-global-typeahead__input");
+
       await searchInput.waitFor({ state: "visible" });
       await searchInput.click();
       await searchInput.fill(name);
