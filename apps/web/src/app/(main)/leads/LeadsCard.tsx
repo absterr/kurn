@@ -1,3 +1,4 @@
+"use client";
 import {
   Briefcase,
   ChevronRight,
@@ -6,9 +7,10 @@ import {
   MapPin,
   Phone,
 } from "lucide-react";
-import type { Lead } from "@/lib/types";
+import type { z } from "zod";
+import type { leadSchema } from "@/lib/types";
 
-const LeadsCard = ({ lead }: { lead: Lead }) => {
+const LeadsCard = ({ lead }: { lead: z.infer<typeof leadSchema> }) => {
   return (
     <div className="rounded-lg p-2 md:p-4 transition-all cursor-pointer group">
       <div className="flex items-center justify-between gap-4 pb-4">

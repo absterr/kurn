@@ -51,7 +51,10 @@ export class LinkedinAuth {
     const page = await context.newPage();
 
     try {
-      await page.goto("https://www.linkedin.com/feed");
+      await page.goto("https://www.linkedin.com/feed", {
+        waitUntil: "commit",
+        timeout: 5000,
+      });
 
       if (page.url().includes("login")) {
         await context.close();
