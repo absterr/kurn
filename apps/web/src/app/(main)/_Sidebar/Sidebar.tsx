@@ -101,7 +101,9 @@ export default function Sidebar() {
               className="p-1 cursor-default flex items-center gap-2"
             >
               <AppIcon />
-              {!isCollapsed && <span className="text-lg truncate">Kurn</span>}
+              {!isCollapsed && (
+                <span className="text-lg font-medium truncate">Kurn</span>
+              )}
             </button>
           </div>
 
