@@ -11,11 +11,17 @@ const leadsFormSchema = z.object({
 
 type FormValues = z.infer<typeof leadsFormSchema>;
 
-export default function LeadsForm() {
+const LeadsForm = ({
+  isPending,
+  onSearchAction,
+}: {
+  isPending: boolean;
+  onSearchAction: (values: FormValues) => void;
+}) => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(leadsFormSchema),
     defaultValues: {
@@ -24,58 +30,58 @@ export default function LeadsForm() {
     },
   });
 
-  const onSubmit = async (data: FormValues) => {
-    console.log(data);
-  };
-
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="w-full flex flex-col items-end md:flex-row gap-4 py-6"
-    >
-      <div className="w-full">
-        <div className="flex justify-between p-1">
-          <p>
-            Keyword <span className="text-red-500 text-sm">*</span>
-          </p>
-          {errors.keyword && (
-            <p className="text-red-500 text-xs sm:text-sm">
-              {errors.keyword.message}
-            </p>
-          )}
-        </div>
-
-        <input
-          {...register("keyword")}
-          placeholder="Keyword"
-          className="w-full p-3 bg-background rounded-xl text-xs sm:text-sm"
-        />
-      </div>
-
-      <div className="w-full">
-        <div className="flex justify-between p-1">
-          <p>
-            Location <span className="text-red-500 text-sm">*</span>
-          </p>
-          {errors.location && (
-            <p className="text-red-500 text-xs sm:text-sm">
-              {errors.location.message}
-            </p>
-          )}
-        </div>
-        <input
-          {...register("location")}
-          placeholder="Location"
-          className="w-full p-3 bg-background rounded-xl text-xs sm:text-sm"
-        />
-      </div>
-      <Button
-        type="submit"
-        disabled={isSubmitting}
-        className="bg-foreground w-full sm:w-fit text-background p-5 cursor-pointer rounded-3xl"
+    <div>
+      <form
+        onSubmit={handleSubmit(onSearchAction)}
+        className="w-full flex flex-col items-end md:flex-row gap-4 py-6"
       >
-        {isSubmitting ? "Submitting..." : "Submit"}
-      </Button>
-    </form>
+        <div className="w-full">
+          <div className="flex justify-between p-1">
+            <p>
+              Keyword <span className="text-red-500 text-sm">*</span>
+            </p>
+            {errors.keyword && (
+              <p className="text-red-500 text-xs sm:text-sm">
+                {errors.keyword.message}
+              </p>
+            )}
+          </div>
+
+          <input
+            {...register("keyword")}
+            placeholder="Keyword"
+            className="w-full p-3 bg-background rounded-xl text-xs sm:text-sm"
+          />
+        </div>
+
+        <div className="w-full">
+          <div className="flex justify-between p-1">
+            <p>
+              Location <span className="text-red-500 text-sm">*</span>
+            </p>
+            {errors.location && (
+              <p className="text-red-500 text-xs sm:text-sm">
+                {errors.location.message}
+              </p>
+            )}
+          </div>
+          <input
+            {...register("location")}
+            placeholder="Location"
+            className="w-full p-3 bg-background rounded-xl text-xs sm:text-sm"
+          />
+        </div>
+        <Button
+          type="submit"
+          disabled={isPending}
+          className="bg-foreground w-full sm:w-fit text-background p-5 cursor-pointer rounded-3xl"
+        >
+          {isPending ? "Submitting..." : "Submit"}
+        </Button>
+      </form>
+    </div>
   );
-}
+};
+
+export default LeadsForm;
