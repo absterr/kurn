@@ -31,7 +31,7 @@ export default function LeadsForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="w-full flex flex-col items-end md:flex-row gap-4"
+      className="w-full flex flex-col items-end md:flex-row gap-4 py-6"
     >
       <div className="w-full">
         <div className="flex justify-between p-1">
