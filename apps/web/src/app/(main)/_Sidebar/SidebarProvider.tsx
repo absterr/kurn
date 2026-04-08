@@ -20,6 +20,18 @@ export function SidebarProvider({ children }: { children: React.ReactNode }) {
   const toggle = useCallback(() => setIsCollapsed((prev) => !prev), []);
 
   useEffect(() => {
+    const media = window.matchMedia("(max-width: 640px)");
+    const handleChange = (e: MediaQueryList | MediaQueryListEvent) => {
+      setIsCollapsed(e.matches);
+    };
+
+    handleChange(media);
+    media.addEventListener("change", handleChange);
+
+    return () => media.removeEventListener("change", handleChange);
+  }, []);
+
+  useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "b" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
