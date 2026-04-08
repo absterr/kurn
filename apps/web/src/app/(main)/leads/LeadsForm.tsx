@@ -34,7 +34,7 @@ const LeadsForm = ({
     <div>
       <form
         onSubmit={handleSubmit(onSearchAction)}
-        className="w-full flex flex-col items-end md:flex-row gap-4 py-6"
+        className="w-full flex flex-col items-end md:flex-row gap-4 pt-4 pb-8"
       >
         <div className="w-full">
           <div className="flex justify-between p-1">

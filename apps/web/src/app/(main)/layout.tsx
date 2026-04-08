@@ -13,8 +13,8 @@ export default function MainLayout({
         <Sidebar />
         <div className="flex flex-1 flex-col gap-y-4">
           <Topbar />
-          <main className="flex-1 rounded-xl bg-foreground/5 p-4">
-            <div className="overflow-y-auto">{children}</div>
+          <main className="flex-1 rounded-xl bg-foreground/5 p-4 flex min-h-0">
+            <div className="overflow-hidden h-full">{children}</div>
           </main>
         </div>
       </div>
