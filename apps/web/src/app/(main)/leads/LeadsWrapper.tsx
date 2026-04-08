@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { findLeads } from "@/lib/actions";
 import type { Lead } from "@/lib/types";
-import LeadsCard from "./LeadsCard";
+import LeadsDrawer from "./LeadsDrawer";
 import LeadsForm from "./LeadsForm";
 
 const EmptyState = ({ message }: { message: string }) => (
@@ -22,7 +22,7 @@ const EmptyState = ({ message }: { message: string }) => (
   </div>
 );
 
-const LeadsWrapper = () => {
+export default function LeadsWrapper() {
   const [leads, setLeads] = useState<Lead[] | null>(null);
   const [isPending, startTransition] = useTransition();
 
@@ -59,7 +59,7 @@ const LeadsWrapper = () => {
           <div className="p-4 rounded-xl max-h-[67vh] overflow-y-auto no-scrollbar">
             {leads.map((lead, idx) => (
               <div key={lead.mapLink}>
-                <LeadsCard lead={lead} />
+                <LeadsDrawer lead={lead} />
                 {idx !== leads.length - 1 && (
                   <div className="py-3">
                     <hr className="bg-foreground" />
@@ -72,6 +72,4 @@ const LeadsWrapper = () => {
       </section>
     </div>
   );
-};
-
-export default LeadsWrapper;
+}
