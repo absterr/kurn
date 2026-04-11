@@ -52,12 +52,18 @@ const NavItem = ({
   href: string;
 }) => {
   const pathname = usePathname();
-  const { isCollapsed } = useSidebar();
+  const { isCollapsed, toggle } = useSidebar();
   const isActive = pathname === href;
 
   return (
     <Link
       href={href}
+      onClick={() => {
+        const media = window.matchMedia("(max-width: 640px)");
+        if (media.matches && !isCollapsed) {
+          toggle();
+        }
+      }}
       className={cn(
         "flex items-center gap-3 px-4 py-2 rounded-lg text-sm font-medium  transition-colors",
         isActive
