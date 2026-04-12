@@ -9,6 +9,5 @@ import { LinkedinLeadsScraper } from "./providers/linkedin-leads.scraper";
   imports: [SharedModule],
   providers: [GoogleMapsScraper, LeadsV1Service, LinkedinLeadsScraper],
   controllers: [LeadsV1Controller],
-  exports: [LeadsV1Service],
 })
 export class LeadsV1Module {}
