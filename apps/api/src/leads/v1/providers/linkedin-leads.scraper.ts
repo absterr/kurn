@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { Page } from "playwright";
-import { BrowserContextProvider } from "./browser-context-provider";
+import { BrowserContextProvider } from "src/lib/providers/browser-context-provider";
 
 interface Job {
   title: string;
