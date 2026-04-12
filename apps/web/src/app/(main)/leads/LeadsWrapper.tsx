@@ -8,7 +8,6 @@ import LeadsCard from "./LeadsCard";
 import LeadsDetails from "./LeadsDetails";
 import LeadsDrawer from "./LeadsDrawer";
 import LeadsForm from "./LeadsForm";
-import { mockLeads } from "./mockLeads";
 
 const EmptyState = ({
   caption,
@@ -29,7 +28,7 @@ const EmptyState = ({
 );
 
 export default function LeadsWrapper() {
-  const [leads, setLeads] = useState<Lead[] | null>(mockLeads);
+  const [leads, setLeads] = useState<Lead[] | null>(null);
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [isPending, startTransition] = useTransition();
 
@@ -51,9 +50,9 @@ export default function LeadsWrapper() {
   };
 
   return (
-    <div>
+    <div className="h-full min-h-0 flex-1 flex flex-col">
       <LeadsForm isPending={isPending} onSearchAction={handleSearch} />
-      <div>
+      <div className="flex-1 min-h-0">
         {isPending ? (
           <div className="flex justify-center py-20">
             <LoadingSpinner size={8} />
@@ -69,8 +68,8 @@ export default function LeadsWrapper() {
             message="Enter a keyword and location to discover potential leads"
           />
         ) : (
-          <div className="xl:grid xl:grid-cols-2 xl:gap-8 h-full py-1">
-            <section className="rounded-xl overflow-y-auto no-scrollbar">
+          <div className="h-full flex flex-col xl:grid xl:grid-cols-2 xl:gap-8 py-1">
+            <section className="rounded-xl flex flex-col min-h-0">
               <h3 className="py-2">
                 Results{" "}
                 <span className="text-xs sm:text-sm">({leads.length})</span>
@@ -93,20 +92,22 @@ export default function LeadsWrapper() {
               </div>
             </section>
 
-            <section className="hidden xl:block xl:bg-background rounded-xl p-2 overflow-y-auto no-scrollbar">
-              {selectedLead ? (
-                <div>
-                  <h3 className="text-left text-lg font-semibold px-6 py-4">
-                    {selectedLead.name}
-                  </h3>
-                  <LeadsDetails lead={selectedLead} />
-                </div>
-              ) : (
-                <EmptyState
-                  caption="Select a card"
-                  message="Click on any of the results to see details"
-                />
-              )}
+            <section className="min-h-0 hidden xl:flex xl:flex-col xl:bg-background rounded-xl p-2">
+              <div className="flex-1 min-h-0 overflow-y-auto no-scrollbar">
+                {selectedLead ? (
+                  <div>
+                    <h3 className="text-left text-lg font-semibold px-6 py-4">
+                      {selectedLead.name}
+                    </h3>
+                    <LeadsDetails lead={selectedLead} />
+                  </div>
+                ) : (
+                  <EmptyState
+                    caption="Select a card"
+                    message="Click on any of the results to see details"
+                  />
+                )}
+              </div>
             </section>
           </div>
         )}
