@@ -199,7 +199,7 @@ export class LinkedinLeadsScraper {
     const page = await context.newPage();
 
     try {
-      await page.goto(searchUrl);
+      await page.goto(searchUrl, { waitUntil: "domcontentloaded" });
 
       const searchInput = page.locator(".search-global-typeahead__input");
 
