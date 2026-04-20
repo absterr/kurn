@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { Page } from "playwright";
 import { BrowserContextProvider } from "src/lib/providers/browser-context-provider";
 
-interface Job {
+export interface LeadJob {
   title: string;
   link: string;
   location: string;
@@ -87,7 +87,7 @@ export class LinkedinLeadsScraper {
 
     if (results !== "FOUND") return [];
 
-    const recentJobs: Job[] = [];
+    const recentLeadJobs: LeadJob[] = [];
     const seenJobIds = new Set<string>();
 
     while (true) {
@@ -125,7 +125,7 @@ export class LinkedinLeadsScraper {
 
         if (!jobId || seenJobIds.has(jobId)) continue;
         seenJobIds.add(jobId);
-        recentJobs.push(job);
+        recentLeadJobs.push(job);
       }
 
       const nextBtn = page.locator(
@@ -139,7 +139,7 @@ export class LinkedinLeadsScraper {
       await page.waitForTimeout(1000);
     }
 
-    return recentJobs;
+    return recentLeadJobs;
   }
 
   private async getOverview(companyUrl: string, page: Page) {
@@ -225,9 +225,7 @@ export class LinkedinLeadsScraper {
           .then(() => "EMPTY"),
       ]).catch(() => "TIMEOUT");
 
-      if (resultsFound !== "FOUND") {
-        return "";
-      }
+      if (resultsFound !== "FOUND") return "";
 
       const scrollTries = 2;
       let prevHeight = 0;
