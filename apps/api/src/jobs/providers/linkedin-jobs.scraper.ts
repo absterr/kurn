@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { Locator, Page } from "playwright";
 import { BrowserContextProvider } from "src/lib/providers/browser-context-provider";
+import { Timeframe } from "src/lib/types";
 
 export interface Job {
   title: string;
@@ -32,13 +33,16 @@ export class LinkedinJobsScraper {
       (await companyEl.getAttribute("href"))?.replace(/\/life\/?$/, "") || "";
 
     const descEl = detailsPanel.locator("#job-details").locator("p");
-    const description = (await descEl.innerText())?.trim() || "";
+    const description = (await descEl.allInnerTexts())
+      .map((t) => t.trim())
+      .filter(Boolean)
+      .join("\n\n");
 
     const metaEl = detailsPanel.locator(
       ".job-details-jobs-unified-top-card__tertiary-description-container",
     );
     const metaRaw = (await metaEl.innerText()) || "";
-    // _ REPRESENTS REGION
+    // _ IS THE REGION
     const [_, date, rest] = metaRaw.split("·").map((s) => s.trim());
     const applicants = rest.split("\n\n")[0].trim();
 
@@ -51,7 +55,7 @@ export class LinkedinJobsScraper {
     };
   }
 
-  async scrape(position: string) {
+  async scrape(position: string, timeframe: Timeframe) {
     const sesssionPath = this.browserContextProvider.linkedinSessionPath;
     const searchUrl = `https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(position)}`;
 
@@ -73,9 +77,44 @@ export class LinkedinJobsScraper {
       const resultsFilterDropdown = page.locator(
         "#navigational-filter_resultType",
       );
-      await resultsFilterDropdown.isVisible().catch(() => null);
+      await resultsFilterDropdown.click().catch(() => null);
+
       const jobs = page.locator('.artdeco-dropdown__item:has-text("Jobs")');
-      await jobs.click().catch(() => false);
+      await jobs.waitFor({ state: "visible" });
+      await jobs.click().catch(() => null);
+
+      const timeframeFilterDropdown = page.locator(
+        "#searchFilter_timePostedRange",
+      );
+      await timeframeFilterDropdown.click().catch(() => null);
+
+      const dropdownContainer = page
+        .locator(".reusable-search-filters-trigger-dropdown__container")
+        .filter({ hasText: "Date Posted" });
+      await dropdownContainer.waitFor({ state: "visible" });
+
+      const valueMap = {
+        "Any time": "",
+        "Past month": "r2592000",
+        "Past week": "r604800",
+        "Past 24 hours": "r86400",
+      };
+
+      const value = valueMap[timeframe];
+      const option = dropdownContainer.locator(
+        `input[name="date-posted-filter-value"][value="${value}"]`,
+      );
+      await option.check().catch(() => null);
+
+      const showResultsBtn = page.locator(
+        'button.artdeco-button--primary:has-text("Show")',
+      );
+
+      if (await showResultsBtn.isVisible().catch(() => false)) {
+        await showResultsBtn.click().catch(() => null);
+      }
+
+      await page.waitForTimeout(3000);
 
       const searchResults = page.locator("li[data-occludable-job-id]");
       await searchResults
