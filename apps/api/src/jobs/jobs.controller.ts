@@ -8,6 +8,6 @@ export class JobsController {
 
   @Post()
   async(@Body() dto: JobsDto) {
-    return this.jobsService.findJobs(dto.position);
+    return this.jobsService.findJobs(dto.position, dto.timeframe);
   }
 }
