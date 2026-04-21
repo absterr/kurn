@@ -1,10 +1,16 @@
 import { Injectable } from "@nestjs/common";
+import { Locator, Page } from "playwright";
 import { BrowserContextProvider } from "src/lib/providers/browser-context-provider";
 
 export interface Job {
   title: string;
   link: string;
   location: string;
+  date: string;
+  applicants: string;
+  description: string;
+  companyName: string;
+  companyLink: string;
 }
 
 @Injectable()
@@ -12,6 +18,38 @@ export class LinkedinJobsScraper {
   constructor(
     private readonly browserContextProvider: BrowserContextProvider,
   ) {}
+
+  private async getJobDetails(page: Page, card: Locator) {
+    await card.click().catch(() => null);
+
+    const detailsPanel = page.locator(".jobs-details__main-content");
+
+    const companyEl = detailsPanel.locator(
+      ".job-details-jobs-unified-top-card__company-name a",
+    );
+    const companyName = (await companyEl.textContent())?.trim() || "";
+    const companyLink =
+      (await companyEl.getAttribute("href"))?.replace(/\/life\/?$/, "") || "";
+
+    const descEl = detailsPanel.locator("#job-details").locator("p");
+    const description = (await descEl.innerText())?.trim() || "";
+
+    const metaEl = detailsPanel.locator(
+      ".job-details-jobs-unified-top-card__tertiary-description-container",
+    );
+    const metaRaw = (await metaEl.innerText()) || "";
+    // _ REPRESENTS REGION
+    const [_, date, rest] = metaRaw.split("·").map((s) => s.trim());
+    const applicants = rest.split("\n\n")[0].trim();
+
+    return {
+      date,
+      applicants,
+      description,
+      companyName,
+      companyLink,
+    };
+  }
 
   async scrape(position: string) {
     const sesssionPath = this.browserContextProvider.linkedinSessionPath;
@@ -58,18 +96,16 @@ export class LinkedinJobsScraper {
         );
 
         const jobTitle = (await titleEl.innerText()) || "";
-        const link = await titleEl.getAttribute("href");
-        const location = (await locationEl.first().textContent()) || "";
-
-        const title = jobTitle
-          .split("\n")
-          .map((t) => t.trim())
-          .filter(Boolean)[0];
+        const jobUrl = await titleEl.getAttribute("href");
+        const location = (await locationEl.first().textContent())?.trim() || "";
+        const title = jobTitle.split("\n")[0].trim();
+        const details = await this.getJobDetails(page, card);
 
         results.push({
           title,
-          link: link ? `https://www.linkedin.com${link.split("?")[0]}` : "",
-          location: location?.trim(),
+          link: jobUrl ? `https://www.linkedin.com${jobUrl.split("?")[0]}` : "",
+          location,
+          ...details,
         });
       }
 
