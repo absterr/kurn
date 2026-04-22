@@ -10,6 +10,9 @@ export class EnvironmentVariables {
   @IsNumber()
   @IsOptional()
   SERVER_PORT: number = 4000;
+
+  @IsUrl()
+  DATABASE_URL: string;
 }
 
 export function validate(config: Record<string, unknown>) {
