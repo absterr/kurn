@@ -7,8 +7,10 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { is } from "zod/v4/locales";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "./SidebarProvider";
+import { ThemeSwitch } from "./ThemeSwitch";
 
 const AppIcon = ({ className }: { className?: string }) => (
   <svg
@@ -127,7 +129,12 @@ export default function Sidebar() {
             <NavItem icon={<Bookmark size={20} />} label="Saved" href="#" />
           </nav>
         </div>
-        <div>
+        <div
+          className={cn(
+            "flex items-center justify-between",
+            isCollapsed ? "flex-col gap-y-10" : "flex-row",
+          )}
+        >
           <button
             type="button"
             onClick={toggle}
@@ -139,6 +146,9 @@ export default function Sidebar() {
             />
             {!isCollapsed && <span className="truncate text-sm">Collapse</span>}
           </button>
+          <div className={cn(isCollapsed ? "-order-1" : "px-6")}>
+            <ThemeSwitch />
+          </div>
         </div>
       </aside>
     </>
