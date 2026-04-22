@@ -1,7 +1,7 @@
 import { plainToInstance } from "class-transformer";
 import { IsNumber, IsOptional, IsUrl, validateSync } from "class-validator";
 
-class EnvironmentVariables {
+export class EnvironmentVariables {
   @IsUrl({
     require_tld: false,
   })
@@ -12,7 +12,7 @@ class EnvironmentVariables {
   SERVER_PORT: number = 4000;
 }
 
-export function validate(config: Record<string, string>) {
+export function validate(config: Record<string, unknown>) {
   const validatedConfig = plainToInstance(EnvironmentVariables, config, {
     enableImplicitConversion: true,
   });

@@ -1,14 +1,14 @@
 import { ValidationPipe, VersioningType } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
+import { EnvProvider } from "./config/env/env-provider";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  const configService = app.get(ConfigService);
-  const PORT = configService.get("SERVER_PORT");
-  const WEB_ORIGIN = configService.get("WEB_ORIGIN");
+  const env = app.get(EnvProvider);
+  const PORT = env.get("SERVER_PORT");
+  const WEB_ORIGIN = env.get("WEB_ORIGIN");
 
   const corsOptions = {
     origin: [WEB_ORIGIN],
