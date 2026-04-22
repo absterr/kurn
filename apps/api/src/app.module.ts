@@ -8,7 +8,7 @@ import { TestModule } from "./test/test.module";
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ validate, isGlobal: true }),
+    ConfigModule.forRoot({ validate }),
     LeadsV1Module,
     TestModule,
     JobsModule,
