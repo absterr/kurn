@@ -4,6 +4,7 @@ import {
   IsIn,
   IsOptional,
   IsString,
+  Matches,
   MinLength,
 } from "class-validator";
 
@@ -65,4 +66,9 @@ export class JobsDto {
   @IsIn(LEVEL, { each: true })
   @IsOptional()
   level: Level[];
+
+  @Matches(/^([01]\d|2[0-3]):([0-5]\d)$/, {
+    message: "Time must be in HH:mm (24h) format",
+  })
+  startAt: string;
 }
