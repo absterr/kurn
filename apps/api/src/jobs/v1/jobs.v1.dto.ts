@@ -42,7 +42,7 @@ export const INTERVAL_MS: Record<Interval, number> = {
   [Interval.H24]: 24 * 60 * 60 * 1000,
 };
 
-export class JobsDto {
+export class JobsV1Dto {
   @IsString()
   @MinLength(1)
   position: string;
