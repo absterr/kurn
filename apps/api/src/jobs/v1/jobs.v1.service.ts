@@ -1,14 +1,14 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { Kysely } from "kysely";
 import { DB } from "src/db/types";
-import { KYSELY_DB } from "../db/db.module";
-import { JobsDto } from "./jobs.dto";
+import { KYSELY_DB } from "../../db/db.module";
+import { JobsV1Dto } from "./jobs.v1.dto";
 
 @Injectable()
-export class JobsService {
+export class JobsV1Service {
   constructor(@Inject(KYSELY_DB) private readonly db: Kysely<DB>) {}
 
-  async findJobs(dto: JobsDto) {
+  async findJobs(dto: JobsV1Dto) {
     return this.db
       .insertInto("jobs")
       .values({

@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { Locator, Page } from "playwright";
-import { Timeframe } from "src/jobs/jobs.dto";
+import { Timeframe } from "src/jobs/v1/jobs.v1.dto";
 import { BrowserContextProvider } from "src/lib/providers/browser-context-provider";
 
 export interface Job {
