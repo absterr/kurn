@@ -12,7 +12,7 @@
     "start:nest": "nest start",
     "start:debug": "nest start --debug --watch",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "codegen": "kysely-codegen --dialect postgres --out-file src/db/types.ts"
+    "db:gen": "kysely-codegen --dialect postgres --out-file src/db/types.ts"
   },
   "dependencies": {
     "@nestjs/common": "^11.1.17",
