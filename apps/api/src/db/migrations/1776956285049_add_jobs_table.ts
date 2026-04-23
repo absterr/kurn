@@ -11,8 +11,10 @@ export async function up(db: Kysely<unknown>): Promise<void> {
 
   await db.schema
     .createTable("jobs")
-    .addColumn("id", "uuid", (col) => col.primaryKey())
-    .addColumn("position", "text", (col) => col.notNull())
+    .addColumn("id", "uuid", (col) =>
+      col.primaryKey().defaultTo(sql`gen_random_uuid()`),
+    )
+    .addColumn("position", "text", (col) => col.notNull().unique())
     .addColumn("timeframe", "text", (col) => col.notNull())
     .addColumn("interval", sql`interval_type`, (col) => col.notNull())
     .addColumn("start_at", "text", (col) => col.notNull())

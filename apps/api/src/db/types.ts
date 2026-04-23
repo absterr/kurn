@@ -16,7 +16,7 @@ export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
 export interface Jobs {
   created_at: Generated<Timestamp>;
-  id: string;
+  id: Generated<string>;
   interval: IntervalType;
   level: Generated<string[]>;
   position: string;

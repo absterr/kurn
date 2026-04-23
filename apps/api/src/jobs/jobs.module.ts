@@ -1,12 +1,11 @@
 import { Module } from "@nestjs/common";
-import { SharedModule } from "src/lib/shared.module";
+import { DatabaseModule } from "src/db/db.module";
 import { JobsController } from "./jobs.controller";
-import { JobsService } from "./providers/jobs.service";
-import { LinkedinJobsScraper } from "./providers/linkedin-jobs.scraper";
+import { JobsService } from "./jobs.service";
 
 @Module({
-  imports: [SharedModule],
+  imports: [DatabaseModule],
   controllers: [JobsController],
-  providers: [JobsService, LinkedinJobsScraper],
+  providers: [JobsService],
 })
 export class JobsModule {}

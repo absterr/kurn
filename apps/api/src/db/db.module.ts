@@ -22,6 +22,7 @@ export const KYSELY_DB = "KYSELY_DB";
           dialect: new PostgresDialect({ pool }),
         });
       },
+      inject: [EnvProvider],
     },
   ],
   exports: [KYSELY_DB],
