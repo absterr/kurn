@@ -1,18 +1,20 @@
-import { Global, Inject, Module, OnModuleDestroy } from "@nestjs/common";
+import { Inject, Module, OnModuleDestroy } from "@nestjs/common";
 import { Kysely, PostgresDialect } from "kysely";
 import { Pool } from "pg";
+import { EnvModule } from "src/config/env/env.module";
+import { EnvProvider } from "src/config/env/env.provider";
 import { DB } from "./types";
 
 export const KYSELY_DB = "KYSELY_DB";
 
-@Global()
 @Module({
+  imports: [EnvModule],
   providers: [
     {
       provide: KYSELY_DB,
-      useFactory: () => {
+      useFactory: (env: EnvProvider) => {
         const pool = new Pool({
-          connectionString: process.env.DATABASE_URL,
+          connectionString: env.get("DATABASE_URL"),
           max: 10,
         });
 
