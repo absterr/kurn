@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { LinkedinAuth } from "src/lib/providers/linkedin-auth";
-import { Timeframe } from "src/lib/types";
+import { Timeframe } from "../jobs.dto";
 import { LinkedinJobsScraper } from "./linkedin-jobs.scraper";
 
 @Injectable()
