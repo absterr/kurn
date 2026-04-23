@@ -1,21 +1,8 @@
 import { plainToInstance } from "class-transformer";
-import { IsNumber, IsOptional, IsUrl, validateSync } from "class-validator";
+import { validateSync } from "class-validator";
+import { EnvironmentVariables } from "./env-vars";
 
-export class EnvironmentVariables {
-  @IsUrl({
-    require_tld: false,
-  })
-  WEB_ORIGIN: string;
-
-  @IsNumber()
-  @IsOptional()
-  SERVER_PORT: number = 4000;
-
-  @IsUrl()
-  DATABASE_URL: string;
-}
-
-export function validate(config: Record<string, unknown>) {
+export default function validate(config: Record<string, unknown>) {
   const validatedConfig = plainToInstance(EnvironmentVariables, config, {
     enableImplicitConversion: true,
   });

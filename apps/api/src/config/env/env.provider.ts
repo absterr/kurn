@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { EnvironmentVariables } from "./validateEnv";
+import { EnvironmentVariables } from "./env-vars";
 
 @Injectable()
 export class EnvProvider {
