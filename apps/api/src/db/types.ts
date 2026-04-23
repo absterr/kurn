@@ -3,4 +3,29 @@
  * Please do not edit it manually.
  */
 
-export type DB = {};
+import type { ColumnType } from "kysely";
+
+export type Generated<T> =
+  T extends ColumnType<infer S, infer I, infer U>
+    ? ColumnType<S, I | undefined, U>
+    : ColumnType<T, T | undefined, T>;
+
+export type IntervalType = "12h" | "24h" | "6h";
+
+export type Timestamp = ColumnType<Date, Date | string, Date | string>;
+
+export interface Jobs {
+  created_at: Generated<Timestamp>;
+  id: string;
+  interval: IntervalType;
+  level: Generated<string[]>;
+  position: string;
+  start_at: string;
+  timeframe: string;
+  updated_at: Generated<Timestamp>;
+  work_type: Generated<string[]>;
+}
+
+export interface DB {
+  jobs: Jobs;
+}
