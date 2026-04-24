@@ -10,7 +10,7 @@ export class JobsV1Service {
 
   async findJobs(dto: JobsV1Dto) {
     return this.db
-      .insertInto("jobs")
+      .insertInto("job_queries")
       .values({
         position: dto.position,
         timeframe: dto.timeframe,

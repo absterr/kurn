@@ -14,7 +14,7 @@ export type IntervalType = "12h" | "24h" | "6h";
 
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
-export interface Jobs {
+export interface JobQueries {
   created_at: Generated<Timestamp>;
   id: Generated<string>;
   interval: IntervalType;
@@ -27,5 +27,5 @@ export interface Jobs {
 }
 
 export interface DB {
-  jobs: Jobs;
+  job_queries: JobQueries;
 }
