@@ -15,33 +15,33 @@ export type IntervalType = "12h" | "24h" | "6h";
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
 export interface JobQueries {
-  created_at: Generated<Timestamp>;
+  createdAt: Generated<Timestamp>;
   id: Generated<string>;
   interval: IntervalType;
   level: Generated<string[]>;
   position: string;
-  start_at: string;
+  startAt: string;
   timeframe: string;
-  updated_at: Generated<Timestamp>;
-  work_type: Generated<string[]>;
+  updatedAt: Generated<Timestamp>;
+  workType: Generated<string[]>;
 }
 
 export interface Jobs {
-  applicants_count: string;
-  company_link: string;
-  company_name: string;
-  created_at: Generated<Timestamp>;
+  applicantsCount: string;
+  companyLink: string;
+  companyName: string;
+  createdAt: Generated<Timestamp>;
   date: string;
   description: string;
   id: Generated<string>;
-  job_query_id: string;
+  jobQueryId: string;
   link: string;
   location: string;
   title: string;
-  updated_at: Generated<Timestamp>;
+  updatedAt: Generated<Timestamp>;
 }
 
 export interface DB {
-  job_queries: JobQueries;
+  jobQueries: JobQueries;
   jobs: Jobs;
 }

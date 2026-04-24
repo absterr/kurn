@@ -24,7 +24,7 @@ export class JobHandler {
         .insertInto("jobs")
         .values(
           jobs.map((job) => ({
-            job_query_id: queryId,
+            jobQueryId: queryId,
             ...job,
           })),
         )

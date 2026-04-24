@@ -6,7 +6,7 @@ import { BrowserContextProvider } from "src/lib/providers/browser-context-provid
 
 export type NewJob = Omit<
   Jobs,
-  "id" | "job_query_id" | "created_at" | "updated_at"
+  "id" | "jobQueryId" | "createdAt" | "updatedAt"
 >;
 
 @Injectable()
@@ -148,9 +148,6 @@ export class LinkedinJobsScraper {
           title,
           link: jobUrl ? `https://www.linkedin.com${jobUrl.split("?")[0]}` : "",
           location,
-          company_name: details.companyName,
-          company_link: details.companyLink,
-          applicants_count: details.applicantsCount,
           ...details,
         });
       }
