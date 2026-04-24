@@ -1,8 +1,5 @@
 import { Kysely, sql } from "kysely";
 
-// `any` is required here since migrations should be frozen in time. alternatively, keep a "snapshot" db interface.
-// I replaced `any` with `unknown` so Biome won't crashout lol
-
 export async function up(db: Kysely<unknown>): Promise<void> {
   await db.schema
     .createType("interval_type")
@@ -10,7 +7,7 @@ export async function up(db: Kysely<unknown>): Promise<void> {
     .execute();
 
   await db.schema
-    .createTable("jobs")
+    .createTable("job_queries")
     .addColumn("id", "uuid", (col) =>
       col.primaryKey().defaultTo(sql`gen_random_uuid()`),
     )
@@ -43,15 +40,15 @@ export async function up(db: Kysely<unknown>): Promise<void> {
     `.execute(db);
 
   await sql`
-      CREATE TRIGGER update_jobs_modtime
-      BEFORE UPDATE ON jobs
+      CREATE TRIGGER update_job_queries_modtime
+      BEFORE UPDATE ON job_queries
       FOR EACH ROW
       EXECUTE PROCEDURE update_modified_column();
     `.execute(db);
 }
 
 export async function down(db: Kysely<unknown>): Promise<void> {
-  await db.schema.dropTable("jobs").execute();
+  await db.schema.dropTable("job_queries").execute();
   await db.schema.dropType("interval_type").execute();
   await sql`DROP FUNCTION IF EXISTS update_modified_column CASCADE`.execute(db);
 }
