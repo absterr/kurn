@@ -8,7 +8,7 @@ export interface Job {
   link: string;
   location: string;
   date: string;
-  applicants: string;
+  applicantsCount: string;
   description: string;
   companyName: string;
   companyLink: string;
@@ -80,11 +80,11 @@ export class LinkedinJobsScraper {
     const metaRaw = (await metaEl.innerText()) || "";
     // _ IS THE REGION
     const [_, date, rest] = metaRaw.split("·").map((s) => s.trim());
-    const applicants = rest.split("\n\n")[0].trim();
+    const applicantsCount = rest.split("\n\n")[0].trim();
 
     return {
       date,
-      applicants,
+      applicantsCount,
       description,
       companyName,
       companyLink,
