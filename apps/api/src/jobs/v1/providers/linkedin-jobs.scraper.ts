@@ -20,6 +20,42 @@ export class LinkedinJobsScraper {
     private readonly browserContextProvider: BrowserContextProvider,
   ) {}
 
+  private async setTimeframe(page: Page, timeframe: string) {
+    const timeframeFilterDropdown = page.locator(
+      "#searchFilter_timePostedRange",
+    );
+    await timeframeFilterDropdown.click().catch(() => null);
+
+    const dropdownContainer = page
+      .locator(".reusable-search-filters-trigger-dropdown__container")
+      .filter({ hasText: "Date Posted" });
+    await dropdownContainer.waitFor({ state: "visible" });
+
+    const valueMap = {
+      "Any time": "",
+      "Past month": "r2592000",
+      "Past week": "r604800",
+      "Past 24 hours": "r86400",
+    };
+
+    const value = valueMap[timeframe];
+    const option = dropdownContainer.locator(
+      `input[name="date-posted-filter-value"][value="${value}"]`,
+    );
+    await option.check().catch(() => null);
+
+    const showResultsBtn = page.locator(
+      'button.artdeco-button--primary:has-text("Show")',
+    );
+
+    if (await showResultsBtn.isVisible().catch(() => false)) {
+      await showResultsBtn.click().catch(() => null);
+    }
+
+    // LIKELY UNNECESSARY
+    await page.waitForTimeout(3000);
+  }
+
   private async getJobDetails(page: Page, card: Locator) {
     await card.click().catch(() => null);
 
@@ -83,38 +119,9 @@ export class LinkedinJobsScraper {
       await jobs.waitFor({ state: "visible" });
       await jobs.click().catch(() => null);
 
-      const timeframeFilterDropdown = page.locator(
-        "#searchFilter_timePostedRange",
-      );
-      await timeframeFilterDropdown.click().catch(() => null);
-
-      const dropdownContainer = page
-        .locator(".reusable-search-filters-trigger-dropdown__container")
-        .filter({ hasText: "Date Posted" });
-      await dropdownContainer.waitFor({ state: "visible" });
-
-      const valueMap = {
-        "Any time": "",
-        "Past month": "r2592000",
-        "Past week": "r604800",
-        "Past 24 hours": "r86400",
-      };
-
-      const value = valueMap[timeframe];
-      const option = dropdownContainer.locator(
-        `input[name="date-posted-filter-value"][value="${value}"]`,
-      );
-      await option.check().catch(() => null);
-
-      const showResultsBtn = page.locator(
-        'button.artdeco-button--primary:has-text("Show")',
-      );
-
-      if (await showResultsBtn.isVisible().catch(() => false)) {
-        await showResultsBtn.click().catch(() => null);
+      if (timeframe !== "Any time") {
+        await this.setTimeframe(page, timeframe);
       }
-
-      await page.waitForTimeout(3000);
 
       const searchResults = page.locator("li[data-occludable-job-id]");
       await searchResults
