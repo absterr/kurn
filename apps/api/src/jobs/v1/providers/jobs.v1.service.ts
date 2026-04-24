@@ -14,7 +14,7 @@ export class JobsV1Service {
   ) {}
 
   async findJobs(dto: JobsV1Dto) {
-    const job_query = await this.db
+    const jobQuery = await this.db
       .insertInto("job_queries")
       .values({
         position: dto.position,
@@ -36,12 +36,12 @@ export class JobsV1Service {
       .returningAll()
       .executeTakeFirstOrThrow();
 
-    const cron = toCron(job_query.interval, job_query.start_at);
+    const cron = toCron(jobQuery.interval, jobQuery.start_at);
 
-    this.cronScheduler.upsertJob(job_query.id, cron, () =>
+    this.cronScheduler.upsertJob(jobQuery.id, cron, () =>
       console.log("Bullseye"),
     );
 
-    return job_query;
+    return jobQuery;
   }
 }
