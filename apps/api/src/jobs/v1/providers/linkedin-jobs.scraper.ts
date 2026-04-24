@@ -1,18 +1,13 @@
 import { Injectable } from "@nestjs/common";
 import { Locator, Page } from "playwright";
-import { Timeframe } from "src/jobs/v1/jobs.v1.dto";
+import { Jobs } from "src/db/types";
+import { JobsV1Dto } from "src/jobs/v1/jobs.v1.dto";
 import { BrowserContextProvider } from "src/lib/providers/browser-context-provider";
 
-export interface Job {
-  title: string;
-  link: string;
-  location: string;
-  date: string;
-  applicantsCount: string;
-  description: string;
-  companyName: string;
-  companyLink: string;
-}
+export type NewJob = Omit<
+  Jobs,
+  "id" | "job_query_id" | "created_at" | "updated_at"
+>;
 
 @Injectable()
 export class LinkedinJobsScraper {
@@ -91,7 +86,9 @@ export class LinkedinJobsScraper {
     };
   }
 
-  async scrape(position: string, timeframe: Timeframe) {
+  async scrape(dto: JobsV1Dto) {
+    const { position, timeframe } = dto;
+
     const sesssionPath = this.browserContextProvider.linkedinSessionPath;
     const searchUrl = `https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(position)}`;
 
@@ -129,7 +126,7 @@ export class LinkedinJobsScraper {
         .isVisible()
         .catch(() => null);
 
-      const results: Job[] = [];
+      const results: NewJob[] = [];
       const maxResults = 5;
       const count = Math.min(await searchResults.count(), maxResults);
 
@@ -151,6 +148,9 @@ export class LinkedinJobsScraper {
           title,
           link: jobUrl ? `https://www.linkedin.com${jobUrl.split("?")[0]}` : "",
           location,
+          company_name: details.companyName,
+          company_link: details.companyLink,
+          applicants_count: details.applicantsCount,
           ...details,
         });
       }
