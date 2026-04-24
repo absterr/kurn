@@ -26,6 +26,22 @@ export interface JobQueries {
   work_type: Generated<string[]>;
 }
 
+export interface Jobs {
+  applicants_count: string;
+  company_link: string;
+  company_name: string;
+  created_at: Generated<Timestamp>;
+  date: string;
+  description: string;
+  id: Generated<string>;
+  job_query_id: string;
+  link: string;
+  location: string;
+  title: string;
+  updated_at: Generated<Timestamp>;
+}
+
 export interface DB {
   job_queries: JobQueries;
+  jobs: Jobs;
 }
