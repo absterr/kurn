@@ -6,6 +6,20 @@ import { CronJob } from "cron";
 export class CronScheduler {
   constructor(private schedulerRegistry: SchedulerRegistry) {}
 
+  // async onModuleInit() {
+  //   const jobQueries = await this.db
+  //     .selectFrom('job_queries')
+  //     .selectAll()
+  //     .execute();
+
+  //   if (jobQueries.length > 0) {
+  //     for (const query of jobQueries) {
+  //       const cron = toCron(query.interval, query.start_at);
+  //       this.upsertJob(query.id, cron, () => console.log('Hello world'));
+  //     }
+  //   }
+  // }
+
   upsertJob(id: string, cronTime: string, callback: () => void) {
     if (this.schedulerRegistry.doesExist("cron", id)) {
       this.schedulerRegistry.deleteCronJob(id);
