@@ -1,5 +1,5 @@
 import { Inject, Module, OnModuleDestroy } from "@nestjs/common";
-import { Kysely, PostgresDialect } from "kysely";
+import { CamelCasePlugin, Kysely, PostgresDialect } from "kysely";
 import { Pool } from "pg";
 import { EnvModule } from "src/config/env/env.module";
 import { EnvProvider } from "src/config/env/env.provider";
@@ -20,6 +20,7 @@ export const KYSELY_DB = "KYSELY_DB";
 
         return new Kysely<DB>({
           dialect: new PostgresDialect({ pool }),
+          plugins: [new CamelCasePlugin()],
         });
       },
       inject: [EnvProvider],

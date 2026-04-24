@@ -17,28 +17,21 @@ export class JobsV1Service {
 
   async findJobs(dto: JobsV1Dto) {
     const jobQuery = await this.db
-      .insertInto("job_queries")
-      .values({
-        position: dto.position,
-        timeframe: dto.timeframe,
-        interval: dto.interval,
-        start_at: dto.startAt,
-        work_type: dto.workType ?? [],
-        level: dto.level ?? [],
-      })
+      .insertInto("jobQueries")
+      .values(dto)
       .onConflict((oc) =>
         oc.column("position").doUpdateSet({
           timeframe: dto.timeframe,
           interval: dto.interval,
-          start_at: dto.startAt,
-          work_type: dto.workType ?? [],
-          level: dto.level ?? [],
+          startAt: dto.startAt,
+          workType: dto.workType,
+          level: dto.level,
         }),
       )
       .returningAll()
       .executeTakeFirstOrThrow();
 
-    const cron = toCron(jobQuery.interval, jobQuery.start_at);
+    const cron = toCron(jobQuery.interval, jobQuery.startAt);
 
     this.cronScheduler.upsertJob(
       jobQuery.id,
