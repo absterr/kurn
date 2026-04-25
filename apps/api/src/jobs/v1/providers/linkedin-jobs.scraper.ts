@@ -2,7 +2,12 @@ import { Injectable } from "@nestjs/common";
 import { Locator, Page } from "playwright";
 import { expect } from "playwright/test";
 import { Jobs } from "src/db/types";
-import { JobsV1Dto, Level, Timeframe, WorkType } from "src/jobs/v1/jobs.v1.dto";
+import {
+  ExperienceLevel,
+  JobsV1Dto,
+  TimeframePosted,
+  WorkplaceType,
+} from "src/jobs/v1/jobs.v1.dto";
 import { BrowserContextProvider } from "src/lib/providers/browser-context-provider";
 
 export type NewJob = Omit<
@@ -16,8 +21,8 @@ export class LinkedinJobsScraper {
     private readonly browserContextProvider: BrowserContextProvider,
   ) {}
 
-  private async setTimeframe(page: Page, timeframe: Timeframe) {
-    if (timeframe === "Any time") return;
+  private async setTimeframe(page: Page, timeframePosted: TimeframePosted) {
+    if (timeframePosted === "Any time") return;
 
     const timeframeFilterDropdown = page.locator(
       "#searchFilter_timePostedRange",
@@ -36,7 +41,7 @@ export class LinkedinJobsScraper {
       "Past 24 hours": "r86400",
     };
 
-    const value = valueMap[timeframe];
+    const value = valueMap[timeframePosted];
     const option = dropdownContainer.locator(
       `input[name="date-posted-filter-value"][value="${value}"]`,
     );
@@ -54,10 +59,13 @@ export class LinkedinJobsScraper {
     await page.waitForLoadState("domcontentloaded");
   }
 
-  private async setExperienceLevel(page: Page, level: Level[]) {
-    if (!level.length) return;
+  private async setExperienceLevel(
+    page: Page,
+    experienceLevel: ExperienceLevel[],
+  ) {
+    if (!experienceLevel.length) return;
 
-    const LEVEL_MAP: Record<Level, string> = {
+    const LEVEL_MAP: Record<ExperienceLevel, string> = {
       Internship: "1",
       "Entry level": "2",
       Associate: "3",
@@ -73,8 +81,8 @@ export class LinkedinJobsScraper {
     const container = page.locator(`#${dropdownId}`);
     await container.waitFor({ state: "visible" });
 
-    for (const l of level) {
-      const value = LEVEL_MAP[l];
+    for (const level of experienceLevel) {
+      const value = LEVEL_MAP[level];
       const levelCheckbox = container.locator(
         `label[for="experience-${value}"]`,
       );
@@ -91,10 +99,10 @@ export class LinkedinJobsScraper {
     await page.waitForLoadState("domcontentloaded");
   }
 
-  private async setWorkType(page: Page, workType: WorkType[]) {
-    if (!workType.length) return;
+  private async setWorkType(page: Page, workplaceType: WorkplaceType[]) {
+    if (!workplaceType.length) return;
 
-    const WORK_TYPE_MAP: Record<WorkType, string> = {
+    const WORK_TYPE_MAP: Record<WorkplaceType, string> = {
       Remote: "2",
       "On-site": "1",
       Hybrid: "3",
@@ -106,7 +114,7 @@ export class LinkedinJobsScraper {
     const container = page.locator(`#${dropdownId}`);
     await container.waitFor({ state: "visible" });
 
-    for (const type of workType) {
+    for (const type of workplaceType) {
       const value = WORK_TYPE_MAP[type];
       const typeCheckBox = container.locator(
         `label[for="workplaceType-${value}"]`,
@@ -160,7 +168,7 @@ export class LinkedinJobsScraper {
   }
 
   async scrape(dto: JobsV1Dto) {
-    const { level, position, timeframe, workType } = dto;
+    const { experienceLevel, position, timeframePosted, workplaceType } = dto;
 
     const sesssionPath = this.browserContextProvider.linkedinSessionPath;
     const searchUrl = `https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(position)}`;
@@ -189,9 +197,9 @@ export class LinkedinJobsScraper {
       await jobs.waitFor({ state: "visible" });
       await jobs.click().catch(() => null);
 
-      await this.setTimeframe(page, timeframe);
-      await this.setExperienceLevel(page, level);
-      await this.setWorkType(page, workType);
+      await this.setTimeframe(page, timeframePosted);
+      await this.setExperienceLevel(page, experienceLevel);
+      await this.setWorkType(page, workplaceType);
 
       const searchResults = page.locator("li[data-occludable-job-id]");
       await searchResults
