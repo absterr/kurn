@@ -1,7 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { Locator, Page } from "playwright";
+import { expect } from "playwright/test";
 import { Jobs } from "src/db/types";
-import { JobsV1Dto } from "src/jobs/v1/jobs.v1.dto";
+import { JobsV1Dto, Level, Timeframe } from "src/jobs/v1/jobs.v1.dto";
 import { BrowserContextProvider } from "src/lib/providers/browser-context-provider";
 
 export type NewJob = Omit<
@@ -15,7 +16,9 @@ export class LinkedinJobsScraper {
     private readonly browserContextProvider: BrowserContextProvider,
   ) {}
 
-  private async setTimeframe(page: Page, timeframe: string) {
+  private async setTimeframe(page: Page, timeframe: Timeframe) {
+    if (timeframe === "Any time") return;
+
     const timeframeFilterDropdown = page.locator(
       "#searchFilter_timePostedRange",
     );
@@ -48,7 +51,44 @@ export class LinkedinJobsScraper {
     }
 
     // LIKELY UNNECESSARY
-    await page.waitForTimeout(3000);
+    await page.waitForLoadState("domcontentloaded");
+  }
+
+  private async setExperienceLevel(page: Page, level: Level[]) {
+    if (!level.length) return;
+
+    const LEVEL_MAP: Record<Level, string> = {
+      Internship: "1",
+      "Entry level": "2",
+      Associate: "3",
+      "Mid-Senior level": "4",
+      Director: "5",
+      Executive: "6",
+    };
+
+    const expLevelDropdown = page.locator("#searchFilter_experience");
+    const dropdownId =
+      (await expLevelDropdown.getAttribute("aria-controls")) ?? "";
+    await expLevelDropdown.click();
+    const container = page.locator(`#${dropdownId}`);
+    await container.waitFor({ state: "visible" });
+
+    for (const l of level) {
+      const value = LEVEL_MAP[l];
+      const levelCheckbox = container.locator(
+        `label[for="experience-${value}"]`,
+      );
+
+      await levelCheckbox.click().catch(() => null);
+      // CHECK IF CHECKBOX IS CHECKED
+      await expect(levelCheckbox).toBeChecked();
+    }
+
+    await container
+      .locator('button[aria-label="Apply current filter to show results"]')
+      .click();
+
+    await page.waitForLoadState("domcontentloaded");
   }
 
   private async getJobDetails(page: Page, card: Locator) {
@@ -87,7 +127,7 @@ export class LinkedinJobsScraper {
   }
 
   async scrape(dto: JobsV1Dto) {
-    const { position, timeframe } = dto;
+    const { position, timeframe, level } = dto;
 
     const sesssionPath = this.browserContextProvider.linkedinSessionPath;
     const searchUrl = `https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(position)}`;
@@ -116,9 +156,8 @@ export class LinkedinJobsScraper {
       await jobs.waitFor({ state: "visible" });
       await jobs.click().catch(() => null);
 
-      if (timeframe !== "Any time") {
-        await this.setTimeframe(page, timeframe);
-      }
+      await this.setTimeframe(page, timeframe);
+      await this.setExperienceLevel(page, level);
 
       const searchResults = page.locator("li[data-occludable-job-id]");
       await searchResults
