@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { Locator, Page } from "playwright";
 import { expect } from "playwright/test";
 import { Jobs } from "src/db/types";
-import { JobsV1Dto, Level, Timeframe } from "src/jobs/v1/jobs.v1.dto";
+import { JobsV1Dto, Level, Timeframe, WorkType } from "src/jobs/v1/jobs.v1.dto";
 import { BrowserContextProvider } from "src/lib/providers/browser-context-provider";
 
 export type NewJob = Omit<
@@ -91,6 +91,39 @@ export class LinkedinJobsScraper {
     await page.waitForLoadState("domcontentloaded");
   }
 
+  private async setWorkType(page: Page, workType: WorkType[]) {
+    if (!workType.length) return;
+
+    const WORK_TYPE_MAP: Record<WorkType, string> = {
+      Remote: "2",
+      "On-site": "1",
+      Hybrid: "3",
+    };
+
+    const workTypeDropdown = page.locator("#searchFilter_workplaceType");
+    const dropdownId = await workTypeDropdown.getAttribute("aria-controls");
+    await workTypeDropdown.click();
+    const container = page.locator(`#${dropdownId}`);
+    await container.waitFor({ state: "visible" });
+
+    for (const type of workType) {
+      const value = WORK_TYPE_MAP[type];
+      const typeCheckBox = container.locator(
+        `label[for="workplaceType-${value}"]`,
+      );
+
+      await typeCheckBox.check().catch(() => null);
+      // CHECK IF CHECKBOX IS CHECKED
+      await expect(typeCheckBox).toBeChecked();
+    }
+
+    await container
+      .locator('button[aria-label="Apply current filter to show results"]')
+      .click();
+
+    await page.waitForLoadState("domcontentloaded");
+  }
+
   private async getJobDetails(page: Page, card: Locator) {
     await card.click().catch(() => null);
 
@@ -127,7 +160,7 @@ export class LinkedinJobsScraper {
   }
 
   async scrape(dto: JobsV1Dto) {
-    const { position, timeframe, level } = dto;
+    const { level, position, timeframe, workType } = dto;
 
     const sesssionPath = this.browserContextProvider.linkedinSessionPath;
     const searchUrl = `https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(position)}`;
@@ -158,6 +191,7 @@ export class LinkedinJobsScraper {
 
       await this.setTimeframe(page, timeframe);
       await this.setExperienceLevel(page, level);
+      await this.setWorkType(page, workType);
 
       const searchResults = page.locator("li[data-occludable-job-id]");
       await searchResults
