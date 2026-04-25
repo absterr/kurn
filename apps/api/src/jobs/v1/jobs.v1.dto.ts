@@ -8,7 +8,7 @@ import {
   MinLength,
 } from "class-validator";
 
-const LEVEL = [
+const EXPERIENCE_LEVEL = [
   "Internship",
   "Entry level",
   "Associate",
@@ -17,20 +17,20 @@ const LEVEL = [
   "Executive",
 ] as const;
 
-const TIMEFRAME = [
+const TIMEFRAME_POSTED = [
   "Any time",
   "Past month",
   "Past week",
   "Past 24 hours",
 ] as const;
 
-const WORK_TYPE = ["Remote", "On-site", "Hybrid"] as const;
+const WORKPLACE_TYPE = ["Remote", "On-site", "Hybrid"] as const;
 
-export type Timeframe = (typeof TIMEFRAME)[number];
-export type Level = (typeof LEVEL)[number];
-export type WorkType = (typeof WORK_TYPE)[number];
+export type TimeframePosted = (typeof TIMEFRAME_POSTED)[number];
+export type ExperienceLevel = (typeof EXPERIENCE_LEVEL)[number];
+export type WorkplaceType = (typeof WORKPLACE_TYPE)[number];
 
-export enum Interval {
+export enum CronInterval {
   H6 = "6h",
   H12 = "12h",
   H24 = "24h",
@@ -42,24 +42,24 @@ export class JobsV1Dto {
   position: string;
 
   @IsString()
-  @IsIn(TIMEFRAME)
-  timeframe: Timeframe;
+  @IsIn(TIMEFRAME_POSTED)
+  timeframePosted: TimeframePosted;
 
   @IsString()
-  @IsEnum(Interval)
-  interval: Interval;
+  @IsEnum(CronInterval)
+  cronInterval: CronInterval;
 
   @IsArray()
   @IsString({ each: true })
-  @IsIn(WORK_TYPE, { each: true })
+  @IsIn(WORKPLACE_TYPE, { each: true })
   @IsOptional()
-  workType: WorkType[];
+  workplaceType: WorkplaceType[];
 
   @IsArray()
   @IsString({ each: true })
-  @IsIn(LEVEL, { each: true })
+  @IsIn(EXPERIENCE_LEVEL, { each: true })
   @IsOptional()
-  level: Level[];
+  experienceLevel: ExperienceLevel[];
 
   @Matches(/^([01]\d|2[0-3]):([0-5]\d)$/, {
     message: "Time must be in HH:mm (24h) format",

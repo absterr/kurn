@@ -16,14 +16,14 @@ export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
 export interface JobQueries {
   createdAt: Generated<Timestamp>;
+  cronInterval: IntervalType;
+  experienceLevel: Generated<string[]>;
   id: Generated<string>;
-  interval: IntervalType;
-  level: Generated<string[]>;
   position: string;
   startAt: string;
-  timeframe: string;
+  timeframePosted: string;
   updatedAt: Generated<Timestamp>;
-  workType: Generated<string[]>;
+  workplaceType: Generated<string[]>;
 }
 
 export interface Jobs {

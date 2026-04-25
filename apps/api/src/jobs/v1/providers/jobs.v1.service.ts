@@ -19,19 +19,14 @@ export class JobsV1Service {
     const jobQuery = await this.db
       .insertInto("jobQueries")
       .values(dto)
-      .onConflict((oc) =>
-        oc.column("position").doUpdateSet({
-          timeframe: dto.timeframe,
-          interval: dto.interval,
-          startAt: dto.startAt,
-          workType: dto.workType,
-          level: dto.level,
-        }),
-      )
+      .onConflict((oc) => {
+        const { position, ...rest } = dto;
+        return oc.column("position").doUpdateSet(rest);
+      })
       .returningAll()
       .executeTakeFirstOrThrow();
 
-    const cron = toCron(jobQuery.interval, jobQuery.startAt);
+    const cron = toCron(jobQuery.cronInterval, jobQuery.startAt);
 
     this.cronScheduler.upsertJob(
       jobQuery.id,

@@ -12,13 +12,13 @@ export async function up(db: Kysely<unknown>): Promise<void> {
       col.primaryKey().defaultTo(sql`gen_random_uuid()`),
     )
     .addColumn("position", "text", (col) => col.notNull().unique())
-    .addColumn("timeframe", "text", (col) => col.notNull())
-    .addColumn("interval", sql`interval_type`, (col) => col.notNull())
+    .addColumn("timeframe_posted", "text", (col) => col.notNull())
+    .addColumn("cron_interval", sql`interval_type`, (col) => col.notNull())
     .addColumn("start_at", "text", (col) => col.notNull())
-    .addColumn("work_type", sql`text[]`, (col) =>
+    .addColumn("workplace_type", sql`text[]`, (col) =>
       col.defaultTo(sql`'{}'`).notNull(),
     )
-    .addColumn("level", sql`text[]`, (col) =>
+    .addColumn("experience_level", sql`text[]`, (col) =>
       col.defaultTo(sql`'{}'`).notNull(),
     )
     .addColumn("created_at", "timestamp", (col) =>
