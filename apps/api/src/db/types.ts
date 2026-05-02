@@ -41,7 +41,17 @@ export interface Jobs {
   updatedAt: Generated<Timestamp>;
 }
 
+export interface Users {
+  createdAt: Generated<Timestamp>;
+  email: string;
+  emailVerified: Generated<boolean>;
+  id: Generated<string>;
+  name: string;
+  updatedAt: Generated<Timestamp>;
+}
+
 export interface DB {
   jobQueries: JobQueries;
   jobs: Jobs;
+  users: Users;
 }
