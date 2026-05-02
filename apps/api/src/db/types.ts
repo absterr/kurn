@@ -10,23 +10,11 @@ export type Generated<T> =
     ? ColumnType<S, I | undefined, U>
     : ColumnType<T, T | undefined, T>;
 
-export type IntervalType = "12h" | "24h" | "6h";
-
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
-
-export interface Accounts {
-  accountsId: string | null;
-  createdAt: Generated<Timestamp>;
-  id: Generated<string>;
-  password: string | null;
-  providerId: string;
-  updatedAt: Generated<Timestamp>;
-  userId: string;
-}
 
 export interface JobQueries {
   createdAt: Generated<Timestamp>;
-  cronInterval: IntervalType;
+  cronInterval: string;
   experienceLevel: Generated<string[]>;
   id: Generated<string>;
   position: string;
@@ -61,7 +49,6 @@ export interface Users {
 }
 
 export interface DB {
-  accounts: Accounts;
   jobQueries: JobQueries;
   jobs: Jobs;
   users: Users;
