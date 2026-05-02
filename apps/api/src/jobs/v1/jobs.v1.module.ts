@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
 import { ScheduleModule } from "@nestjs/schedule";
 import { DatabaseModule } from "src/db/db.module";
-import { SharedModule } from "src/lib/shared.module";
+import { SharedModule } from "src/lib/shared/shared.module";
 import { JobsV1Controller } from "./jobs.v1.controller";
 import { CronScheduler } from "./providers/cron-scheduler";
 import { JobHandler } from "./providers/job-handler";
