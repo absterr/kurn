@@ -1,10 +1,18 @@
 import { Kysely, sql } from "kysely";
 
 export async function up(db: Kysely<unknown>): Promise<void> {
-  await db.schema
-    .createType("interval_type")
-    .asEnum(["6h", "12h", "24h"])
-    .execute();
+  const typeExists = await sql<{
+    exists: boolean;
+  }>`SELECT EXISTS (SELECT 1 from pg_type WHERE typname = 'interval_type')`.execute(
+    db,
+  );
+
+  if (!typeExists.rows[0].exists) {
+    await db.schema
+      .createType("interval_type")
+      .asEnum(["6h", "12h", "24h"])
+      .execute();
+  }
 
   await db.schema
     .createTable("job_queries")
