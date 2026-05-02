@@ -58,9 +58,20 @@ export interface Users {
   updatedAt: Generated<Timestamp>;
 }
 
+export interface Verifications {
+  createdAt: Generated<Timestamp>;
+  expiresAt: Timestamp;
+  id: Generated<string>;
+  updatedAt: Generated<Timestamp>;
+  userId: string;
+  value: string | null;
+  verificationType: string;
+}
+
 export interface DB {
   accounts: Accounts;
   jobQueries: JobQueries;
   jobs: Jobs;
   users: Users;
+  verifications: Verifications;
 }

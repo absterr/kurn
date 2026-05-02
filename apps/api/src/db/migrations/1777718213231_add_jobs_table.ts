@@ -26,16 +26,6 @@ export async function up(db: Kysely<unknown>): Promise<void> {
     .execute();
 
   await sql`
-      CREATE OR REPLACE FUNCTION update_modified_column()
-      RETURNS TRIGGER AS $$
-      BEGIN
-        NEW.updated_at = now();
-        RETURN NEW;
-      END
-      $$ language 'plpgsql';
-    `.execute(db);
-
-  await sql`
       CREATE TRIGGER update_jobs_modtime
       BEFORE UPDATE ON jobs
       FOR EACH ROW
@@ -45,5 +35,4 @@ export async function up(db: Kysely<unknown>): Promise<void> {
 
 export async function down(db: Kysely<unknown>): Promise<void> {
   await db.schema.dropTable("jobs").execute();
-  await sql`DROP FUNCTION IF EXISTS update_modified_column CASCADE`.execute(db);
 }
