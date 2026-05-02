@@ -12,6 +12,16 @@ export type Generated<T> =
 
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
+export interface Accounts {
+  accountId: string | null;
+  createdAt: Generated<Timestamp>;
+  id: Generated<string>;
+  password: string | null;
+  providerId: string;
+  updatedAt: Generated<Timestamp>;
+  userId: string;
+}
+
 export interface JobQueries {
   createdAt: Generated<Timestamp>;
   cronInterval: string;
@@ -49,6 +59,7 @@ export interface Users {
 }
 
 export interface DB {
+  accounts: Accounts;
   jobQueries: JobQueries;
   jobs: Jobs;
   users: Users;
