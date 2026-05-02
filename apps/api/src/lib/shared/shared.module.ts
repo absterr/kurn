@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
-import { BrowserContextProvider } from "./providers/browser-context-provider";
-import { LinkedinAuth } from "./providers/linkedin-auth";
-import { WebCrawler } from "./providers/web-crawler";
+import { BrowserContextProvider } from "./browser-context-provider";
+import { LinkedinAuth } from "./linkedin-auth";
+import { WebCrawler } from "./web-crawler";
 
 @Module({
   providers: [BrowserContextProvider, LinkedinAuth, WebCrawler],

@@ -3,7 +3,7 @@ import { Kysely } from "kysely";
 import { KYSELY_DB } from "src/db/db.module";
 import { DB } from "src/db/types";
 import { JobsV1Dto } from "src/jobs/v1/jobs.v1.dto";
-import { LinkedinAuth } from "src/lib/providers/linkedin-auth";
+import { LinkedinAuth } from "src/lib/shared/linkedin-auth";
 import { LinkedinJobsScraper } from "./linkedin-jobs.scraper";
 
 @Injectable()

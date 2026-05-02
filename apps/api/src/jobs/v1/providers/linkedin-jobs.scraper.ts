@@ -8,7 +8,7 @@ import {
   TimeframePosted,
   WorkplaceType,
 } from "src/jobs/v1/jobs.v1.dto";
-import { BrowserContextProvider } from "src/lib/providers/browser-context-provider";
+import { BrowserContextProvider } from "src/lib/shared/browser-context-provider";
 
 export type NewJob = Omit<
   Jobs,

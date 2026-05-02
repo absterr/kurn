@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import pLimit from "p-limit";
-import { LinkedinAuth } from "src/lib/providers/linkedin-auth";
-import { WebCrawler } from "src/lib/providers/web-crawler";
+import { LinkedinAuth } from "src/lib/shared/linkedin-auth";
+import { WebCrawler } from "src/lib/shared/web-crawler";
 import { GoogleMapsScraper } from "./google-maps.scraper";
 import { LinkedinLeadsScraper } from "./linkedin-leads.scraper";
 

@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { Page } from "playwright";
-import { BrowserContextProvider } from "src/lib/providers/browser-context-provider";
+import { BrowserContextProvider } from "src/lib/shared/browser-context-provider";
 
 export interface LeadJob {
   title: string;
