@@ -49,6 +49,15 @@ export interface Jobs {
   updatedAt: Generated<Timestamp>;
 }
 
+export interface Sessions {
+  createdAt: Generated<Timestamp>;
+  expiresAt: Timestamp;
+  id: Generated<string>;
+  updatedAt: Generated<Timestamp>;
+  userAgent: string | null;
+  userId: string;
+}
+
 export interface Users {
   createdAt: Generated<Timestamp>;
   email: string;
@@ -72,6 +81,7 @@ export interface DB {
   accounts: Accounts;
   jobQueries: JobQueries;
   jobs: Jobs;
+  sessions: Sessions;
   users: Users;
   verifications: Verifications;
 }
