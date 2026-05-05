@@ -1,4 +1,4 @@
-import { IsNumber, IsOptional, IsUrl } from "class-validator";
+import { IsNumber, IsOptional, IsString, IsUrl } from "class-validator";
 
 export class EnvironmentVariables {
   @IsUrl({
@@ -14,4 +14,16 @@ export class EnvironmentVariables {
     protocols: ["postgres", "postgresql"],
   })
   DATABASE_URL: string;
+
+  @IsString()
+  USER_GMAIL: string;
+
+  @IsString()
+  GOOGLE_REFRESH_TOKEN: string;
+
+  @IsString()
+  GOOGLE_CLIENT_ID: string;
+
+  @IsString()
+  GOOGLE_CLIENT_SECRET: string;
 }
