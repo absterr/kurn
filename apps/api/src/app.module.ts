@@ -9,11 +9,11 @@ import { TestModule } from "./test/test.module";
 @Module({
   imports: [
     AuthModule,
+    CleanupModule,
     EnvModule,
     JobsV1Module,
     LeadsV1Module,
     TestModule,
-    CleanupModule,
   ],
 })
 export class AppModule {}
