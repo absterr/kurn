@@ -1,9 +1,9 @@
-import { Injectable, OnModuleInit } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import nodemailer, { Transporter } from "nodemailer";
 import { EnvProvider } from "src/config/env/env.provider";
 
 @Injectable()
-export class MailService implements OnModuleInit {
+export class MailService {
   private transporter: Transporter;
 
   constructor(private env: EnvProvider) {
@@ -19,9 +19,9 @@ export class MailService implements OnModuleInit {
     });
   }
 
-  async onModuleInit() {
-    await this.transporter.verify();
-  }
+  // async onModuleInit() {
+  //   await this.transporter.verify();
+  // }
 
   async sendMail(to: string, subject: string, html: string) {
     return this.transporter.sendMail({
