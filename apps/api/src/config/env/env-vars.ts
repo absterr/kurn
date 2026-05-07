@@ -1,6 +1,9 @@
 import { IsNumber, IsOptional, IsString, IsUrl } from "class-validator";
 
 export class EnvironmentVariables {
+  @IsString()
+  NODE_ENV: "development" | "production";
+
   @IsUrl({
     require_tld: false,
   })
@@ -14,6 +17,12 @@ export class EnvironmentVariables {
     protocols: ["postgres", "postgresql"],
   })
   DATABASE_URL: string;
+
+  @IsString()
+  ACCESS_SECRET: string;
+
+  @IsString()
+  REFRESH_SECRET: string;
 
   @IsString()
   USER_GMAIL: string;

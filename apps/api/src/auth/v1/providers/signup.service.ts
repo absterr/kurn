@@ -1,10 +1,10 @@
+import { randomBytes } from "node:crypto";
 import {
   ConflictException,
   Inject,
   Injectable,
   InternalServerErrorException,
 } from "@nestjs/common";
-import { randomBytes } from "crypto";
 import { addDays } from "date-fns";
 import { Kysely } from "kysely";
 import { EnvProvider } from "src/config/env/env.provider";

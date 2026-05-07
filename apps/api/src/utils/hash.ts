@@ -1,5 +1,5 @@
-import { scrypt as _scrypt, randomBytes, timingSafeEqual } from "crypto";
-import { promisify } from "util";
+import { scrypt as _scrypt, randomBytes, timingSafeEqual } from "node:crypto";
+import { promisify } from "node:util";
 
 const scrypt = promisify(_scrypt);
 const KEY_LENGTH = 64;
