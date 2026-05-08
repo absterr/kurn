@@ -4,6 +4,7 @@ import { DatabaseModule } from "src/db/db.module";
 import { AuthCookieService } from "src/lib/cookie/cookie.service";
 import { MailService } from "src/lib/mail/mail.service";
 import { AuthController } from "./auth.v1.controller";
+import { LoginService } from "./providers/login.service";
 import { SignupService } from "./providers/signup.service";
 import { VerifyEmailService } from "./providers/verify-email.service";
 
@@ -13,6 +14,7 @@ import { VerifyEmailService } from "./providers/verify-email.service";
   providers: [
     AuthCookieService,
     EnvProvider,
+    LoginService,
     MailService,
     SignupService,
     VerifyEmailService,

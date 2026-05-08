@@ -10,7 +10,8 @@ import {
   Res,
 } from "@nestjs/common";
 import type { Request, Response } from "express";
-import { SignupDto } from "./auth.v1.dto";
+import { LoginDto, SignupDto } from "./auth.v1.dto";
+import { LoginService } from "./providers/login.service";
 import { SignupService } from "./providers/signup.service";
 import { VerifyEmailService } from "./providers/verify-email.service";
 
@@ -18,6 +19,7 @@ import { VerifyEmailService } from "./providers/verify-email.service";
 export class AuthController {
   constructor(
     private readonly signupService: SignupService,
+    private readonly loginService: LoginService,
     private readonly verifyEmailService: VerifyEmailService,
   ) {}
 
@@ -35,5 +37,15 @@ export class AuthController {
   ) {
     const userAgent = req.get("user-agent");
     return this.verifyEmailService.verifyEmail(res, token, userAgent);
+  }
+
+  @Post("login")
+  async login(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Body() dto: LoginDto,
+  ) {
+    const userAgent = req.get("user-agent");
+    return this.loginService.login(res, dto, userAgent);
   }
 }
