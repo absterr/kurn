@@ -4,6 +4,7 @@ import {
   IsIn,
   IsOptional,
   IsString,
+  IsUUID,
   Matches,
   MinLength,
 } from "class-validator";
@@ -37,6 +38,9 @@ export enum CronInterval {
 }
 
 export class JobsV1Dto {
+  @IsUUID()
+  userId: string;
+
   @IsString()
   @MinLength(1)
   position: string;

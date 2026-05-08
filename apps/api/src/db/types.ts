@@ -31,6 +31,7 @@ export interface JobQueries {
   startAt: string;
   timeframePosted: string;
   updatedAt: Generated<Timestamp>;
+  userId: string;
   workplaceType: Generated<string[]>;
 }
 
@@ -47,6 +48,7 @@ export interface Jobs {
   location: string;
   title: string;
   updatedAt: Generated<Timestamp>;
+  userId: string;
 }
 
 export interface Sessions {
