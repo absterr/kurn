@@ -1,4 +1,4 @@
-import { Injectable, Res } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { addMinutes, addWeeks } from "date-fns";
 import type { CookieOptions, Response } from "express";
 import { EnvProvider } from "src/config/env/env.provider";
@@ -20,7 +20,7 @@ export class AuthCookieService {
   }
 
   setAuthCookies(
-    @Res({ passthrough: true }) res: Response,
+    res: Response,
     accessToken: string,
     refreshToken: string,
     refresh = false,
@@ -50,7 +50,7 @@ export class AuthCookieService {
       });
   }
 
-  clearAuthCookies(@Res({ passthrough: true }) res: Response) {
+  clearAuthCookies(res: Response) {
     return res
       .clearCookie("accessToken")
       .clearCookie("refreshToken", { path: REFRESH_PATH })
