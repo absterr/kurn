@@ -12,6 +12,7 @@ import {
 import type { Request, Response } from "express";
 import { LoginDto, SignupDto } from "./auth.v1.dto";
 import { LoginService } from "./providers/login.service";
+import { LogoutService } from "./providers/logout.service";
 import { SignupService } from "./providers/signup.service";
 import { VerifyEmailService } from "./providers/verify-email.service";
 
@@ -21,6 +22,7 @@ export class AuthController {
     private readonly signupService: SignupService,
     private readonly loginService: LoginService,
     private readonly verifyEmailService: VerifyEmailService,
+    private readonly logoutService: LogoutService,
   ) {}
 
   @Post("signup")
@@ -47,5 +49,11 @@ export class AuthController {
   ) {
     const userAgent = req.get("user-agent");
     return this.loginService.login(res, dto, userAgent);
+  }
+
+  // PROTECT THIS ROUTE LATER
+  @Get("logout")
+  async logout(@Req() req: Request, @Res() res: Response) {
+    return this.logoutService.logout(req, res);
   }
 }
