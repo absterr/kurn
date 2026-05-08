@@ -168,7 +168,13 @@ export class LinkedinJobsScraper {
   }
 
   async scrape(dto: JobsV1Dto) {
-    const { experienceLevel, position, timeframePosted, workplaceType } = dto;
+    const {
+      userId,
+      experienceLevel,
+      position,
+      timeframePosted,
+      workplaceType,
+    } = dto;
 
     const sesssionPath = this.browserContextProvider.linkedinSessionPath;
     const searchUrl = `https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(position)}`;
@@ -226,6 +232,7 @@ export class LinkedinJobsScraper {
         const details = await this.getJobDetails(page, card);
 
         results.push({
+          userId,
           title,
           link: jobUrl ? `https://www.linkedin.com${jobUrl.split("?")[0]}` : "",
           location,
