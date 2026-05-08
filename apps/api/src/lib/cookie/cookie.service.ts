@@ -1,7 +1,6 @@
-import { CookieSerializeOptions } from "@fastify/cookie";
 import { Injectable, Res } from "@nestjs/common";
 import { addMinutes, addWeeks } from "date-fns";
-import type { FastifyReply } from "fastify";
+import type { CookieOptions, Response } from "express";
 import { EnvProvider } from "src/config/env/env.provider";
 
 const REFRESH_PATH = "/api/v1/auth/refresh";
@@ -9,7 +8,7 @@ const REFRESH_PATH = "/api/v1/auth/refresh";
 @Injectable()
 export class AuthCookieService {
   private readonly secure: boolean;
-  private readonly defaults: CookieSerializeOptions;
+  private readonly defaults: CookieOptions;
 
   constructor(private readonly env: EnvProvider) {
     this.secure = this.env.get("NODE_ENV") === "production";
@@ -21,29 +20,29 @@ export class AuthCookieService {
   }
 
   setAuthCookies(
-    @Res({ passthrough: true }) res: FastifyReply,
+    @Res({ passthrough: true }) res: Response,
     accessToken: string,
     refreshToken: string,
     refresh = false,
   ) {
     if (refresh) {
-      return res.setCookie("accessToken", accessToken, {
+      return res.cookie("accessToken", accessToken, {
         ...this.defaults,
         expires: addMinutes(new Date(), 15),
       });
     }
 
     return res
-      .setCookie("accessToken", accessToken, {
+      .cookie("accessToken", accessToken, {
         ...this.defaults,
         expires: addMinutes(new Date(), 15),
       })
-      .setCookie("refreshToken", refreshToken, {
+      .cookie("refreshToken", refreshToken, {
         ...this.defaults,
         path: REFRESH_PATH,
         expires: addWeeks(new Date(), 2),
       })
-      .setCookie("logged_in", "true", {
+      .cookie("logged_in", "true", {
         secure: this.secure,
         sameSite: "lax",
         httpOnly: false,
@@ -51,7 +50,7 @@ export class AuthCookieService {
       });
   }
 
-  clearAuthCookies(@Res({ passthrough: true }) res: FastifyReply) {
+  clearAuthCookies(@Res({ passthrough: true }) res: Response) {
     return res
       .clearCookie("accessToken")
       .clearCookie("refreshToken", { path: REFRESH_PATH })
