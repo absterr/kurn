@@ -16,6 +16,7 @@ import { KYSELY_DB } from "src/db/db.module";
 import { DB } from "src/db/types";
 import { AuthCookieService } from "src/lib/cookie/cookie.service";
 import { MailService } from "src/lib/mail/mail.service";
+import { EMAIL_VERIFICATION_TEMPLATE } from "src/utils/email-templates";
 import { comparePassword } from "src/utils/hash";
 import { signUserToken } from "src/utils/user-token";
 import { LoginDto } from "../auth.v1.dto";
@@ -45,12 +46,10 @@ export class LoginService {
 
     const url = `${this.env.get("WEB_ORIGIN")}/verify-email?token=${verificationToken}`;
 
-    // SHOULD DEFINITELY USE EMAIL TEMPLATE FOR THIS
-
     await this.mailService.sendMail(
       email,
       "Email verification",
-      `Please verify your email by clicking on this link: ${url}`,
+      EMAIL_VERIFICATION_TEMPLATE(url),
     );
   }
 
