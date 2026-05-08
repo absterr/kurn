@@ -5,6 +5,7 @@ import { AuthCookieService } from "src/lib/cookie/cookie.service";
 import { MailService } from "src/lib/mail/mail.service";
 import { AuthController } from "./auth.v1.controller";
 import { LoginService } from "./providers/login.service";
+import { LogoutService } from "./providers/logout.service";
 import { SignupService } from "./providers/signup.service";
 import { VerifyEmailService } from "./providers/verify-email.service";
 
@@ -15,6 +16,7 @@ import { VerifyEmailService } from "./providers/verify-email.service";
     AuthCookieService,
     EnvProvider,
     LoginService,
+    LogoutService,
     MailService,
     SignupService,
     VerifyEmailService,
