@@ -19,6 +19,9 @@ export class EnvironmentVariables {
   DATABASE_URL: string;
 
   @IsString()
+  COOKIE_SECRET: string;
+
+  @IsString()
   ACCESS_SECRET: string;
 
   @IsString()

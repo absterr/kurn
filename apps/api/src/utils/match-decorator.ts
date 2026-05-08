@@ -21,9 +21,9 @@ export default function Match(
   property: string,
   validationOptions?: ValidationOptions,
 ) {
-  return (object: Record<string, unknown>, propertyName: string) => {
+  return (object: object, propertyName: string) => {
     registerDecorator({
-      target: object.constructor,
+      target: (object as Record<string, unknown>).constructor,
       propertyName: propertyName,
       options: validationOptions,
       constraints: [property],

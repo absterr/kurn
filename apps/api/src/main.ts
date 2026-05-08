@@ -1,22 +1,11 @@
 import { ValidationPipe, VersioningType } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
-import {
-  FastifyAdapter,
-  NestFastifyApplication,
-} from "@nestjs/platform-fastify";
+import cookieParser from "cookie-parser";
 import { AppModule } from "./app.module";
 import { EnvProvider } from "./config/env/env.provider";
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestFastifyApplication>(
-    AppModule,
-    new FastifyAdapter(),
-  );
-
-  // REGISTER THE COOKIE PLUGIN
-  // await app.register(cookie, {
-  //   secret: "some-secret",
-  // });
+  const app = await NestFactory.create(AppModule);
 
   const env = app.get(EnvProvider);
   const PORT = env.get("SERVER_PORT");
@@ -28,6 +17,7 @@ async function bootstrap() {
     credentials: true,
   };
 
+  app.use(cookieParser(env.get("COOKIE_SECRET")));
   app.useGlobalPipes(new ValidationPipe());
   app.setGlobalPrefix("/api");
   app.enableVersioning({
