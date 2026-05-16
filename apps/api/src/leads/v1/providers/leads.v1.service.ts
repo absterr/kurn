@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import pLimit from "p-limit";
 import { WebCrawler } from "src/lib/shared/web-crawler";
-import { GoogleMapsScraper } from "./google-maps.scraper";
+import { GoogleMapsScraper, Lead } from "./google-maps.scraper";
 
 @Injectable()
 export class LeadsV1Service {
@@ -9,8 +9,46 @@ export class LeadsV1Service {
     private readonly googleMapsScraper: GoogleMapsScraper,
     private readonly webCrawler: WebCrawler,
   ) {}
-  async findLeads(keyword: string, location: string) {
+
+  async auditLeads(mapsLeads: Lead[]) {
     const limit = pLimit(2);
+
+    const auditedLeads = await Promise.all(
+      mapsLeads.map((lead) =>
+        limit(async () => {
+          const hasWebsite = !!lead.website;
+          let websiteIsReachable = false;
+          let emails: string[] = [];
+
+          if (!hasWebsite) {
+            return {
+              ...lead,
+              emails,
+              audit: { hasWebsite, websiteIsReachable },
+            };
+          }
+
+          try {
+            const res = await fetch(lead.website);
+            if (res.ok) {
+              websiteIsReachable = true;
+              emails = await this.webCrawler.extractEmails(lead.website);
+            }
+          } catch {}
+
+          return {
+            ...lead,
+            emails,
+            audit: { hasWebsite, websiteIsReachable },
+          };
+        }),
+      ),
+    );
+
+    return auditedLeads;
+  }
+
+  async findLeads(keyword: string, location: string) {
     const googleMapsLeads = await this.googleMapsScraper.fallbackScrape(
       keyword,
       location,
@@ -18,24 +56,6 @@ export class LeadsV1Service {
 
     if (googleMapsLeads.length === 0) return [];
 
-    const leads = await Promise.all(
-      googleMapsLeads.map((lead) =>
-        limit(async () => {
-          let emails: string[] = [];
-
-          if (lead.website) {
-            try {
-              emails = await this.webCrawler.extractEmails(lead.website);
-            } catch (err) {
-              console.log(`Crawl error for ${lead.website}: ${err.message}`);
-            }
-          }
-
-          return { ...lead, emails };
-        }),
-      ),
-    );
-
-    return leads;
+    return googleMapsLeads;
   }
 }
