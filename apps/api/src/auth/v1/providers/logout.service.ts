@@ -32,6 +32,6 @@ export class LogoutService {
       .where("id", "=", payload.sessionId)
       .execute();
 
-    this.authCookieService.clearAuthCookies(res);
+    return this.authCookieService.clearAuthCookies(res);
   }
 }

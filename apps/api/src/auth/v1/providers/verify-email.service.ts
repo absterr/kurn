@@ -77,7 +77,11 @@ export class VerifyEmailService {
         secret: this.env.get("REFRESH_SECRET"),
       });
 
-      this.authCookieService.setAuthCookies(res, accessToken, refreshToken);
+      return this.authCookieService.setAuthCookies(
+        res,
+        accessToken,
+        refreshToken,
+      );
     } catch (err) {
       throw new InternalServerErrorException(err.message);
     }
