@@ -5,14 +5,12 @@ import { DB } from "src/db/types";
 import toCron from "src/utils/to-cron";
 import { JobsV1Dto } from "../jobs.v1.dto";
 import { CronScheduler } from "./cron-scheduler";
-import { JobHandler } from "./job-handler";
 
 @Injectable()
 export class JobsV1Service {
   constructor(
     @Inject(KYSELY_DB) private readonly db: Kysely<DB>,
     private readonly cronScheduler: CronScheduler,
-    private readonly jobHandler: JobHandler,
   ) {}
 
   async findJobs(dto: JobsV1Dto) {
@@ -28,10 +26,8 @@ export class JobsV1Service {
 
     const cron = toCron(jobQuery.cronInterval, jobQuery.startAt);
 
-    this.cronScheduler.upsertJob(
-      jobQuery.id,
-      cron,
-      async () => await this.jobHandler.findJobs(jobQuery.id, dto),
+    this.cronScheduler.upsertJob(jobQuery.id, cron, () =>
+      console.log("Add cron job."),
     );
 
     return jobQuery;
