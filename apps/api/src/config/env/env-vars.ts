@@ -38,4 +38,7 @@ export class EnvironmentVariables {
 
   @IsString()
   GOOGLE_CLIENT_SECRET: string;
+
+  @IsString()
+  GEMINI_API_KEY: string;
 }

@@ -19,6 +19,7 @@
     "db:down": "bun x kysely-ctl migrate:down"
   },
   "dependencies": {
+    "@google/genai": "^2.3.0",
     "@nestjs/common": "^11.1.17",
     "@nestjs/config": "^4.0.4",
     "@nestjs/core": "^11.1.17",
