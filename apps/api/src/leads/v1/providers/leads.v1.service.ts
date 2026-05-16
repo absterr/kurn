@@ -56,6 +56,8 @@ export class LeadsV1Service {
 
     if (googleMapsLeads.length === 0) return [];
 
-    return googleMapsLeads;
+    const auditedLeads = await this.auditLeads(googleMapsLeads);
+
+    return auditedLeads;
   }
 }
