@@ -38,8 +38,8 @@ export enum CronInterval {
 }
 
 export class JobsV1Dto {
-  @IsUUID()
-  userId: string;
+  // @IsUUID()
+  // userId: string;
 
   @IsString()
   @MinLength(1)
