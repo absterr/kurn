@@ -31,24 +31,7 @@ export interface JobQueries {
   startAt: string;
   timeframePosted: string;
   updatedAt: Generated<Timestamp>;
-  userId: string;
   workplaceType: Generated<string[]>;
-}
-
-export interface Jobs {
-  applicantsCount: string;
-  companyLink: string;
-  companyName: string;
-  createdAt: Generated<Timestamp>;
-  date: string;
-  description: string;
-  id: Generated<string>;
-  jobQueryId: string;
-  link: string;
-  location: string;
-  title: string;
-  updatedAt: Generated<Timestamp>;
-  userId: string;
 }
 
 export interface Sessions {
@@ -82,7 +65,6 @@ export interface Verifications {
 export interface DB {
   accounts: Accounts;
   jobQueries: JobQueries;
-  jobs: Jobs;
   sessions: Sessions;
   users: Users;
   verifications: Verifications;
