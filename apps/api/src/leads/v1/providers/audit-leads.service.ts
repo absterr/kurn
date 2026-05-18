@@ -39,7 +39,7 @@ export class AuditLeadsService {
               websiteIsReachable = true;
               emails = await this.webCrawler.extractEmails(lead.website);
             } else {
-              diagnosis.push("Website is ");
+              diagnosis.push(`Website returned an error (${res.status})`);
             }
           } catch {
             diagnosis.push("Website is unreachable");
