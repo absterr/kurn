@@ -1,36 +1,40 @@
-import { Injectable } from "@nestjs/common";
-import { AuditLeadsService } from "./audit-leads.service";
-import { GoogleMapsScraper } from "./google-maps.scraper";
-import { OutreachService } from "./outreach.service";
+import { InjectQueue } from "@nestjs/bullmq";
+import { Inject, Injectable } from "@nestjs/common";
+import { Queue } from "bullmq";
+import { Kysely } from "kysely";
+import { KYSELY_DB } from "src/db/db.module";
+import { DB } from "src/db/types";
+import { LeadsV1Dto } from "../leads.v1.dto";
 
 @Injectable()
 export class LeadsV1Service {
   constructor(
-    private readonly auditLeadsService: AuditLeadsService,
-    private readonly googleMapsScraper: GoogleMapsScraper,
-    private readonly outreachService: OutreachService,
+    @Inject(KYSELY_DB) private readonly db: Kysely<DB>,
+    @InjectQueue("lead-search")
+    private readonly leadSearchQueue: Queue,
   ) {}
 
-  async findLeads(keyword: string, location: string) {
-    const googleMapsLeads = await this.googleMapsScraper.fallbackScrape(
-      keyword,
-      location,
+  async findLeads(dto: LeadsV1Dto) {
+    const leadQuery = await this.db
+      .insertInto("leadQueries")
+      .values(dto)
+      .returningAll()
+      .executeTakeFirstOrThrow();
+
+    await this.leadSearchQueue.add(
+      "lead-search",
+      {
+        leadQueryId: leadQuery.id,
+        keyword: dto.keyword,
+        location: dto.location,
+      },
+      {
+        attempts: 2,
+        backoff: {
+          type: "fixed",
+          delay: 10000,
+        },
+      },
     );
-
-    if (googleMapsLeads.length === 0) return [];
-
-    const auditedLeads =
-      await this.auditLeadsService.auditLeads(googleMapsLeads);
-
-    const leadsWithEmail = auditedLeads.filter(
-      (lead) => lead.emails.length > 0,
-    );
-
-    if (leadsWithEmail.length === 0) return auditedLeads;
-
-    const leadsWithDrafts =
-      await this.outreachService.generateEmail(leadsWithEmail);
-
-    return leadsWithDrafts;
   }
 }
