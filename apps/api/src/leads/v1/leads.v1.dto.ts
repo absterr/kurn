@@ -1,4 +1,4 @@
-import { IsString, MinLength } from "class-validator";
+import { IsOptional, IsString, MinLength } from "class-validator";
 
 export class LeadsV1Dto {
   @IsString()
@@ -6,6 +6,6 @@ export class LeadsV1Dto {
   keyword: string;
 
   @IsString()
-  @MinLength(1)
+  @IsOptional()
   location: string;
 }
