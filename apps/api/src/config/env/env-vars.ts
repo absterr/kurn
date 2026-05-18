@@ -19,6 +19,12 @@ export class EnvironmentVariables {
   DATABASE_URL: string;
 
   @IsString()
+  REDIS_HOST: string;
+
+  @IsNumber()
+  REDIS_PORT: number;
+
+  @IsString()
   COOKIE_SECRET: string;
 
   @IsString()
