@@ -34,6 +34,15 @@ export interface JobQueries {
   workplaceType: Generated<string[]>;
 }
 
+export interface LeadQueries {
+  createdAt: Generated<Timestamp>;
+  id: Generated<string>;
+  keyword: string;
+  location: string | null;
+  status: Generated<string>;
+  updatedAt: Generated<Timestamp>;
+}
+
 export interface Sessions {
   createdAt: Generated<Timestamp>;
   expiresAt: Timestamp;
@@ -65,6 +74,7 @@ export interface Verifications {
 export interface DB {
   accounts: Accounts;
   jobQueries: JobQueries;
+  leadQueries: LeadQueries;
   sessions: Sessions;
   users: Users;
   verifications: Verifications;
