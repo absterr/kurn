@@ -1,33 +1,34 @@
 interface OutreachInput {
-  company: string;
+  companyName: string;
   audit: {
-    hasWebsite: boolean;
-    websiteIsReachable: boolean;
-    diagnosis: string[];
+    hasWebsite: boolean | null;
+    websiteReachable: boolean | null;
+    diagnosis: string[] | null;
   };
 }
 
 export const EMAIL_SYSTEM_PROMPT = (input: OutreachInput) => {
-  const { company, audit } = input;
+  const { companyName, audit } = input;
 
   const websiteStatus = !input.audit.hasWebsite
     ? "no website at all"
-    : !input.audit.websiteIsReachable
+    : !input.audit.websiteReachable
       ? "a website that is currently unreachable"
       : "a live, reachable website";
 
-  const diagnosisText = audit.diagnosis.length
-    ? audit.diagnosis.map((d) => `- ${d}.`).join("\n")
-    : "No specific issues were diagnosed beyond the website status above.";
+  const diagnosisText =
+    audit.diagnosis !== null && audit.diagnosis.length > 0
+      ? audit.diagnosis.map((d) => `- ${d}.`).join("\n")
+      : "No specific issues were diagnosed beyond the website status above.";
 
   return `
     You are generating a short, genuine cold outreach email to a business.
 
     COMPANY:
-    ${company}
+    ${companyName}
 
     AUDIT:
-    ${company} has ${websiteStatus}.
+    ${companyName} has ${websiteStatus}.
 
     DIAGNOSIS:
     ${diagnosisText}
