@@ -8,27 +8,23 @@ export class AuditLeadsService {
   constructor(private readonly webCrawler: WebCrawler) {}
 
   async auditLeads(mapsLeads: Lead[]) {
-    const limit = pLimit(2);
+    const limit = pLimit(5);
 
     const auditedLeads = await Promise.all(
       mapsLeads.map((lead) =>
         limit(async () => {
-          const hasWebsite = !!lead.website;
           const diagnosis: string[] = [];
           let emails: string[] = [];
-          let websiteIsReachable = false;
+          let websiteReachable: boolean | null = null;
 
-          if (!hasWebsite) {
+          if (lead.website.trim().length === 0) {
             diagnosis.push("No website", "Weak online presence");
 
             return {
               ...lead,
               emails,
-              audit: {
-                hasWebsite,
-                websiteIsReachable,
-                diagnosis,
-              },
+              websiteReachable,
+              diagnosis,
             };
           }
 
@@ -36,19 +32,22 @@ export class AuditLeadsService {
             const res = await fetch(lead.website);
             if (res.ok) {
               diagnosis.push("Website is reachable");
-              websiteIsReachable = true;
+              websiteReachable = true;
               emails = await this.webCrawler.extractEmails(lead.website);
             } else {
+              websiteReachable = false;
               diagnosis.push(`Website returned an error (${res.status})`);
             }
           } catch {
+            websiteReachable = false;
             diagnosis.push("Website is unreachable");
           }
 
           return {
             ...lead,
             emails,
-            audit: { hasWebsite, websiteIsReachable, diagnosis },
+            websiteReachable,
+            diagnosis,
           };
         }),
       ),
