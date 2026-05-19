@@ -56,7 +56,7 @@ export interface LeadQueries {
 }
 
 export interface Leads {
-  address: string;
+  address: string | null;
   auditDiagnosis: string[] | null;
   companyName: string;
   completionStatus: Generated<string>;

@@ -5,9 +5,9 @@ import { BrowserContextProvider } from "src/lib/shared/browser-context-provider"
 export interface Lead {
   name: string;
   mapLink: string;
-  address: string;
-  phone: string;
-  website: string;
+  address: string | null;
+  phone: string | null;
+  website: string | null;
 }
 
 @Injectable()
@@ -41,17 +41,17 @@ export class GoogleMapsScraper {
     const lead: Lead = {
       name,
       mapLink,
-      address: "",
-      phone: "",
-      website: "",
+      address: null,
+      phone: null,
+      website: null,
     };
 
     for (const item of items) {
       const icon = await (await item.$("span.google-symbols"))?.textContent();
       const value = (await (await item.$(".Io6YTe"))?.textContent())?.trim();
-      if (icon?.includes("")) lead.address = value || "";
-      if (icon?.includes("")) lead.phone = value || "";
-      if (icon?.includes("")) lead.website = value || "";
+      if (icon?.includes("")) lead.address = value || null;
+      if (icon?.includes("")) lead.phone = value || null;
+      if (icon?.includes("")) lead.website = value || null;
     }
 
     return lead;

@@ -17,7 +17,7 @@ export class AuditLeadsService {
           let emails: string[] = [];
           let websiteReachable: boolean | null = null;
 
-          if (lead.website.trim().length === 0) {
+          if (lead.website === null) {
             diagnosis.push("No website", "Weak online presence");
 
             return {
