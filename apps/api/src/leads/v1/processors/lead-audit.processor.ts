@@ -1,4 +1,4 @@
-import { Processor, WorkerHost } from "@nestjs/bullmq";
+import { InjectQueue, Processor, WorkerHost } from "@nestjs/bullmq";
 import { Inject } from "@nestjs/common";
 import { Job, Queue } from "bullmq";
 import { Kysely } from "kysely";
@@ -17,7 +17,7 @@ export class LeadAuditProcessor extends WorkerHost {
   constructor(
     @Inject(KYSELY_DB) private readonly db: Kysely<DB>,
     private readonly auditLeadsService: AuditLeadsService,
-    private readonly outreachDraftQueue: Queue,
+    @InjectQueue("outreach-draft") private readonly outreachDraftQueue: Queue,
   ) {
     super();
   }

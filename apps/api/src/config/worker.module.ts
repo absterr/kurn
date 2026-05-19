@@ -16,18 +16,6 @@ import { EnvProvider } from "./env/env.provider";
         },
       }),
     }),
-
-    BullModule.registerQueue(
-      {
-        name: "lead-search",
-      },
-      {
-        name: "lead-audit",
-      },
-      {
-        name: "outreach-draft",
-      },
-    ),
   ],
 })
 export class WorkerModule {}
