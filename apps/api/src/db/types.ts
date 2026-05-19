@@ -10,6 +10,18 @@ export type Generated<T> =
     ? ColumnType<S, I | undefined, U>
     : ColumnType<T, T | undefined, T>;
 
+export type Json = JsonValue;
+
+export type JsonArray = JsonValue[];
+
+export type JsonObject = {
+  [x: string]: JsonValue | undefined;
+};
+
+export type JsonPrimitive = boolean | number | string | null;
+
+export type JsonValue = JsonArray | JsonObject | JsonPrimitive;
+
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
 export interface Accounts {
@@ -41,6 +53,23 @@ export interface LeadQueries {
   location: string | null;
   status: Generated<string>;
   updatedAt: Generated<Timestamp>;
+}
+
+export interface Leads {
+  address: string;
+  auditDiagnosis: string[] | null;
+  companyName: string;
+  completionStatus: Generated<string>;
+  createdAt: Generated<Timestamp>;
+  emailDraft: Json | null;
+  emails: string[] | null;
+  id: Generated<string>;
+  leadQueryId: string;
+  mapLink: string;
+  phone: string | null;
+  updatedAt: Generated<Timestamp>;
+  website: string | null;
+  websiteReachable: boolean | null;
 }
 
 export interface Sessions {
@@ -75,6 +104,7 @@ export interface DB {
   accounts: Accounts;
   jobQueries: JobQueries;
   leadQueries: LeadQueries;
+  leads: Leads;
   sessions: Sessions;
   users: Users;
   verifications: Verifications;

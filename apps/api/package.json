@@ -16,7 +16,8 @@
     "db:make": "bun x kysely-ctl migrate:make",
     "db:latest": "bun x kysely-ctl migrate:latest",
     "db:up": "bun x kysely-ctl migrate:up",
-    "db:down": "bun x kysely-ctl migrate:down"
+    "db:down": "bun x kysely-ctl migrate:down",
+    "db:reset": "bun x kysely-ctl migrate:rollback --all"
   },
   "dependencies": {
     "@google/genai": "^2.3.0",

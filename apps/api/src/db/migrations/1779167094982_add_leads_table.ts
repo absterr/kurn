@@ -13,7 +13,7 @@ export async function up(db: Kysely<unknown>): Promise<void> {
       col
         .notNull()
         .check(
-          sql`status IN ('cancelled', 'completed', 'failed', 'partial', 'paused', 'pending', 'processing')`,
+          sql`completion_status IN ('cancelled', 'completed', 'failed', 'partial', 'paused', 'pending', 'processing')`,
         )
         .defaultTo(sql`'pending'`),
     )
