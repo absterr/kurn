@@ -25,7 +25,7 @@ import { EnvProvider } from "./env/env.provider";
         name: "lead-audit",
       },
       {
-        name: "outreach-generation",
+        name: "outreach-draft",
       },
     ),
   ],

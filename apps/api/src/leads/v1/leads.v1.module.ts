@@ -5,7 +5,7 @@ import { LeadsV1Controller } from "./leads.v1.controller";
 import { AuditLeadsService } from "./providers/audit-leads.service";
 import { GoogleMapsScraper } from "./providers/google-maps.scraper";
 import { LeadsV1Service } from "./providers/leads.v1.service";
-import { OutreachService } from "./providers/outreach.service";
+import { OutreachDraftService } from "./providers/outreach-draft.service";
 
 @Module({
   imports: [SharedModule, EnvModule],
@@ -13,7 +13,7 @@ import { OutreachService } from "./providers/outreach.service";
     AuditLeadsService,
     GoogleMapsScraper,
     LeadsV1Service,
-    OutreachService,
+    OutreachDraftService,
   ],
   controllers: [LeadsV1Controller],
 })

@@ -1,14 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { Page } from "playwright";
 import { BrowserContextProvider } from "src/lib/shared/browser-context-provider";
-
-export interface Lead {
-  name: string;
-  mapLink: string;
-  address: string | null;
-  phone: string | null;
-  website: string | null;
-}
+import { Lead } from "src/utils/shared-types";
 
 @Injectable()
 export class GoogleMapsScraper {
