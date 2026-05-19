@@ -8,6 +8,6 @@ export class LeadsV1Controller {
 
   @Post()
   async(@Body() dto: LeadsV1Dto) {
-    return this.leadsService.findLeads(dto.keyword, dto.location);
+    return this.leadsService.findLeads(dto);
   }
 }

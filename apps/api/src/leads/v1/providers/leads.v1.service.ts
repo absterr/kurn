@@ -10,8 +10,7 @@ import { LeadsV1Dto } from "../leads.v1.dto";
 export class LeadsV1Service {
   constructor(
     @Inject(KYSELY_DB) private readonly db: Kysely<DB>,
-    @InjectQueue("lead-search")
-    private readonly leadSearchQueue: Queue,
+    @InjectQueue("lead-search") private readonly leadSearchQueue: Queue,
   ) {}
 
   async findLeads(dto: LeadsV1Dto) {

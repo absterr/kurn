@@ -5,7 +5,6 @@ import { Kysely } from "kysely";
 import pLimit from "p-limit";
 import { KYSELY_DB } from "src/db/db.module";
 import { DB } from "src/db/types";
-import { AuditLeadsService } from "../providers/audit-leads.service";
 import { OutreachDraftService } from "../providers/outreach-draft.service";
 
 type AuditedLead = {
@@ -28,7 +27,6 @@ interface AuditLeadsJobData {
 export class OutreachDraftProcessor extends WorkerHost {
   constructor(
     @Inject(KYSELY_DB) private readonly db: Kysely<DB>,
-    private readonly auditLeadsService: AuditLeadsService,
     private readonly outreachDraftService: OutreachDraftService,
   ) {
     super();
