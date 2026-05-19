@@ -19,7 +19,7 @@ export async function up(db: Kysely<unknown>): Promise<void> {
     )
     .addColumn("company_name", "varchar(255)", (col) => col.notNull())
     .addColumn("map_link", "varchar(255)", (col) => col.notNull())
-    .addColumn("address", "varchar(255)", (col) => col.notNull())
+    .addColumn("address", "varchar(255)")
     .addColumn("phone", "varchar(255)")
     .addColumn("website", "varchar(255)")
     .addColumn("website_reachable", "boolean")

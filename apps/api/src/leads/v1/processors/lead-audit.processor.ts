@@ -27,9 +27,14 @@ export class LeadSearchProcessor extends WorkerHost {
     try {
       const auditedLeads = await this.auditLeadsService.auditLeads(leads);
 
-      auditedLeads.forEach(async (lead) => {
-        const { name, diagnosis, ...rest } = lead;
+      const filteredAuditedLeads = auditedLeads.filter(async (lead) => {
+        const leadIsReachable = lead.emails.length > 0 || lead.phone !== null;
 
+        return leadIsReachable;
+      });
+
+      filteredAuditedLeads.forEach(async (lead) => {
+        const { name, diagnosis, ...rest } = lead;
         await this.db
           .insertInto("leads")
           .values({
@@ -43,7 +48,7 @@ export class LeadSearchProcessor extends WorkerHost {
           .executeTakeFirstOrThrow();
       });
 
-      return auditedLeads;
+      return filteredAuditedLeads;
     } catch (err) {
       const isLastAttempt = job.attemptsMade >= (job.opts.attempts ?? 1);
 
