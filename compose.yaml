@@ -1,0 +1,31 @@
+services:
+    api:
+        build:
+            context: ./apps/api
+            dockerfile: Dockerfile
+        depends_on:
+            redis:
+                condition: service_healthy
+        env_file:
+            - ./apps/api/.env
+        environment:
+            NODE_ENV: ${NODE_ENV:-production}
+            PORT: ${PORT:-4000}
+            REDIS_URL: ${REDIS_URL:-redis://redis:6379}
+        ports:
+            - '${PORT:-4000}:${PORT:-4000}'
+        restart: unless-stopped
+    redis:
+        healthcheck:
+            interval: 10s
+            retries: 5
+            test: ['CMD', 'redis-cli', 'ping']
+            timeout: 5s
+        image: redis:7-alpine
+        ports:
+            - '${REDIS_PORT:-6379}:${REDIS_PORT:-6379}'
+        restart: unless-stopped
+        volumes:
+            - redis-data:/data
+volumes:
+    redis-data:
