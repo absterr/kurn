@@ -1,0 +1,48 @@
+# Build output
+dist
+
+# Cache
+**/.cache
+**/tmp
+**/temp
+
+# Dependencies
+node_modules
+.pnpm-store
+.npm
+.yarn
+.yarn-cache
+
+# Docker
+Dockerfile
+compose.yaml
+docker-compose*
+
+# Env and local files
+**/.env
+**/.env.*
+**/*.local
+
+# IDE / OS
+.vscode
+.idea
+.DS_Store
+
+# Logs
+**/*.log
+**/logs
+
+# Misc
+**/LICENSE
+**/*.md
+
+# Tests
+**/__tests__
+**/*.spec.ts
+**/*.test.ts
+**/*.spec.js
+**/*.test.js
+**/coverage
+
+# TypeScript
+**/*.tsbuildinfo
