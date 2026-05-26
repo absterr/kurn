@@ -13,11 +13,11 @@
     "start:debug": "nest start --debug --watch",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "db:gen": "kysely-codegen --dialect postgres --camel-case --out-file src/db/types.ts",
-    "db:make": "npx kysely-ctl migrate:make",
-    "db:latest": "npx kysely-ctl migrate:latest",
-    "db:up": "npx kysely-ctl migrate:up",
-    "db:down": "npx kysely-ctl migrate:down",
-    "db:reset": "npx kysely-ctl migrate:rollback --all"
+    "db:make": "bun x kysely-ctl migrate:make",
+    "db:latest": "bun x kysely-ctl migrate:latest",
+    "db:up": "bun x kysely-ctl migrate:up",
+    "db:down": "bun x kysely-ctl migrate:down",
+    "db:reset": "bun x kysely-ctl migrate:rollback --all"
   },
   "dependencies": {
     "@google/genai": "^2.3.0",
