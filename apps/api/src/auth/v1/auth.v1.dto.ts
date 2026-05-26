@@ -6,7 +6,7 @@ import {
   MinLength,
 } from "class-validator";
 import { IntersectionType, PickType } from "nestjs-mapped-types";
-import Match from "src/utils/match-decorator";
+import Match from "@/utils/match-decorator";
 
 export class PasswordDto {
   @IsString()

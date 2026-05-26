@@ -2,9 +2,9 @@ import { InjectQueue, Processor, WorkerHost } from "@nestjs/bullmq";
 import { Inject } from "@nestjs/common";
 import { Job, Queue } from "bullmq";
 import { Kysely } from "kysely";
-import { KYSELY_DB } from "src/db/db.module";
-import { DB } from "src/db/types";
-import { Lead } from "src/utils/shared-types";
+import { KYSELY_DB } from "@/db/db.module";
+import { DB } from "@/db/types";
+import { Lead } from "@/utils/shared-types";
 import { AuditLeadsService } from "../providers/audit-leads.service";
 
 interface AuditLeadsJobData {

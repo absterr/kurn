@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { addMinutes, addWeeks } from "date-fns";
 import type { CookieOptions, Response } from "express";
-import { EnvProvider } from "src/config/env/env.provider";
+import { EnvProvider } from "@/config/env/env.provider";
 
 const REFRESH_PATH = "/api/v1/auth/refresh";
 

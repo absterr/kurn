@@ -1,8 +1,8 @@
 import { Inject, Module, OnModuleDestroy } from "@nestjs/common";
 import { CamelCasePlugin, Kysely, PostgresDialect } from "kysely";
 import { Pool } from "pg";
-import { EnvModule } from "src/config/env/env.module";
-import { EnvProvider } from "src/config/env/env.provider";
+import { EnvModule } from "@/config/env/env.module";
+import { EnvProvider } from "@/config/env/env.provider";
 import { DB } from "./types";
 
 export const KYSELY_DB = "KYSELY_DB";

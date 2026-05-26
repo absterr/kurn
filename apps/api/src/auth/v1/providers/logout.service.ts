@@ -1,11 +1,11 @@
 import { Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 import { Request, Response } from "express";
 import { Kysely } from "kysely";
-import { EnvProvider } from "src/config/env/env.provider";
-import { KYSELY_DB } from "src/db/db.module";
-import { DB } from "src/db/types";
-import { AuthCookieService } from "src/lib/cookie/cookie.service";
-import { AccessTokenPayload, verifyUserToken } from "src/utils/user-token";
+import { EnvProvider } from "@/config/env/env.provider";
+import { KYSELY_DB } from "@/db/db.module";
+import { DB } from "@/db/types";
+import { AuthCookieService } from "@/lib/cookie/cookie.service";
+import { AccessTokenPayload, verifyUserToken } from "@/utils/user-token";
 
 @Injectable()
 export class LogoutService {

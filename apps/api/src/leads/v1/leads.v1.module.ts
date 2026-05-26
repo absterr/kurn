@@ -1,8 +1,8 @@
 import { BullModule } from "@nestjs/bullmq";
 import { Module } from "@nestjs/common";
-import { EnvModule } from "src/config/env/env.module";
-import { DatabaseModule } from "src/db/db.module";
-import { SharedModule } from "src/lib/shared/shared.module";
+import { EnvModule } from "@/config/env/env.module";
+import { DatabaseModule } from "@/db/db.module";
+import { SharedModule } from "@/lib/shared/shared.module";
 import { LeadsV1Controller } from "./leads.v1.controller";
 import { LeadAuditProcessor } from "./processors/lead-audit.processor";
 import { LeadSearchProcessor } from "./processors/lead-search.processor";
