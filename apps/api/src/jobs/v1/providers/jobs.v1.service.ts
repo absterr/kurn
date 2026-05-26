@@ -1,8 +1,8 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { Kysely } from "kysely";
-import { KYSELY_DB } from "src/db/db.module";
-import { DB } from "src/db/types";
-import toCron from "src/utils/to-cron";
+import { KYSELY_DB } from "@/db/db.module";
+import { DB } from "@/db/types";
+import toCron from "@/utils/to-cron";
 import { JobsV1Dto } from "../jobs.v1.dto";
 import { CronScheduler } from "./cron-scheduler";
 

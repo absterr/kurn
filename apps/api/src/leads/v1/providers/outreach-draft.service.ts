@@ -2,8 +2,8 @@ import { GoogleGenAI } from "@google/genai";
 import { Injectable } from "@nestjs/common";
 import { plainToInstance } from "class-transformer";
 import { IsString, validateOrReject } from "class-validator";
-import { EnvProvider } from "src/config/env/env.provider";
-import { EMAIL_SYSTEM_PROMPT } from "src/utils/system-prompts";
+import { EnvProvider } from "@/config/env/env.provider";
+import { EMAIL_SYSTEM_PROMPT } from "@/utils/system-prompts";
 
 class GeneratedEmailDto {
   @IsString()

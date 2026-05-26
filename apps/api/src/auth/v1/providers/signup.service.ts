@@ -7,12 +7,12 @@ import {
 } from "@nestjs/common";
 import { addDays } from "date-fns";
 import { Kysely } from "kysely";
-import { EnvProvider } from "src/config/env/env.provider";
-import { KYSELY_DB } from "src/db/db.module";
-import { DB } from "src/db/types";
-import { MailService } from "src/lib/mail/mail.service";
-import { EMAIL_VERIFICATION_TEMPLATE } from "src/utils/email-templates";
-import { hashPassword } from "src/utils/hash";
+import { EnvProvider } from "@/config/env/env.provider";
+import { KYSELY_DB } from "@/db/db.module";
+import { DB } from "@/db/types";
+import { MailService } from "@/lib/mail/mail.service";
+import { EMAIL_VERIFICATION_TEMPLATE } from "@/utils/email-templates";
+import { hashPassword } from "@/utils/hash";
 import { SignupDto } from "../auth.v1.dto";
 
 @Injectable()

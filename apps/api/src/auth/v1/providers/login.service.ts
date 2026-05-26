@@ -11,14 +11,14 @@ import {
 import { addDays, addWeeks } from "date-fns";
 import { Response } from "express";
 import { Kysely } from "kysely";
-import { EnvProvider } from "src/config/env/env.provider";
-import { KYSELY_DB } from "src/db/db.module";
-import { DB } from "src/db/types";
-import { AuthCookieService } from "src/lib/cookie/cookie.service";
-import { MailService } from "src/lib/mail/mail.service";
-import { EMAIL_VERIFICATION_TEMPLATE } from "src/utils/email-templates";
-import { comparePassword } from "src/utils/hash";
-import { signUserToken } from "src/utils/user-token";
+import { EnvProvider } from "@/config/env/env.provider";
+import { KYSELY_DB } from "@/db/db.module";
+import { DB } from "@/db/types";
+import { AuthCookieService } from "@/lib/cookie/cookie.service";
+import { MailService } from "@/lib/mail/mail.service";
+import { EMAIL_VERIFICATION_TEMPLATE } from "@/utils/email-templates";
+import { comparePassword } from "@/utils/hash";
+import { signUserToken } from "@/utils/user-token";
 import { LoginDto } from "../auth.v1.dto";
 
 @Injectable()

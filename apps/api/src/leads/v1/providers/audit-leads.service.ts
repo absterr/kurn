@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import pLimit from "p-limit";
-import { WebCrawler } from "src/lib/shared/web-crawler";
-import { Lead } from "src/utils/shared-types";
+import { WebCrawler } from "@/lib/shared/web-crawler";
+import { Lead } from "@/utils/shared-types";
 
 @Injectable()
 export class AuditLeadsService {

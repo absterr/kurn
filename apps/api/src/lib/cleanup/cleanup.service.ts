@@ -1,8 +1,8 @@
 import { Inject, Injectable, Logger } from "@nestjs/common";
 import { Cron, CronExpression } from "@nestjs/schedule";
 import { Kysely, sql } from "kysely";
-import { KYSELY_DB } from "src/db/db.module";
-import { DB } from "src/db/types";
+import { KYSELY_DB } from "@/db/db.module";
+import { DB } from "@/db/types";
 
 @Injectable()
 export class CleanupService {

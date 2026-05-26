@@ -2,8 +2,8 @@ import { InjectQueue } from "@nestjs/bullmq";
 import { Inject, Injectable } from "@nestjs/common";
 import { Queue } from "bullmq";
 import { Kysely } from "kysely";
-import { KYSELY_DB } from "src/db/db.module";
-import { DB } from "src/db/types";
+import { KYSELY_DB } from "@/db/db.module";
+import { DB } from "@/db/types";
 import { LeadsV1Dto } from "../leads.v1.dto";
 
 @Injectable()
