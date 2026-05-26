@@ -3,17 +3,17 @@
 # ─────────────────────────────────────────────
 
 
-FROM node:22-slim AS build
+FROM oven/bun:1.3.13-slim AS build
 
 WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm ci
+RUN bun install
 
 COPY . .
 
-RUN npm run build
+RUN bun run build
 
 
 # ─────────────────────────────────────────────
@@ -27,9 +27,11 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm ci --omit=dev
+RUN npm install -g bun
 
-RUN npx playwright install --with-deps chromium
+RUN bun install --omit=dev
+
+RUN bun x playwright install --with-deps chromium
 
 COPY --from=build /app/dist ./dist
 
