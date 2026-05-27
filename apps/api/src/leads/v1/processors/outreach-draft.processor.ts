@@ -3,8 +3,8 @@ import { Inject } from "@nestjs/common";
 import { Job } from "bullmq";
 import { Kysely } from "kysely";
 import pLimit from "p-limit";
-import { KYSELY_DB } from "src/db/db.module";
-import { DB } from "src/db/types";
+import { KYSELY_DB } from "@/db/db.module";
+import { DB } from "@/db/types";
 import { OutreachDraftService } from "../providers/outreach-draft.service";
 
 type AuditedLead = {

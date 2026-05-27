@@ -22,7 +22,7 @@ export class EnvironmentVariables {
   REDIS_HOST: string;
 
   @IsNumber()
-  REDIS_PORT: number;
+  REDIS_PORT: number = 6379;
 
   @IsString()
   COOKIE_SECRET: string;
