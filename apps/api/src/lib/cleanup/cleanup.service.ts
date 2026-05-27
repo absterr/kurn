@@ -17,7 +17,7 @@ export class CleanupService {
         .where("expiresAt", "<", sql<Date>`now()`)
         .executeTakeFirstOrThrow();
 
-      this.logger.error(`Deleted ${deletedRows.numDeletedRows} sessions`);
+      this.logger.log(`Deleted ${deletedRows.numDeletedRows} sessions`);
     } catch (error) {
       this.logger.error("Error during session cleanup:", error);
     }
@@ -32,7 +32,7 @@ export class CleanupService {
         .where("expiresAt", "<", sql<Date>`now()`)
         .executeTakeFirstOrThrow();
 
-      this.logger.error(`Deleted ${deletedRows.numDeletedRows} verifications`);
+      this.logger.log(`Deleted ${deletedRows.numDeletedRows} verifications`);
     } catch (error) {
       this.logger.error("Error during verification cleanup:", error);
     }
@@ -47,7 +47,7 @@ export class CleanupService {
         .where("expiresAt", "<", sql<Date>`now()`)
         .executeTakeFirstOrThrow();
 
-      this.logger.error(`Deleted ${deletedRows.numDeletedRows} verifications`);
+      this.logger.log(`Deleted ${deletedRows.numDeletedRows} verifications`);
     } catch (error) {
       this.logger.error("Error during verification cleanup:", error);
     }
