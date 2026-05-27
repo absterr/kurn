@@ -34,7 +34,7 @@
   },
   "overrides": [
     {
-      "includes": ["apps/api/**/*.ts"],
+      "includes": ["apps/worker/**/*.ts"],
       "javascript": {
         "parser": {
           "unsafeParameterDecoratorsEnabled": true
