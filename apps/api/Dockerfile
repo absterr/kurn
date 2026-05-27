@@ -25,9 +25,9 @@ FROM node:22-slim AS runtime
 
 WORKDIR /app
 
-COPY package*.json ./
-
 RUN npm install -g bun
+
+COPY package*.json ./
 
 RUN bun install --omit=dev
 

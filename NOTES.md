@@ -4,16 +4,20 @@
 
 > Ordered by priority (highest → lowest)
 
-- [ ] **[DevOps]** Setup Docker
+- [x] **[DevOps]** Setup Docker
 - [ ] **[DevOps]** Setup CI and deploy
 - [ ] **[Web]** Build leads page — display input details for search and search queries, with most relevant info
 - [ ] **[Web]** Build leads info page (url params) — show extra info on lead queries including fetched leads and their statuses
-- [ ] **[API]** Add cron to leads module
-- [ ] **[API]** Deliberate and plan the job module flow
-- [ ] **[API]** Implement deduplication on leads module
-- [ ] **[API]** Implement AI audit for leads module
-- [ ] **[API]** Implement async cold email
-- [ ] **[API]** Implement basic job module
+- [ ] **[Worker]** Add worker app for cron and async jobs with NestJS
+- [ ] **[API]** Migrate api to use hono and bun
+- [ ] **[Worker]** Add cron to leads module
+- [ ] **[Worker]** Deliberate and plan the job module flow
+- [ ] **[Worker]** Implement deduplication on leads module
+- [ ] **[Worker]** Implement AI audit for leads module
+- [ ] **[Worker]** Implement async cold email
+- [ ] **[Worker]** Implement basic job module
+- [ ] **[API]** Add admin-based (request/invite) auth
+- [ ] **[Worker]** Implement API key rotation
 
 ---
 
@@ -28,9 +32,12 @@
 
 ## Notes
 
-### API
+### DB
 
 - Possible to change the `lead_query_table` status field to accommodate cron by adding and/or removing some statuses
+
+### Worker
+
 - Possible to filter search queries to determine whether it was a specific lead query or a group — by the number of results and the similarity between the search query and name of lead from results
 - Can also end query search status if it repeatedly generates the same results (e.g. for when the result is a specific lead)
 - Can improve emails to prevent them from entering spam and preferably landing in primary inbox
