@@ -1,20 +1,4 @@
 services:
-    api:
-        build:
-            context: ./apps/api
-            dockerfile: Dockerfile
-        depends_on:
-            redis:
-                condition: service_healthy
-        env_file:
-            - ./apps/api/.env
-        environment:
-            NODE_ENV: ${NODE_ENV:-production}
-            PORT: ${PORT:-4000}
-            REDIS_URL: ${REDIS_URL:-redis://redis:6379}
-        ports:
-            - '${PORT:-4000}:${PORT:-4000}'
-        restart: unless-stopped
     redis:
         healthcheck:
             interval: 10s
@@ -27,5 +11,21 @@ services:
         restart: unless-stopped
         volumes:
             - redis-data:/data
+    worker:
+        build:
+            context: ./apps/worker
+            dockerfile: Dockerfile
+        depends_on:
+            redis:
+                condition: service_healthy
+        env_file:
+            - ./apps/worker/.env
+        environment:
+            NODE_ENV: ${NODE_ENV:-production}
+            PORT: ${PORT:-4000}
+            REDIS_URL: ${REDIS_URL:-redis://redis:6379}
+        ports:
+            - '${PORT:-4000}:${PORT:-4000}'
+        restart: unless-stopped
 volumes:
     redis-data:
