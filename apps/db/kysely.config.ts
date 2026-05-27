@@ -10,6 +10,6 @@ export default defineConfig({
     }),
   },
   migrations: {
-    migrationFolder: "src/db/migrations",
+    migrationFolder: "migrations",
   },
 });

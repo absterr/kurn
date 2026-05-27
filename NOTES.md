@@ -5,7 +5,8 @@
 > Ordered by priority (highest → lowest)
 
 - [x] **[DevOps]** Setup Docker
-- [ ] **[DevOps]** Setup CI and deploy
+- [x] **[DevOps]** Setup CI and deploy frontend
+- [ ] **[DevOps]** Setup db, API and deploy API
 - [ ] **[Web]** Build leads page — display input details for search and search queries, with most relevant info
 - [ ] **[Web]** Build leads info page (url params) — show extra info on lead queries including fetched leads and their statuses
 - [ ] **[Worker]** Add worker app for cron and async jobs with NestJS
