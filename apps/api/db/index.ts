@@ -1,7 +1,7 @@
 import { CamelCasePlugin, Kysely, PostgresDialect, sql } from "kysely";
 import { Pool } from "pg";
 import env from "../config/env";
-import type { DB } from "./db-types";
+import type { DB } from "./types";
 
 let pool: Pool | undefined;
 let db: Kysely<DB> | undefined;
@@ -11,7 +11,10 @@ export function makeDB() {
     try {
       console.info("> initializing database pool");
 
-      pool = new Pool({ connectionString: env.DATABASE_URL, max: 10 });
+      pool = new Pool({
+        connectionString: env.DATABASE_URL,
+        max: 10,
+      });
       db = new Kysely<DB>({
         dialect: new PostgresDialect({ pool }),
         plugins: [new CamelCasePlugin()],

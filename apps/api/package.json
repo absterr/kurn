@@ -4,7 +4,9 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "db:gen": "kysely-codegen --dialect postgres --camel-case --out-file db/db-types.ts"
+    "dev": "bun run --watch server.ts",
+    "start": "bun server.ts",
+    "db:gen": "kysely-codegen --dialect postgres --camel-case --out-file db/types.ts"
   },
   "devDependencies": {
     "@types/bun": "latest",
@@ -15,6 +17,7 @@
     "typescript": "^5"
   },
   "dependencies": {
+    "@hono/zod-validator": "^0.8.0",
     "dotenv": "^17.4.2",
     "hono": "^4.12.23",
     "kysely": "^0.29.2",
