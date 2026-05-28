@@ -6,11 +6,11 @@
 
 - [x] **[DevOps]** Setup Docker
 - [x] **[DevOps]** Setup CI and deploy frontend
-- [ ] **[DevOps]** Setup db, API and deploy API
+- [x] **[DevOps]** Setup db
+- [x] **[API]** Migrate api to use hono and bun
 - [ ] **[Web]** Build leads page — display input details for search and search queries, with most relevant info
 - [ ] **[Web]** Build leads info page (url params) — show extra info on lead queries including fetched leads and their statuses
 - [ ] **[Worker]** Add worker app for cron and async jobs with NestJS
-- [ ] **[API]** Migrate api to use hono and bun
 - [ ] **[Worker]** Add cron to leads module
 - [ ] **[Worker]** Deliberate and plan the job module flow
 - [ ] **[Worker]** Implement deduplication on leads module
