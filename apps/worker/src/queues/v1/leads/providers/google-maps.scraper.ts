@@ -50,7 +50,7 @@ export class GoogleMapsScraper {
     return lead;
   }
 
-  async scrape(keyword: string, location: string) {
+  async scrape(keyword: string, location: string | null) {
     const context = await this.browserContextProvider.getContext();
     const searchQuery = `${keyword} ${location}`;
     const searchUrl = `https://www.google.com/maps/search/${encodeURIComponent(searchQuery)}`;
