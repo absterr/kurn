@@ -9,8 +9,6 @@ chromium.use(stealth());
 export class BrowserContextProvider implements OnModuleInit, OnModuleDestroy {
   private browser: Browser;
 
-  linkedinSessionPath = "user_data/linkedin-session.json";
-
   async onModuleInit() {
     this.browser = await chromium.launch({
       headless: true,
@@ -18,22 +16,13 @@ export class BrowserContextProvider implements OnModuleInit, OnModuleDestroy {
     });
   }
 
-  getContext(storageState?: string) {
-    const browserContextOptions: BrowserContextOptions = {
+  getContext() {
+    return this.browser.newContext({
       userAgent:
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
       viewport: { width: 1920, height: 1080 },
       locale: "en-US",
-    };
-
-    if (storageState) {
-      return this.browser.newContext({
-        storageState,
-        ...browserContextOptions,
-      });
-    }
-
-    return this.browser.newContext(browserContextOptions);
+    });
   }
 
   async onModuleDestroy() {
