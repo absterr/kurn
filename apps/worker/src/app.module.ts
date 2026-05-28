@@ -1,17 +1,10 @@
 import { Module } from "@nestjs/common";
 import { EnvModule } from "./config/env/env.module";
 import { WorkerModule } from "./config/worker.module";
-import { JobsV1Module } from "./jobs/v1/jobs.v1.module";
-import { LeadsV1Module } from "./leads/v1/leads.v1.module";
 import { CleanupModule } from "./lib/cleanup/cleanup.module";
+import { QueueModule } from "./queues/queue.module";
 
 @Module({
-  imports: [
-    CleanupModule,
-    EnvModule,
-    JobsV1Module,
-    LeadsV1Module,
-    WorkerModule,
-  ],
+  imports: [CleanupModule, EnvModule, QueueModule, WorkerModule],
 })
 export class AppModule {}

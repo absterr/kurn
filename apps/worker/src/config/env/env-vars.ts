@@ -4,11 +4,6 @@ export class EnvironmentVariables {
   @IsString()
   NODE_ENV: "development" | "production";
 
-  @IsUrl({
-    require_tld: false,
-  })
-  WEB_ORIGIN: string;
-
   @IsNumber()
   @IsOptional()
   SERVER_PORT: number = 4000;
@@ -23,15 +18,6 @@ export class EnvironmentVariables {
 
   @IsNumber()
   REDIS_PORT: number = 6379;
-
-  @IsString()
-  COOKIE_SECRET: string;
-
-  @IsString()
-  ACCESS_SECRET: string;
-
-  @IsString()
-  REFRESH_SECRET: string;
 
   @IsString()
   USER_GMAIL: string;

@@ -9,7 +9,7 @@
 - [x] **[DevOps]** Setup db
 - [x] **[API]** Create new api package with hono and bun
 - [x] **[Worker]** Migrate api to worker
-- [ ] **[Worker]** Add cron to leads module
+- [x] **[Worker]** Add queue cron for leads module
 - [ ] **[Web]** Build leads page — display input details for search and search queries, with most relevant info
 - [ ] **[Web]** Build leads info page (url params) — show extra info on lead queries including fetched leads and their statuses
 - [ ] **[Worker]** Deliberate and plan the job module flow

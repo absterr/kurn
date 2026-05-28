@@ -3,13 +3,12 @@ import { Module } from "@nestjs/common";
 import { EnvModule } from "@/config/env/env.module";
 import { DatabaseModule } from "@/db/db.module";
 import { SharedModule } from "@/lib/shared/shared.module";
-import { LeadsV1Controller } from "./leads.v1.controller";
+import { LeadsV1Service } from "./leads.v1.service";
 import { LeadAuditProcessor } from "./processors/lead-audit.processor";
 import { LeadSearchProcessor } from "./processors/lead-search.processor";
 import { OutreachDraftProcessor } from "./processors/outreach-draft.processor";
 import { AuditLeadsService } from "./providers/audit-leads.service";
 import { GoogleMapsScraper } from "./providers/google-maps.scraper";
-import { LeadsV1Service } from "./providers/leads.v1.service";
 import { OutreachDraftService } from "./providers/outreach-draft.service";
 
 @Module({
@@ -31,13 +30,13 @@ import { OutreachDraftService } from "./providers/outreach-draft.service";
   ],
   providers: [
     LeadsV1Service,
-    LeadAuditProcessor,
-    LeadSearchProcessor,
-    OutreachDraftProcessor,
     AuditLeadsService,
     GoogleMapsScraper,
     OutreachDraftService,
+    LeadAuditProcessor,
+    LeadSearchProcessor,
+    OutreachDraftProcessor,
   ],
-  controllers: [LeadsV1Controller],
+  exports: [LeadsV1Service],
 })
 export class LeadsV1Module {}
