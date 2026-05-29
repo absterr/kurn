@@ -5,6 +5,7 @@ import { closeDB } from "./db";
 const PORT = env.API_PORT;
 
 // Bun.serve is not supported in some serverless environments
+// Migrate to Node.js in those cases
 const server = Bun.serve({
   fetch: app.fetch,
   port: PORT,
