@@ -4,57 +4,62 @@ import { closeDB } from "./db";
 
 const PORT = env.API_PORT;
 
-const server = Bun.serve({
-  fetch: app.fetch,
-  port: PORT,
-});
+// Use Bun.serve only in local or other bun environments
+if (!process.env.VERCEL) {
+  console.log("Starting API server on a serverful environment...");
 
-console.log(`Server is running on port ${PORT}`);
+  const server = Bun.serve({
+    fetch: app.fetch,
+    port: PORT,
+  });
 
-let isShuttingDown = false;
+  console.log(`API server is running on port ${PORT}`);
 
-async function shutdown() {
-  if (isShuttingDown) {
-    return;
+  let isShuttingDown = false;
+
+  async function shutdown() {
+    if (isShuttingDown) {
+      return;
+    }
+
+    isShuttingDown = true;
+    console.info("> attempting graceful shutdown");
+    server.stop();
+    console.info("> HTTP server terminated");
+
+    try {
+      await closeDB();
+      console.info("> database connection closed");
+    } catch (err) {
+      console.error(err);
+      process.exit(1);
+    }
+
+    process.exit(0);
   }
 
-  isShuttingDown = true;
-  console.info("> attempting graceful shutdown");
-  server.stop();
-  console.info("> HTTP server terminated");
+  // SERVER EVENT LISTENERS
 
-  try {
-    await closeDB();
-    console.info("> database connection closed");
-  } catch (err) {
-    console.error(err);
+  process.on("SIGINT", shutdown);
+  process.on("SIGTERM", shutdown);
+
+  process.on("unhandledRejection", async (err) => {
+    console.error("> unhandled rejection");
+
+    if (err instanceof Error) {
+      console.error(err.name, err.message);
+    } else {
+      console.error(err);
+    }
+
+    await shutdown();
     process.exit(1);
-  }
+  });
 
-  process.exit(0);
-}
-
-// SERVER EVENT LISTENERS
-
-process.on("SIGINT", shutdown);
-process.on("SIGTERM", shutdown);
-
-process.on("unhandledRejection", async (err) => {
-  console.error("> unhandled rejection");
-
-  if (err instanceof Error) {
+  process.on("uncaughtException", async (err) => {
+    console.error("> uncaught exception");
     console.error(err.name, err.message);
-  } else {
-    console.error(err);
-  }
-
-  await shutdown();
-  process.exit(1);
-});
-
-process.on("uncaughtException", async (err) => {
-  console.error("> uncaught exception");
-  console.error(err.name, err.message);
-  await shutdown();
-  process.exit(1);
-});
+    await shutdown();
+    process.exit(1);
+  });
+}
