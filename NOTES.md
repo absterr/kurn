@@ -49,5 +49,5 @@
 
 ## Considerations
 
-- Deploy with Docker on VPS or managed service?
+- Deploy worker on VPS or managed service?
 - Split DB schemas into `schema` and `migrations`?
