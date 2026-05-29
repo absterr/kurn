@@ -1,3 +1,7 @@
+process.on("uncaughtException", (err) => {
+  console.error(`UNCAUGHT: ${err.message}, ${err.stack}`);
+});
+
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
