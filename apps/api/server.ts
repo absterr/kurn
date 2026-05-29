@@ -4,7 +4,7 @@ import { closeDB } from "./db";
 
 const PORT = env.API_PORT;
 
-// Use Bun.serve only in local or other bun environments
+// Use Bun.serve only in local or other server-based bun environments
 if (!process.env.VERCEL) {
   console.log("Starting API server on a serverful environment...");
 
