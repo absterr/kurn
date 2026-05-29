@@ -5,7 +5,7 @@ config({ path: [".env", ".env.local"] });
 
 const envSchema = z.object({
   API_PORT: z.coerce.number().default(8080),
-  NODE_ENV: z.enum(["development", "production"]).default("development"),
+  API_ENV: z.enum(["development", "production"]).default("development"),
   WEB_ORIGIN: z.url(),
   DATABASE_URL: z.url(),
 });
