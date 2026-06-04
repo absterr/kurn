@@ -11,7 +11,8 @@
 - [x] **[Worker]** Migrate api to worker
 - [x] **[Worker]** Add queue cron for leads module
 - [x] **[API]** Deploy API on Railway (or vercel if Railway tweaks, requires switching to node)
-- [ ] **[Web]** Build leads page — display input details for search and search queries, with most relevant info
+- [x] **[Web]** Build leads page — display input details for search and search queries, with most relevant info
+- [ ] **[API]** Move auth and its dependencies from worker to api
 - [ ] **[Web]** Build leads info page (url params) — show extra info on lead queries including fetched leads and their statuses
 - [ ] **[Worker]** Deliberate and plan the job module flow
 - [ ] **[Worker]** Implement deduplication on leads module
