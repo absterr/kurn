@@ -7,7 +7,6 @@ import type { Lead } from "@/lib/types";
 import LeadsCard from "./LeadsCard";
 import LeadsDetails from "./LeadsDetails";
 import LeadsDrawer from "./LeadsDrawer";
-import LeadsForm from "./LeadsForm";
 
 const EmptyState = ({
   caption,
@@ -51,7 +50,8 @@ export default function LeadsWrapper() {
 
   return (
     <div className="h-full min-h-0 flex-1 flex flex-col">
-      <LeadsForm isPending={isPending} onSearchAction={handleSearch} />
+      {/* Leads Form was here */}
+      {/*<LeadsForm isPending={isPending} onSearchAction={handleSearch} />*/}
       <div className="flex-1 min-h-0">
         {isPending ? (
           <div className="flex justify-center py-20">
