@@ -48,7 +48,7 @@ const LeadsQueryForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSaveQuery)}>
-      <div className="flex flex-row items-start gap-4 pt-4 pb-8">
+      <div className="flex flex-col md:flex-row items-start gap-4 pt-4 pb-8">
         <div className="w-full">
           <div className="flex justify-between p-1">
             <p className="py-1">
