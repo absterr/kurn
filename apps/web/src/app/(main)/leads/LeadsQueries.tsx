@@ -15,8 +15,9 @@ const EmptyState = () => (
 );
 
 export default function LeadsQueries() {
+  // min-h-0: constrains grid child so descendants with h-full have a real boundary
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full min-h-0">
       <div className="flex items-center justify-between lg:px-6">
         <h2 className="font-medium text-base sm:text-lg">Leads Queries</h2>
         {mockLeadQueries.length > 0 && (

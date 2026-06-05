@@ -13,7 +13,7 @@
 - [x] **[API]** Deploy API on Railway (or vercel if Railway tweaks, requires switching to node)
 - [x] **[Web]** Build leads page — display input details for search and search queries, with most relevant info
 - [x] **[Web]** Fix site layout (right overflow on mobile, theme switch on md-lg screens)
-- [ ] **[DevOps]** Fix web deployment issues on vercel
+- [x] **[DevOps]** Fix web deployment issues on vercel
 - [ ] **[Web]** Build leads info page (url params) — show extra info on lead queries including fetched leads and their statuses
 - [ ] **[API]** Move auth and its dependencies from worker to api
 - [ ] **[API]** Add admin-based (request/invite) auth
