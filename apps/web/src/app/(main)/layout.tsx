@@ -9,11 +9,11 @@ export default function MainLayout({
 }>) {
   return (
     <SidebarProvider>
-      <div className="h-dvh w-dvw overflow-hidden p-4 flex gap-4">
+      <div className="h-dvh w-dvw overflow-hidden p-2.5 sm:p-4 flex gap-2.5 sm:gap-4">
         <Sidebar />
-        <div className="flex flex-1 flex-col gap-y-4">
+        <div className="flex flex-1 flex-col min-w-0 gap-y-2.5 sm:gap-y-4">
           <Topbar />
-          <main className="flex-1 rounded-xl bg-foreground/5 p-4 flex min-h-0">
+          <main className="flex-1 rounded-xl bg-foreground/5 p-2 sm:p-4 flex min-h-0">
             <div className="overflow-hidden w-full max-w-7xl mx-auto">
               {children}
             </div>
