@@ -47,55 +47,58 @@ const LeadsQueryForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSaveQuery)}>
-      <div className="flex flex-col md:flex-row items-start gap-4 pt-4 pb-8">
-        <div className="w-full">
-          <div className="flex justify-between p-1">
-            <p className="py-1">
-              Keyword <span className="text-red-500 text-sm">*</span>
-            </p>
-            {errors.keyword && (
-              <p className="text-red-500 text-xs sm:text-sm">
-                {errors.keyword.message}
+    <div>
+      <h2 className="font-medium text-base sm:text-lg">Find Leads</h2>
+      <form onSubmit={handleSubmit(onSaveQuery)}>
+        <div className="flex flex-col md:flex-row items-start gap-4 pt-4 pb-8">
+          <div className="w-full">
+            <div className="flex justify-between p-1">
+              <p className="py-1">
+                Keyword <span className="text-red-500 text-sm">*</span>
               </p>
-            )}
+              {errors.keyword && (
+                <p className="text-red-500 text-xs sm:text-sm">
+                  {errors.keyword.message}
+                </p>
+              )}
+            </div>
+
+            <input
+              {...register("keyword")}
+              placeholder="Keyword"
+              className="w-full p-3 bg-background rounded-xl text-xs sm:text-sm"
+            />
           </div>
 
-          <input
-            {...register("keyword")}
-            placeholder="Keyword"
-            className="w-full p-3 bg-background rounded-xl text-xs sm:text-sm"
-          />
-        </div>
-
-        <div className="w-full">
-          <div className="flex justify-between p-1">
-            <p className="py-1">
-              Location <span className="text-red-500 text-sm">*</span>
-            </p>
-            {errors.location && (
-              <p className="text-red-500 text-xs sm:text-sm">
-                {errors.location.message}
+          <div className="w-full">
+            <div className="flex justify-between p-1">
+              <p className="py-1">
+                Location <span className="text-red-500 text-sm">*</span>
               </p>
-            )}
+              {errors.location && (
+                <p className="text-red-500 text-xs sm:text-sm">
+                  {errors.location.message}
+                </p>
+              )}
+            </div>
+            <input
+              {...register("location")}
+              placeholder="Location"
+              className="w-full p-3 bg-background rounded-xl text-xs sm:text-sm"
+            />
           </div>
-          <input
-            {...register("location")}
-            placeholder="Location"
-            className="w-full p-3 bg-background rounded-xl text-xs sm:text-sm"
-          />
         </div>
-      </div>
-      <div>
-        <Button
-          type="submit"
-          disabled={isPending}
-          className="bg-foreground w-full sm:w-fit text-background p-5 cursor-pointer rounded-2xl"
-        >
-          {isPending ? "Saving..." : "Save"}
-        </Button>
-      </div>
-    </form>
+        <div>
+          <Button
+            type="submit"
+            disabled={isPending}
+            className="bg-foreground w-full sm:w-fit text-background p-5 cursor-pointer rounded-2xl"
+          >
+            {isPending ? "Saving..." : "Save"}
+          </Button>
+        </div>
+      </form>
+    </div>
   );
 };
 
