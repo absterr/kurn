@@ -12,14 +12,15 @@
 - [x] **[Worker]** Add queue cron for leads module
 - [x] **[API]** Deploy API on Railway (or vercel if Railway tweaks, requires switching to node)
 - [x] **[Web]** Build leads page — display input details for search and search queries, with most relevant info
-- [ ] **[API]** Move auth and its dependencies from worker to api
+- [x] **[Web]** Fix site layout (right overflow on mobile, theme switch on md-lg screens)
 - [ ] **[Web]** Build leads info page (url params) — show extra info on lead queries including fetched leads and their statuses
-- [ ] **[Worker]** Deliberate and plan the job module flow
+- [ ] **[API]** Move auth and its dependencies from worker to api
+- [ ] **[API]** Add admin-based (request/invite) auth
 - [ ] **[Worker]** Implement deduplication on leads module
 - [ ] **[Worker]** Implement AI audit for leads module
 - [ ] **[Worker]** Implement async cold email
+- [ ] **[Worker]** Deliberate and plan the job module flow
 - [ ] **[Worker]** Implement basic job module
-- [ ] **[API]** Add admin-based (request/invite) auth
 - [ ] **[Worker]** Implement API key rotation
 
 ---

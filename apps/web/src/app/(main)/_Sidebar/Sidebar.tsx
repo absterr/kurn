@@ -1,6 +1,6 @@
 "use client";
 import {
-  Bookmark,
+  BriefcaseBusiness,
   ChevronRight,
   LayoutDashboard,
   TextSearch,
@@ -125,13 +125,17 @@ export default function Sidebar() {
               label="Leads"
               href="/leads"
             />
-            <NavItem icon={<Bookmark size={20} />} label="Saved" href="#" />
+            <NavItem
+              icon={<BriefcaseBusiness size={20} />}
+              label="Jobs"
+              href="/jobs"
+            />
           </nav>
         </div>
         <div
           className={cn(
-            "flex items-center justify-between",
-            isCollapsed ? "flex-col gap-y-10" : "flex-row",
+            "flex justify-between gap-y-10 flex-col items-center",
+            !isCollapsed && "flex-row sm:flex-col xl:flex-row items-left",
           )}
         >
           <button
@@ -145,7 +149,11 @@ export default function Sidebar() {
             />
             {!isCollapsed && <span className="truncate text-sm">Collapse</span>}
           </button>
-          <div className={cn(isCollapsed ? "-order-1" : "px-6")}>
+          <div
+            className={cn(
+              isCollapsed ? "-order-1" : "sm:-order-1 xl:order-1 px-6",
+            )}
+          >
             <ThemeSwitch />
           </div>
         </div>
