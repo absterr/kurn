@@ -10,7 +10,7 @@ export default function Leads() {
         <LeadsQueries />
       </div>
 
-      {/* flex-col lets ScrollArea stretch as needed for the content */}
+      {/* "flex-col" and "min-h-0" lets ScrollArea stretch as needed for the content */}
       <div className="flex flex-col md:hidden min-h-0">
         <LeadsWrapper form={<LeadsQueryForm />} list={<LeadsQueries />} />
       </div>
