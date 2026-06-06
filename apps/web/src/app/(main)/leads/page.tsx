@@ -1,6 +1,6 @@
 import LeadsQueries from "./LeadsQueries";
 import LeadsQueryForm from "./LeadsQueryForm";
-import { LeadsWrapper } from "./LeadsWrapper";
+import LeadsWrapper from "./LeadsWrapper";
 
 export default function Leads() {
   return (

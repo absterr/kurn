@@ -13,7 +13,7 @@ const leadsQueryFormSchema = z.object({
 
 type FormValues = z.infer<typeof leadsQueryFormSchema>;
 
-const LeadsQueryForm = () => {
+export default function LeadsQueryForm() {
   const [isPending, startTransition] = useTransition();
   const {
     register,
@@ -100,6 +100,4 @@ const LeadsQueryForm = () => {
       </form>
     </div>
   );
-};
-
-export default LeadsQueryForm;
+}
