@@ -1,18 +1,10 @@
 "use client";
+import { MapPin } from "lucide-react";
+import Link from "next/link";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import LeadQueryCard from "./LeadQueryCard";
+import { cn } from "@/lib/utils";
+import type { LeadQuery } from "./mockLeadQueries";
 import { mockLeadQueries } from "./mockLeadQueries";
-
-const EmptyState = () => (
-  <div className="text-center">
-    <h3 className="md:text-lg font-medium text-foreground/70 py-4">
-      No lead queries
-    </h3>
-    <p className="text-xs md:text-sm text-foreground/70">
-      Start by creating a new lead query
-    </p>
-  </div>
-);
 
 export default function LeadsQueries() {
   // min-h-0: constrains grid child so descendants with h-full have a real boundary
@@ -43,3 +35,71 @@ export default function LeadsQueries() {
     </div>
   );
 }
+
+const EmptyState = () => (
+  <div className="text-center">
+    <h3 className="md:text-lg font-medium text-foreground/70 py-4">
+      No lead queries
+    </h3>
+    <p className="text-xs md:text-sm text-foreground/70">
+      Start by creating a new lead query
+    </p>
+  </div>
+);
+
+const LeadQueryCard = ({ leadQuery }: { leadQuery: LeadQuery }) => (
+  <Link href={`/leads/${leadQuery.id}`} className="group">
+    <div className="border border-foreground/10 rounded-lg p-4">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className="text-sm font-semibold text-foreground/90 underline xl:no-underline xl:group-hover:underline">
+            {leadQuery.keyword}
+          </p>
+          <p className="pt-1 flex items-center gap-1 text-xs text-foreground/50">
+            <MapPin className="w-4" />
+            {leadQuery.location}
+          </p>
+        </div>
+
+        <span className="inline-flex shrink-0 items-center gap-1.5 rounded-md px-2.5 py-1 text-xs text-foreground/80 font-medium">
+          <span
+            className={cn(
+              "h-1.5 w-1.5 rounded-full bg-foreground/80",
+              ["pending", "processing"].includes(leadQuery.status) &&
+                "animate-pulse",
+            )}
+          />
+          {leadQuery.status}
+        </span>
+      </div>
+
+      <div className="my-3 border-t border-foreground/10" />
+
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 text-xs text-foreground/50">
+        <span className="font-medium text-foreground/70">
+          {leadQuery.resultsCount}{" "}
+          <span className="font-normal text-foreground/50">
+            {leadQuery.resultsCount === 1 ? "result" : "results"}
+          </span>
+        </span>
+
+        <span>
+          Created:{" "}
+          {new Date(leadQuery.createdAt).toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+          })}
+        </span>
+        <span>
+          Last updated:{" "}
+          {new Date(leadQuery.updatedAt).toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+          })}
+        </span>
+      </div>
+    </div>
+  </Link>
+);
