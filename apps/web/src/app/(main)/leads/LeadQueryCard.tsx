@@ -1,10 +1,11 @@
 "use client";
 import { MapPin } from "lucide-react";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 import type { LeadQuery } from "./mockLeadQueries";
 
 const LeadQueryCard = ({ leadQuery }: { leadQuery: LeadQuery }) => (
-  <div className="group">
+  <Link href={`/leads/${leadQuery.id}`} className="group">
     <div className="border border-foreground/10 rounded-lg p-4">
       <div className="flex items-start justify-between gap-3">
         <div>
@@ -57,7 +58,7 @@ const LeadQueryCard = ({ leadQuery }: { leadQuery: LeadQuery }) => (
         </span>
       </div>
     </div>
-  </div>
+  </Link>
 );
 
 export default LeadQueryCard;

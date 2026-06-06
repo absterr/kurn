@@ -92,3 +92,7 @@ export const mockLeadQueries = [
 ];
 
 export type LeadQuery = (typeof mockLeadQueries)[number];
+
+export function getLeadQuery(queryId: string) {
+  return mockLeadQueries.find((l) => l.id === queryId);
+}
