@@ -1,4 +1,5 @@
 import { getLeadQuery } from "../mockLeadQueries";
+import LeadQueryDetails from "./LeadQueryDetails";
 import { getLeadsByQueryId } from "./mockLeads";
 
 export default async function LeadQuery({
@@ -16,11 +17,7 @@ export default async function LeadQuery({
 
   return (
     <div className="pt-4">
-      <div className="flex flex-col gap-y-2">
-        <h2 className="font-medium text-base sm:text-lg">
-          {leadQuery.keyword}
-        </h2>
-      </div>
+      <LeadQueryDetails leadQuery={leadQuery} />
     </div>
   );
 }

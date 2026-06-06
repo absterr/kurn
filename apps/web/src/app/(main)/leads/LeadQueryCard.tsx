@@ -22,8 +22,8 @@ const LeadQueryCard = ({ leadQuery }: { leadQuery: LeadQuery }) => (
           <span
             className={cn(
               "h-1.5 w-1.5 rounded-full bg-foreground/80",
-              leadQuery.status === "pending" && "animate-pulse",
-              leadQuery.status === "processing" && "animate-pulse",
+              ["pending", "processing"].includes(leadQuery.status) &&
+                "animate-pulse",
             )}
           />
           {leadQuery.status}
