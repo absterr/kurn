@@ -15,14 +15,16 @@
 - [x] **[Web]** Fix site layout (right overflow on mobile, theme switch on md-lg screens)
 - [x] **[DevOps]** Fix web deployment issues on vercel
 - [ ] **[Web]** Build leads info page (url params) — show extra info on lead queries including fetched leads and their statuses
+- [ ] **[DB]** Add auth tables and relationships (excluding leads and lead_queries)
 - [ ] **[API]** Move auth and its dependencies from worker to api
-- [ ] **[API]** Add admin-based (request/invite) auth
+- [ ] **[API]** Add admin-based (request/invite) auth with rate-limits and what not (verify email first in login?)
+- [ ] **[DB]** Add auth relationships to leads and lead_queries tables
 - [ ] **[Worker]** Implement deduplication on leads module
 - [ ] **[Worker]** Implement AI audit for leads module
 - [ ] **[Worker]** Implement async cold email
-- [ ] **[Worker]** Deliberate and plan the job module flow
-- [ ] **[Worker]** Implement basic job module
 - [ ] **[Worker]** Implement API key rotation
+- [ ] **[Worker]** Deliberate and plan the job module flow (take ideas from career-ops)
+- [ ] **[Worker]** Implement basic job module
 
 ---
 
