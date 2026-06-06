@@ -52,8 +52,8 @@ const LeadsQueryForm = () => {
       <form onSubmit={handleSubmit(onSaveQuery)}>
         <div className="flex flex-col md:flex-row items-start gap-4 pt-4 pb-8">
           <div className="w-full">
-            <div className="flex justify-between p-1">
-              <p className="py-1">
+            <div className="flex justify-between">
+              <p className="py-2">
                 Keyword <span className="text-red-500 text-sm">*</span>
               </p>
               {errors.keyword && (
@@ -66,13 +66,13 @@ const LeadsQueryForm = () => {
             <input
               {...register("keyword")}
               placeholder="Keyword"
-              className="w-full p-3 bg-background rounded-xl text-xs sm:text-sm"
+              className="w-full p-3 bg-background/10 border border-foreground/10 focus:outline-foreground/40 rounded-lg text-xs sm:text-sm"
             />
           </div>
 
           <div className="w-full">
-            <div className="flex justify-between p-1">
-              <p className="py-1">
+            <div className="flex justify-between">
+              <p className="py-2">
                 Location <span className="text-red-500 text-sm">*</span>
               </p>
               {errors.location && (
@@ -84,7 +84,7 @@ const LeadsQueryForm = () => {
             <input
               {...register("location")}
               placeholder="Location"
-              className="w-full p-3 bg-background rounded-xl text-xs sm:text-sm"
+              className="w-full p-3 bg-background/10 border border-foreground/10 focus:outline-foreground/40 rounded-lg text-xs sm:text-sm"
             />
           </div>
         </div>
