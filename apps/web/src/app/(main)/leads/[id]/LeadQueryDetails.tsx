@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import type { LeadQuery } from "../mockLeadQueries";
 
 const LeadQueryDetails = ({ leadQuery }: { leadQuery: LeadQuery }) => (
-  <div className="flex flex-col gap-3">
+  <div className="flex flex-col gap-3 pb-6">
     <div className="flex flex-wrap items-center gap-3">
       <h2 className="font-medium text-base sm:text-lg">{leadQuery.keyword}</h2>
 
@@ -33,7 +33,7 @@ const LeadQueryDetails = ({ leadQuery }: { leadQuery: LeadQuery }) => (
       </div>
     </div>
 
-    <div className="flex flex-wrap gap-x-6 gap-y-1 text-sm text-foreground/50">
+    <div className="flex flex-wrap gap-x-6 gap-y-1 text-xs sm:text-sm text-foreground/50">
       <span>
         Created:{" "}
         {new Date(leadQuery.createdAt).toLocaleDateString("en-US", {

@@ -28,9 +28,9 @@ export default function LeadsQueries() {
         )}
       </div>
 
-      {/* "flex-1 min-h-0" allows this element to shrink within its flex/grid parent and enable overflow scrolling */}
-      <ScrollArea className="flex-1 min-h-0 w-full flex flex-col gap-y-4 py-6">
-        <div className="flex flex-col gap-y-3 lg:px-6">
+      {/* "min-h-0" allows this element to shrink within its flex/grid parent and enable overflow scrolling */}
+      <ScrollArea className="min-h-0 w-full py-6">
+        <div className="flex flex-col gap-y-4 lg:px-6">
           {mockLeadQueries.length === 0 ? (
             <EmptyState />
           ) : (
