@@ -1,6 +1,13 @@
 "use client";
 import { MousePointer2 } from "lucide-react";
 import { useState } from "react";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+} from "@/components/ui/drawer";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import type { LeadQuery } from "../mockLeadQueries";
 import LeadDetails from "./LeadDetails";
@@ -35,37 +42,66 @@ export default function LeadQueryWrapper({
   // "flex-col" and "min-h-0" lets ScrollArea stretch as needed for the content
   // ScrollArea needs a child div with "flex" to define the content width bounds
   return (
-    <div className="grid grid-cols-1 xl:grid-cols-2 min-h-0">
-      <div className="flex flex-col min-h-0 pt-4">
-        <LeadQueryDetails leadQuery={leadQuery} />
-        <ScrollArea className="min-h-0 w-full">
-          <div className="flex flex-col lg:pr-6">
-            {leads.map((lead) => (
-              <LeadItem
-                key={lead.id}
-                lead={lead}
-                onClickAction={() => setSelectedLead(lead)}
+    <>
+      <div className="grid grid-cols-1 xl:grid-cols-2 min-h-0">
+        <div className="flex flex-col min-h-0 pt-4">
+          <LeadQueryDetails leadQuery={leadQuery} />
+          <ScrollArea className="min-h-0 w-full">
+            <div className="flex flex-col lg:pr-6">
+              {leads.map((lead) => (
+                <LeadItem
+                  key={lead.id}
+                  lead={lead}
+                  onClickAction={() => setSelectedLead(lead)}
+                />
+              ))}
+            </div>
+          </ScrollArea>
+        </div>
+
+        <div className="p-4 hidden xl:flex min-h-0">
+          {selectedLead === null ? (
+            <EmptyState />
+          ) : (
+            <div className="flex flex-col w-full">
+              <LeadHeader
+                lead={selectedLead}
+                onCloseAction={() => setSelectedLead(null)}
               />
-            ))}
-          </div>
-        </ScrollArea>
+              <ScrollArea className="min-h-0">
+                <LeadDetails lead={selectedLead} />
+              </ScrollArea>
+            </div>
+          )}
+        </div>
       </div>
 
-      <div className="p-4 hidden xl:flex min-h-0">
-        {selectedLead === null ? (
-          <EmptyState />
-        ) : (
-          <div className="flex flex-col w-full">
-            <LeadHeader
-              lead={selectedLead}
-              onCloseAction={() => setSelectedLead(null)}
-            />
-            <ScrollArea className="min-h-0">
-              <LeadDetails lead={selectedLead} />
-            </ScrollArea>
-          </div>
-        )}
+      <div className="xl:hidden">
+        <Drawer
+          open={selectedLead !== null}
+          onOpenChange={(open) => {
+            if (!open) setSelectedLead(null);
+          }}
+        >
+          {selectedLead !== null && (
+            <DrawerContent className="p-6 h-full">
+              <DrawerHeader>
+                <DrawerTitle className="py-2">
+                  {selectedLead.companyName}
+                </DrawerTitle>
+              </DrawerHeader>
+              <ScrollArea className="min-h-0">
+                <LeadDetails lead={selectedLead} />
+                <div className="pb-1.5">
+                  <DrawerClose className="w-full bg-foreground text-background rounded-2xl py-1.5 font-medium">
+                    Close
+                  </DrawerClose>
+                </div>
+              </ScrollArea>
+            </DrawerContent>
+          )}
+        </Drawer>
       </div>
-    </div>
+    </>
   );
 }
