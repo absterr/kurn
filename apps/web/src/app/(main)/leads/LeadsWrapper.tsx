@@ -21,7 +21,7 @@ export default function LeadsWrapper({
   }[] = [
     {
       type: "form",
-      name: "Find",
+      name: "Add",
       icon: Search,
     },
     {

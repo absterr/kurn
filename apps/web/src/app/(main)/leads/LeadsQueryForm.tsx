@@ -47,7 +47,7 @@ export default function LeadsQueryForm() {
 
   return (
     <div>
-      <h2 className="font-medium text-base sm:text-lg">Find Leads</h2>
+      <h2 className="font-medium text-base sm:text-lg">Add Query</h2>
       <form onSubmit={handleSubmit(onSaveQuery)}>
         <div className="flex flex-col md:flex-row items-start gap-4 pt-4 pb-8">
           <div className="w-full">
