@@ -2,7 +2,7 @@
 import { MapPin } from "lucide-react";
 import Link from "next/link";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { cn } from "@/lib/utils";
+import { cn, formatDate } from "@/lib/utils";
 import type { LeadQuery } from "./mockLeadQueries";
 import { mockLeadQueries } from "./mockLeadQueries";
 
@@ -83,22 +83,8 @@ const LeadQueryCard = ({ leadQuery }: { leadQuery: LeadQuery }) => (
           </span>
         </span>
 
-        <span>
-          Created:{" "}
-          {new Date(leadQuery.createdAt).toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-            year: "numeric",
-          })}
-        </span>
-        <span>
-          Last updated:{" "}
-          {new Date(leadQuery.updatedAt).toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-            year: "numeric",
-          })}
-        </span>
+        <span>Created: {formatDate(leadQuery.createdAt)}</span>
+        <span>Last updated: {formatDate(leadQuery.updatedAt)}</span>
       </div>
     </div>
   </Link>

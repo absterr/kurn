@@ -1,12 +1,14 @@
+"use client";
 import { ArrowRight, MapPin, Phone } from "lucide-react";
+import { formatDate } from "@/lib/utils";
 import type { Lead } from "./mockLeads";
 
 export default function LeadItem({
   lead,
-  onClick,
+  onClickAction,
 }: {
   lead: Lead;
-  onClick: () => void;
+  onClickAction: () => void;
 }) {
   return (
     <div
@@ -15,7 +17,7 @@ export default function LeadItem({
     >
       <button
         type="button"
-        onClick={onClick}
+        onClick={onClickAction}
         className="group flex items-start justify-between gap-3"
       >
         <div className="flex flex-col gap-1">
@@ -55,14 +57,7 @@ export default function LeadItem({
           {lead.phone}
         </a>
 
-        <span>
-          Added:{" "}
-          {new Date(lead.createdAt).toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-            year: "numeric",
-          })}
-        </span>
+        <span>Added: {formatDate(lead.createdAt)}</span>
       </div>
     </div>
   );
