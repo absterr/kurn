@@ -9,7 +9,7 @@ leadsV1Router.post("/", zValidator("json", leadsQuerySchema), async (ctx) => {
   try {
     const valid = ctx.req.valid("json");
     return ctx.json(await createLeadsQuery(valid), 201);
-  } catch (err) {
+  } catch {
     return ctx.json({ error: "Something went wrong" }, 500);
   }
 });

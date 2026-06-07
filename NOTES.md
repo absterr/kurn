@@ -14,7 +14,7 @@
 - [x] **[Web]** Build leads page — display input details for search and search queries, with most relevant info
 - [x] **[Web]** Fix site layout (right overflow on mobile, theme switch on md-lg screens)
 - [x] **[DevOps]** Fix web deployment issues on vercel
-- [ ] **[Web]** Build leads info page (url params) — show extra info on lead queries including fetched leads and their statuses
+- [x] **[Web]** Build leads info page (url params) — show extra info on lead queries including fetched leads and their statuses
 - [ ] **[DB]** Add auth tables and relationships (excluding leads and lead_queries)
 - [ ] **[API]** Move auth and its dependencies from worker to api
 - [ ] **[API]** Add admin-based (request/invite) auth with rate-limits and what not (verify email first in login?)

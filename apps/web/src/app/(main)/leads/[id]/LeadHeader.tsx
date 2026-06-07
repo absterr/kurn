@@ -17,11 +17,9 @@ export default function LeadHeader({
   onCloseAction: () => void;
 }) {
   return (
-    <div className="w-full">
-      <div className="flex items-center justify-between">
-        <HeaderDetails lead={lead} />
-        <CloseBtn onCloseAction={onCloseAction} />
-      </div>
+    <div className="flex items-start justify-between pb-6">
+      <HeaderDetails lead={lead} />
+      <CloseBtn onCloseAction={onCloseAction} />
     </div>
   );
 }
