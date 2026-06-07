@@ -1,6 +1,6 @@
 "use client";
 import { MousePointer2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Drawer,
   DrawerClose,
@@ -30,6 +30,23 @@ const EmptyState = () => (
   </div>
 );
 
+const useMediaQuery = (query: string) => {
+  const [matches, setMatches] = useState(
+    () => typeof window !== "undefined" && window.matchMedia(query).matches,
+  );
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(query);
+    const handleChange = () => setMatches(mediaQuery.matches);
+
+    mediaQuery.addEventListener("change", handleChange);
+
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, [query]);
+
+  return matches;
+};
+
 export default function LeadQueryWrapper({
   leadQuery,
   leads,
@@ -38,6 +55,7 @@ export default function LeadQueryWrapper({
   leads: Lead[];
 }) {
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
+  const isDesktop = useMediaQuery("(min-width: 1280px)");
 
   // "flex-col" and "min-h-0" lets ScrollArea stretch as needed for the content
   // ScrollArea needs a child div with "flex" to define the content width bounds
@@ -76,32 +94,30 @@ export default function LeadQueryWrapper({
         </div>
       </div>
 
-      <div className="xl:hidden">
-        <Drawer
-          open={selectedLead !== null}
-          onOpenChange={(open) => {
-            if (!open) setSelectedLead(null);
-          }}
-        >
-          {selectedLead !== null && (
-            <DrawerContent className="p-6 h-full">
-              <DrawerHeader>
-                <DrawerTitle className="py-2">
-                  {selectedLead.companyName}
-                </DrawerTitle>
-              </DrawerHeader>
-              <ScrollArea className="min-h-0">
-                <LeadDetails lead={selectedLead} />
-                <div className="pb-1.5">
-                  <DrawerClose className="w-full bg-foreground text-background rounded-2xl py-1.5 font-medium">
-                    Close
-                  </DrawerClose>
-                </div>
-              </ScrollArea>
-            </DrawerContent>
-          )}
-        </Drawer>
-      </div>
+      <Drawer
+        open={!isDesktop && selectedLead !== null}
+        onOpenChange={(open) => {
+          if (!open) setSelectedLead(null);
+        }}
+      >
+        {selectedLead !== null && (
+          <DrawerContent className="p-6 h-full">
+            <DrawerHeader>
+              <DrawerTitle className="py-2">
+                {selectedLead.companyName}
+              </DrawerTitle>
+            </DrawerHeader>
+            <ScrollArea className="min-h-0">
+              <LeadDetails lead={selectedLead} />
+              <div className="pb-1.5">
+                <DrawerClose className="w-full bg-foreground text-background rounded-2xl py-2 font-medium">
+                  Close
+                </DrawerClose>
+              </div>
+            </ScrollArea>
+          </DrawerContent>
+        )}
+      </Drawer>
     </>
   );
 }
