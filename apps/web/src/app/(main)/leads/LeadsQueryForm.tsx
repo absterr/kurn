@@ -36,10 +36,9 @@ export default function LeadsQueryForm() {
   }) => {
     startTransition(async () => {
       try {
-        // Should save lead query instead
-        const leads = await findLeads(keyword, location);
+        // Save lead query (saveLeds(keyword, location))
+        await findLeads(keyword, location);
         // Update cache state here
-        // setLeads(leads);
       } catch (err) {
         console.log(err);
       }
