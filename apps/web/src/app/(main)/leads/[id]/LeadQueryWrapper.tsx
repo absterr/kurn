@@ -2,9 +2,12 @@
 import { useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import type { LeadQuery } from "../mockLeadQueries";
+import LeadHeader from "./LeadHeader";
 import LeadItem from "./LeadItem";
 import LeadQueryDetails from "./LeadQueryDetails";
 import type { Lead } from "./mockLeads";
+
+const EmptyState = () => <div>Nothing yet</div>;
 
 export default function LeadQueryWrapper({
   leadQuery,
@@ -27,14 +30,25 @@ export default function LeadQueryWrapper({
               <LeadItem
                 key={lead.id}
                 lead={lead}
-                onClick={() => setSelectedLead(lead)}
+                onClickAction={() => setSelectedLead(lead)}
               />
             ))}
           </div>
         </ScrollArea>
       </div>
 
-      <div className="p-2 hidden xl:flex rounded-md">{/* Lead details */}</div>
+      <div className="p-2 hidden xl:flex rounded-md">
+        {selectedLead === null ? (
+          <EmptyState />
+        ) : (
+          <>
+            <LeadHeader
+              lead={selectedLead}
+              onCloseAction={() => setSelectedLead(null)}
+            />
+          </>
+        )}
+      </div>
     </div>
   );
 }
