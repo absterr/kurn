@@ -4,22 +4,20 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "db:make": "bun x kysely-ctl migrate:make",
-    "db:latest": "bun x kysely-ctl migrate:latest",
-    "db:up": "bun x kysely-ctl migrate:up",
-    "db:down": "bun x kysely-ctl migrate:down",
-    "db:reset": "bun x kysely-ctl migrate:rollback --all"
+    "db:migrate": "bunx drizzle-kit migrate",
+    "db:generate": "bunx drizzle-kit generate",
+    "db:push": "bunx drizzle-kit push",
+    "db:reset": "bunx drizzle-kit drop && bunx drizzle-kit migrate"
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "@types/pg": "^8.20.0",
-    "kysely-ctl": "^0.21.0"
+    "drizzle-kit": "^0.31.10"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "dependencies": {
-    "kysely": "^0.29.2",
-    "pg": "^8.21.0"
+    "@neondatabase/serverless": "^1.1.0",
+    "drizzle-orm": "^0.45.2"
   }
 }

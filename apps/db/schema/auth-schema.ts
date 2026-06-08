@@ -1,0 +1,64 @@
+import { sql } from "drizzle-orm";
+import {
+  boolean,
+  pgTable,
+  text,
+  timestamp,
+  unique,
+  uuid,
+  varchar,
+} from "drizzle-orm/pg-core";
+import { timestamps } from "./timestamps";
+
+const verificationTypeEnum = ["email_verification", "password_reset"] as const;
+
+export const users = pgTable("users", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: varchar("name", { length: 255 }).notNull(),
+  email: varchar("email", { length: 255 }).notNull().unique(),
+  emailVerified: boolean("email_verified").notNull().default(false),
+  ...timestamps,
+});
+
+export const accounts = pgTable(
+  "accounts",
+  {
+    id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    accountId: varchar("account_id", { length: 255 }).notNull(),
+    providerId: varchar("provider_id", { length: 255 }).notNull(),
+    password: varchar("password", { length: 255 }),
+    ...timestamps,
+  },
+  (t) => [
+    unique("accounts_provider_id_account_id_unique").on(
+      t.providerId,
+      t.accountId,
+    ),
+  ],
+);
+
+export const sessions = pgTable("sessions", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  userAgent: varchar("user_agent", { length: 255 }),
+  expiresAt: timestamp("expires_at").notNull(),
+  ...timestamps,
+});
+
+export const verifications = pgTable("verifications", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  verificationType: text("verification_type")
+    .notNull()
+    .$type<(typeof verificationTypeEnum)[number]>(),
+  value: text("value").unique(),
+  expiresAt: timestamp("expires_at").notNull(),
+  ...timestamps,
+});
