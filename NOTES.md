@@ -25,6 +25,8 @@
 - [ ] **[Worker]** Implement API key rotation
 - [ ] **[Worker]** Deliberate and plan the job module flow (take ideas from career-ops)
 - [ ] **[Worker]** Implement basic job module
+- [ ] **[Web]** Add admin-based pages
+- [ ] **[API]** Add admin-based routes
 
 ---
 
