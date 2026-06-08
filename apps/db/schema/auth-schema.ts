@@ -1,24 +1,19 @@
 import { sql } from "drizzle-orm";
 import {
-  boolean,
+  pgEnum,
   pgTable,
-  text,
   timestamp,
   unique,
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
 import { timestamps } from "./timestamps";
+import { users } from "./users-schema";
 
-const verificationTypeEnum = ["email_verification", "password_reset"] as const;
-
-export const users = pgTable("users", {
-  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
-  name: varchar("name", { length: 255 }).notNull(),
-  email: varchar("email", { length: 255 }).notNull().unique(),
-  emailVerified: boolean("email_verified").notNull().default(false),
-  ...timestamps,
-});
+export const verificationTypeEnum = pgEnum("verification_type", [
+  "email_change",
+  "password_reset",
+]);
 
 export const accounts = pgTable(
   "accounts",
@@ -55,10 +50,8 @@ export const verifications = pgTable("verifications", {
   userId: uuid("user_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
-  verificationType: text("verification_type")
-    .notNull()
-    .$type<(typeof verificationTypeEnum)[number]>(),
-  value: text("value").unique(),
+  verificationType: verificationTypeEnum("verification_type").notNull(),
+  token: varchar("token", { length: 255 }).unique(),
   expiresAt: timestamp("expires_at").notNull(),
   ...timestamps,
 });
