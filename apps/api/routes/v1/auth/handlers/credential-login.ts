@@ -7,9 +7,8 @@ import { oneWeekFromNow } from "@/utils/date";
 import { comparePassword } from "@/utils/hash";
 import { setAuthCookies } from "@/utils/jwt";
 import { signUserToken } from "@/utils/user-token";
-import type { loginSchema } from "./auth.v1.schema";
-
-const REFRESH_PATH = "/api/v1/auth/refresh";
+import type { loginSchema } from "../auth.v1.schema";
+import { REFRESH_PATH } from ".";
 
 export const credentialLoginHandler = async (
   ctx: Context,
