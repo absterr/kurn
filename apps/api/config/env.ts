@@ -8,6 +8,8 @@ const envSchema = z.object({
   API_ENV: z.enum(["development", "production"]).default("development"),
   WEB_ORIGIN: z.url(),
   DATABASE_URL: z.url(),
+  ACCESS_SECRET: z.string(),
+  REFRESH_SECRET: z.string(),
 });
 
 const env = envSchema.parse(process.env);
