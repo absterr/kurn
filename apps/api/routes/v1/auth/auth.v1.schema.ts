@@ -8,13 +8,22 @@ const getPasswordSchema = (errorMessage: string) =>
     .min(8, "Password must be at least 8 characters")
     .max(64, "Password must not exceed 64 characters");
 
+export const accessRequestSchema = z.object({
+  name: z.string({ error: "Name is required" }),
+  email: getEmailSchema(),
+});
+
 export const loginSchema = z.object({
   email: getEmailSchema(),
   password: getPasswordSchema("Password is required"),
   userAgent: string().optional(),
 });
 
-export const accessRequestSchema = z.object({
-  name: z.string({ error: "Name is required" }),
-  email: getEmailSchema(),
+export const passwordSchema = z.object({
+  password: getPasswordSchema("Password is required"),
+  confirmPassword: getPasswordSchema("This field is required"),
+});
+
+export const tokenSchema = z.object({
+  token: z.string(),
 });
