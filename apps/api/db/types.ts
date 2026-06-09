@@ -67,6 +67,7 @@ export interface Invites {
   email: string;
   expiresAt: Timestamp;
   id: Generated<string>;
+  name: string;
   roles: Generated<ArrayType<UserRole>>;
   status: Generated<InviteStatus>;
   token: string;

@@ -13,3 +13,8 @@ export const loginSchema = z.object({
   password: getPasswordSchema("Password is required"),
   userAgent: string().optional(),
 });
+
+export const accessRequestSchema = z.object({
+  name: z.string({ error: "Name is required" }),
+  email: getEmailSchema(),
+});
