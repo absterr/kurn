@@ -1,6 +1,6 @@
-import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
+import { zValidate } from "@/utils/z-validate";
 import { reviewRequestSchema } from "./admin.v1.schema";
 import { reviewRequestHandler } from "./handlers/review-request";
 
@@ -8,7 +8,7 @@ export const adminV1Router = new Hono();
 
 adminV1Router.post(
   "/review",
-  zValidator("json", reviewRequestSchema),
+  zValidate("json", reviewRequestSchema),
   async (ctx) => {
     try {
       const valid = ctx.req.valid("json");

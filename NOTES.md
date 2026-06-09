@@ -17,7 +17,8 @@
 - [x] **[Web]** Build leads info page (url params) — show extra info on lead queries including fetched leads and their statuses
 - [x] **[DB]** Add auth tables and relationships (excluding leads and lead_queries)
 - [x] **[API]** Move auth and its dependencies from worker to api
-- [ ] **[API]** Add admin-based (request/invite) auth with rate-limits and what not
+- [ ] **[API]** Add admin-based (request/invite) auth and middleware
+- [ ] **[API]** Add rate-limits and what not
 - [ ] **[DB]** Add auth relationships to leads and lead_queries tables
 - [ ] **[DB]** Change lead_queries and leads statuses to better reflect audit flow
 - [ ] **[Worker]** Implement deduplication on leads module

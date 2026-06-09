@@ -1,6 +1,6 @@
-import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
+import { zValidate } from "@/utils/z-validate";
 import {
   accessRequestSchema,
   loginSchema,
@@ -13,7 +13,7 @@ import { validateRegisterTokenHandler } from "./handlers/validate-token";
 
 export const authV1Router = new Hono();
 
-authV1Router.post("/login", zValidator("json", loginSchema), async (ctx) => {
+authV1Router.post("/login", zValidate("json", loginSchema), async (ctx) => {
   try {
     const valid = ctx.req.valid("json");
     const result = await credentialLoginHandler(ctx, valid);
@@ -26,7 +26,7 @@ authV1Router.post("/login", zValidator("json", loginSchema), async (ctx) => {
 
 authV1Router.post(
   "/request",
-  zValidator("json", accessRequestSchema),
+  zValidate("json", accessRequestSchema),
   async (ctx) => {
     try {
       const valid = ctx.req.valid("json");
@@ -40,7 +40,7 @@ authV1Router.post(
 );
 
 // USES QUERY PARAM
-authV1Router.get("/register", zValidator("query", tokenSchema), async (ctx) => {
+authV1Router.get("/register", zValidate("query", tokenSchema), async (ctx) => {
   try {
     const valid = ctx.req.valid("query");
     const result = await validateRegisterTokenHandler(valid);
@@ -54,8 +54,8 @@ authV1Router.get("/register", zValidator("query", tokenSchema), async (ctx) => {
 // USES QUERY PARAM
 authV1Router.post(
   "/register",
-  zValidator("query", tokenSchema),
-  zValidator("json", passwordSchema),
+  zValidate("query", tokenSchema),
+  zValidate("json", passwordSchema),
   async (ctx) => {
     try {
       const validQueryParam = ctx.req.valid("query");
