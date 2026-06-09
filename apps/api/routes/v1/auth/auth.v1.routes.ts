@@ -9,6 +9,7 @@ import {
 } from "./auth.v1.schema";
 import { accessRequestHandler, credentialLoginHandler } from "./handlers";
 import { credentialRegisterHandler } from "./handlers/credential-register";
+import { validateRegisterTokenHandler } from "./handlers/validate-token";
 
 export const authV1Router = new Hono();
 
@@ -37,6 +38,18 @@ authV1Router.post(
     }
   },
 );
+
+// USES QUERY PARAM
+authV1Router.get("/register", zValidator("query", tokenSchema), async (ctx) => {
+  try {
+    const valid = ctx.req.valid("query");
+    const result = await validateRegisterTokenHandler(valid);
+    return ctx.json(result, 200);
+  } catch (err) {
+    if (err instanceof HTTPException) throw err;
+    return ctx.json({ error: "Something went wrong" }, 500);
+  }
+});
 
 // USES QUERY PARAM
 authV1Router.post(
