@@ -5,10 +5,22 @@
 
 import type { ColumnType } from "kysely";
 
+export type AccessRequestStatus = "approved" | "pending" | "rejected";
+
+export type ArrayType<T> =
+  ArrayTypeImpl<T> extends (infer U)[] ? U[] : ArrayTypeImpl<T>;
+
+export type ArrayTypeImpl<T> =
+  T extends ColumnType<infer S, infer I, infer U>
+    ? ColumnType<S[], I[], U[]>
+    : T[];
+
 export type Generated<T> =
   T extends ColumnType<infer S, infer I, infer U>
     ? ColumnType<S, I | undefined, U>
     : ColumnType<T, T | undefined, T>;
+
+export type InviteStatus = "accepted" | "expired" | "pending" | "revoked";
 
 export type Json = JsonValue;
 
@@ -24,8 +36,22 @@ export type JsonValue = JsonArray | JsonObject | JsonPrimitive;
 
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
+export type UserRole = "admin" | "member";
+
+export type VerificationType = "email_change" | "password_reset";
+
+export interface AccessRequests {
+  createdAt: Generated<Timestamp>;
+  email: string;
+  id: Generated<string>;
+  name: string;
+  reviewedBy: string | null;
+  status: Generated<AccessRequestStatus>;
+  updatedAt: Generated<Timestamp>;
+}
+
 export interface Accounts {
-  accountId: string | null;
+  accountId: string;
   createdAt: Generated<Timestamp>;
   id: Generated<string>;
   password: string | null;
@@ -34,16 +60,17 @@ export interface Accounts {
   userId: string;
 }
 
-export interface JobQueries {
+export interface Invites {
+  accessRequestId: string;
   createdAt: Generated<Timestamp>;
-  cronInterval: string;
-  experienceLevel: Generated<string[]>;
+  createdBy: string;
+  email: string;
+  expiresAt: Timestamp;
   id: Generated<string>;
-  position: string;
-  startAt: string;
-  timeframePosted: string;
+  roles: Generated<ArrayType<UserRole>>;
+  status: Generated<InviteStatus>;
+  token: string;
   updatedAt: Generated<Timestamp>;
-  workplaceType: Generated<string[]>;
 }
 
 export interface LeadQueries {
@@ -87,6 +114,7 @@ export interface Users {
   emailVerified: Generated<boolean>;
   id: Generated<string>;
   name: string;
+  roles: Generated<ArrayType<UserRole>>;
   updatedAt: Generated<Timestamp>;
 }
 
@@ -94,15 +122,16 @@ export interface Verifications {
   createdAt: Generated<Timestamp>;
   expiresAt: Timestamp;
   id: Generated<string>;
+  token: string | null;
   updatedAt: Generated<Timestamp>;
   userId: string;
-  value: string | null;
-  verificationType: string;
+  verificationType: VerificationType;
 }
 
 export interface DB {
+  accessRequests: AccessRequests;
   accounts: Accounts;
-  jobQueries: JobQueries;
+  invites: Invites;
   leadQueries: LeadQueries;
   leads: Leads;
   sessions: Sessions;

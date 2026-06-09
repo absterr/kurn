@@ -1,0 +1,69 @@
+import type { Context } from "hono";
+import { HTTPException } from "hono/http-exception";
+import type { z } from "zod";
+import env from "@/config/env";
+import { makeDB } from "@/db";
+import { oneWeekFromNow } from "@/utils/date";
+import { comparePassword } from "@/utils/hash";
+import { setAuthCookies } from "@/utils/jwt";
+import { signUserToken } from "@/utils/user-token";
+import type { loginSchema } from "./auth.v1.schema";
+
+const REFRESH_PATH = "/api/v1/auth/refresh";
+
+export const credentialLoginHandler = async (
+  ctx: Context,
+  data: z.infer<typeof loginSchema>,
+) => {
+  const { email, password, userAgent } = data;
+
+  const foundUser = await makeDB()
+    .selectFrom("users")
+    .where("email", "=", email)
+    .selectAll()
+    .executeTakeFirst();
+
+  if (!foundUser)
+    throw new HTTPException(401, { message: "Invalid email or password" });
+
+  const account = await makeDB()
+    .selectFrom("accounts")
+    .where("userId", "=", foundUser.id)
+    .selectAll()
+    .executeTakeFirst();
+
+  if (!account || !account.password)
+    throw new HTTPException(400, {
+      message: "Account not found or password not set",
+    });
+
+  const isCorrectPassword = await comparePassword(password, account.password);
+
+  if (!isCorrectPassword)
+    throw new HTTPException(401, { message: "Invalid email or password" });
+
+  const session = await makeDB()
+    .insertInto("sessions")
+    .values({
+      userId: foundUser.id,
+      userAgent,
+      expiresAt: oneWeekFromNow(),
+    })
+    .returningAll()
+    .executeTakeFirstOrThrow();
+
+  const accessToken = signUserToken({
+    payload: { userId: session.userId, sessionId: session.id },
+    options: { expiresIn: "15m" },
+    secret: env.ACCESS_SECRET,
+  });
+
+  const refreshToken = signUserToken({
+    payload: { sessionId: session.id },
+    options: { expiresIn: "7d" },
+    secret: env.REFRESH_SECRET,
+  });
+
+  setAuthCookies(ctx, accessToken, refreshToken, REFRESH_PATH);
+  return { userId: foundUser.id };
+};
