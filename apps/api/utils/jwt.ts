@@ -3,7 +3,6 @@ import { deleteCookie, setCookie } from "hono/cookie";
 import env from "@/config/env.js";
 import { fifteenMinsFromNow, oneWeekFromNow } from "./date";
 
-const REFRESH_PATH = "/auth/refresh";
 const secure = env.API_ENV === "production";
 
 const defaults = {
@@ -14,6 +13,7 @@ const defaults = {
 
 export const setAuthCookies = (
   ctx: Context,
+  refreshPath: string,
   accessToken: string,
   refreshToken: string,
 ) => {
@@ -23,7 +23,7 @@ export const setAuthCookies = (
   });
   setCookie(ctx, "refreshToken", refreshToken, {
     ...defaults,
-    path: REFRESH_PATH,
+    path: refreshPath,
     expires: oneWeekFromNow(),
   });
   setCookie(ctx, "logged_in", "true", {
@@ -36,6 +36,7 @@ export const setAuthCookies = (
 
 export const refreshAuthCookies = (
   ctx: Context,
+  refreshPath: string,
   newAccessToken: string,
   newRefreshToken?: string,
 ) => {
@@ -46,7 +47,7 @@ export const refreshAuthCookies = (
   if (newRefreshToken) {
     setCookie(ctx, "refreshToken", newRefreshToken, {
       ...defaults,
-      path: REFRESH_PATH,
+      path: refreshPath,
       expires: oneWeekFromNow(),
     });
     setCookie(ctx, "logged_in", "true", {
@@ -58,8 +59,8 @@ export const refreshAuthCookies = (
   }
 };
 
-export const clearAuthCookies = (ctx: Context) => {
+export const clearAuthCookies = (ctx: Context, refreshPath: string) => {
   deleteCookie(ctx, "accessToken");
-  deleteCookie(ctx, "refreshToken", { path: REFRESH_PATH });
+  deleteCookie(ctx, "refreshToken", { path: refreshPath });
   deleteCookie(ctx, "logged_in");
 };

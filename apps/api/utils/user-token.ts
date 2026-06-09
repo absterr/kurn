@@ -1,12 +1,13 @@
 import jwt, { type SignOptions, type VerifyOptions } from "jsonwebtoken";
+import type { Selectable } from "kysely";
 import type { Sessions, Users } from "@/db/types";
 
 export type RefreshTokenPayload = {
-  sessionId: Sessions["id"];
+  sessionId: Selectable<Sessions>["id"];
 };
 
 export type AccessTokenPayload = RefreshTokenPayload & {
-  userId: Users["id"];
+  userId: Selectable<Users>["id"];
 };
 
 export const signUserToken = ({
