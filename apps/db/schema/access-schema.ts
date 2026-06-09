@@ -44,9 +44,10 @@ export const accessRequests = pgTable(
 
 export const invites = pgTable("invites", {
   id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
-  accessRequestId: uuid("access_request_id")
-    .notNull()
-    .references(() => accessRequests.id, { onDelete: "cascade" }),
+  accessRequestId: uuid("access_request_id").references(
+    () => accessRequests.id,
+    { onDelete: "cascade" },
+  ),
   name: varchar("name", { length: 255 }).notNull(),
   email: varchar("email", { length: 255 }).notNull(),
   roles: userRoleEnum("roles")

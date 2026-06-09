@@ -61,7 +61,7 @@ export interface Accounts {
 }
 
 export interface Invites {
-  accessRequestId: string;
+  accessRequestId: string | null;
   createdAt: Generated<Timestamp>;
   createdBy: string;
   email: string;
