@@ -9,9 +9,6 @@ export const users = pgTable("users", {
   name: varchar("name", { length: 255 }).notNull(),
   email: varchar("email", { length: 255 }).notNull().unique(),
   emailVerified: boolean("email_verified").notNull().default(true),
-  roles: userRoleEnum("roles")
-    .array()
-    .notNull()
-    .default(sql`ARRAY['member']::user_role[]`),
+  roles: userRoleEnum("roles").array().notNull(),
   ...timestamps,
 });

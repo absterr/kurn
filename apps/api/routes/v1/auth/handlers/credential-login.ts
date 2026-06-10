@@ -10,6 +10,7 @@ import { signUserToken } from "@/utils/user-token";
 import type { loginSchema } from "../auth.v1.schema";
 import { REFRESH_PATH } from ".";
 
+// SHOULD PROBABLY SPECIFY WHICH ROLE IS USER TRYING TO LOG IN AS
 export const credentialLoginHandler = async (
   ctx: Context,
   data: z.infer<typeof loginSchema>,
@@ -25,18 +26,21 @@ export const credentialLoginHandler = async (
   if (!foundUser)
     throw new HTTPException(401, { message: "Invalid email or password" });
 
-  const account = await makeDB()
+  const userAccount = await makeDB()
     .selectFrom("accounts")
     .where("userId", "=", foundUser.id)
     .selectAll()
     .executeTakeFirst();
 
-  if (!account || !account.password)
+  if (!userAccount || !userAccount.password)
     throw new HTTPException(400, {
       message: "Account not found or password not set",
     });
 
-  const isCorrectPassword = await comparePassword(password, account.password);
+  const isCorrectPassword = await comparePassword(
+    password,
+    userAccount.password,
+  );
 
   if (!isCorrectPassword)
     throw new HTTPException(401, { message: "Invalid email or password" });
@@ -44,7 +48,7 @@ export const credentialLoginHandler = async (
   const session = await makeDB()
     .insertInto("sessions")
     .values({
-      userId: foundUser.id,
+      accountId: userAccount.id,
       userAgent,
       expiresAt: oneWeekFromNow(),
     })
@@ -52,7 +56,12 @@ export const credentialLoginHandler = async (
     .executeTakeFirstOrThrow();
 
   const accessToken = signUserToken({
-    payload: { userId: session.userId, sessionId: session.id },
+    payload: {
+      accountId: session.accountId,
+      role: userAccount.role,
+      sessionId: session.id,
+      userId: foundUser.id,
+    },
     options: { expiresIn: "15m" },
     secret: env.ACCESS_SECRET,
   });

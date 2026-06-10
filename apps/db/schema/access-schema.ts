@@ -50,10 +50,7 @@ export const invites = pgTable("invites", {
   ),
   name: varchar("name", { length: 255 }).notNull(),
   email: varchar("email", { length: 255 }).notNull(),
-  roles: userRoleEnum("roles")
-    .array()
-    .notNull()
-    .default(sql`ARRAY['member']::user_role[]`),
+  role: userRoleEnum("role").notNull(),
   token: varchar("token", { length: 255 }).notNull().unique(),
   status: inviteStatusEnum("status").notNull().default("pending"),
   createdBy: uuid("created_by")
