@@ -1,5 +1,7 @@
 import { email, string, z } from "zod";
 
+const USER_ROLE = ["member", "admin"] as const;
+
 const getEmailSchema = () =>
   email({ error: "Email is required" }).min(6, "A valid email is required");
 
@@ -16,6 +18,7 @@ export const accessRequestSchema = z.object({
 export const loginSchema = z.object({
   email: getEmailSchema(),
   password: getPasswordSchema("Password is required"),
+  role: z.enum(USER_ROLE, { error: "Role is required" }),
   userAgent: string().optional(),
 });
 

@@ -7,8 +7,9 @@ import {
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
+import { accountRoleEnum } from "./auth-schema";
 import { timestamps } from "./timestamps";
-import { userRoleEnum, users } from "./users-schema";
+import { users } from "./users-schema";
 
 export const accessRequestStatusEnum = pgEnum("access_request_status", [
   "pending",
@@ -50,7 +51,7 @@ export const invites = pgTable("invites", {
   ),
   name: varchar("name", { length: 255 }).notNull(),
   email: varchar("email", { length: 255 }).notNull(),
-  role: userRoleEnum("role").notNull(),
+  role: accountRoleEnum("role").notNull(),
   token: varchar("token", { length: 255 }).notNull().unique(),
   status: inviteStatusEnum("status").notNull().default("pending"),
   createdBy: uuid("created_by")

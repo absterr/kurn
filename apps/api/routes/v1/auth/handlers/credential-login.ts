@@ -10,12 +10,11 @@ import { signUserToken } from "@/utils/user-token";
 import type { loginSchema } from "../auth.v1.schema";
 import { REFRESH_PATH } from ".";
 
-// SHOULD PROBABLY SPECIFY WHICH ROLE IS USER TRYING TO LOG IN AS
 export const credentialLoginHandler = async (
   ctx: Context,
   data: z.infer<typeof loginSchema>,
 ) => {
-  const { email, password, userAgent } = data;
+  const { email, password, role, userAgent } = data;
 
   const foundUser = await makeDB()
     .selectFrom("users")
@@ -29,6 +28,7 @@ export const credentialLoginHandler = async (
   const userAccount = await makeDB()
     .selectFrom("accounts")
     .where("userId", "=", foundUser.id)
+    .where("role", "=", role)
     .selectAll()
     .executeTakeFirst();
 
