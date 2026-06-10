@@ -11,6 +11,8 @@ const defaults = {
   secure,
 };
 
+// THE "logged_in" COOKIE IS MEANT FOR OPTIMISTIC REDIRECTION
+// IT IS USELESS FOR ANYTHING ELSE
 export const setAuthCookies = (
   ctx: Context,
   refreshPath: string,
