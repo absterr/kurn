@@ -23,7 +23,7 @@ export const accessRequestHandler = async (
       message: "A user with this email already exists",
     });
 
-  const foundRequest = await makeDB()
+  const rejectedRequest = await makeDB()
     .selectFrom("accessRequests")
     .where("email", "=", email)
     .where("status", "=", "rejected")
@@ -31,7 +31,7 @@ export const accessRequestHandler = async (
     .selectAll()
     .executeTakeFirst();
 
-  if (foundRequest)
+  if (rejectedRequest)
     throw new HTTPException(429, {
       message: "You request was recently rejected",
     });

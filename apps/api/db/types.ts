@@ -56,6 +56,7 @@ export interface Accounts {
   id: Generated<string>;
   password: string | null;
   providerId: string;
+  role: UserRole;
   updatedAt: Generated<Timestamp>;
   userId: string;
 }
@@ -68,7 +69,7 @@ export interface Invites {
   expiresAt: Timestamp;
   id: Generated<string>;
   name: string;
-  roles: Generated<ArrayType<UserRole>>;
+  role: UserRole;
   status: Generated<InviteStatus>;
   token: string;
   updatedAt: Generated<Timestamp>;
@@ -101,12 +102,12 @@ export interface Leads {
 }
 
 export interface Sessions {
+  accountId: string;
   createdAt: Generated<Timestamp>;
   expiresAt: Timestamp;
   id: Generated<string>;
   updatedAt: Generated<Timestamp>;
   userAgent: string | null;
-  userId: string;
 }
 
 export interface Users {
@@ -115,7 +116,7 @@ export interface Users {
   emailVerified: Generated<boolean>;
   id: Generated<string>;
   name: string;
-  roles: Generated<ArrayType<UserRole>>;
+  roles: ArrayType<UserRole>;
   updatedAt: Generated<Timestamp>;
 }
 

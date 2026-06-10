@@ -26,7 +26,11 @@ export const credentialRegisterHandler = async (
     .execute(async (tx) => {
       const newUser = await tx
         .insertInto("users")
-        .values({ name: invite.name, email: invite.email })
+        .values({
+          name: invite.name,
+          email: invite.email,
+          roles: [invite.role],
+        })
         .returning(["id"])
         .executeTakeFirstOrThrow();
 
@@ -39,6 +43,7 @@ export const credentialRegisterHandler = async (
           password: hashedPassword,
           accountId: newUser.id,
           providerId: "CREDENTIAL",
+          role: invite.role,
         })
         .execute();
     });
