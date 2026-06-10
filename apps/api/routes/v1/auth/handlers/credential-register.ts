@@ -29,7 +29,6 @@ export const credentialRegisterHandler = async (
         .values({
           name: invite.name,
           email: invite.email,
-          roles: [invite.role],
         })
         .returning(["id"])
         .executeTakeFirstOrThrow();

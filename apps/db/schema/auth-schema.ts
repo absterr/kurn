@@ -8,7 +8,9 @@ import {
   varchar,
 } from "drizzle-orm/pg-core";
 import { timestamps } from "./timestamps";
-import { userRoleEnum, users } from "./users-schema";
+import { users } from "./users-schema";
+
+export const accountRoleEnum = pgEnum("user_role", ["admin", "member"]);
 
 export const verificationTypeEnum = pgEnum("verification_type", [
   "email_change",
@@ -24,7 +26,7 @@ export const accounts = pgTable(
       .references(() => users.id, { onDelete: "cascade" }),
     accountId: varchar("account_id", { length: 255 }).notNull(),
     providerId: varchar("provider_id", { length: 255 }).notNull(),
-    role: userRoleEnum("role").notNull(),
+    role: accountRoleEnum("role").notNull(),
     password: varchar("password", { length: 255 }),
     ...timestamps,
   },
