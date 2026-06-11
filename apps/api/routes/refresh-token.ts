@@ -3,13 +3,13 @@ import { getCookie } from "hono/cookie";
 import { HTTPException } from "hono/http-exception";
 import env from "@/config/env";
 import { makeDB } from "@/db";
-import { ONE_DAY_MS, oneWeekFromNow } from "@/utils/date";
-import { setAuthCookies } from "@/utils/jwt";
+import { setAuthCookies } from "@/lib/jwt";
 import {
   type RefreshTokenPayload,
   signUserToken,
   verifyUserToken,
-} from "@/utils/user-token";
+} from "@/lib/user-token";
+import { ONE_DAY_MS, oneWeekFromNow } from "@/utils/date";
 
 const MAX_SESSION_AGE = 30 * ONE_DAY_MS;
 

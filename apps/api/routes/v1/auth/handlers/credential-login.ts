@@ -3,10 +3,10 @@ import { HTTPException } from "hono/http-exception";
 import type { z } from "zod";
 import env from "@/config/env";
 import { makeDB } from "@/db";
+import { setAuthCookies } from "@/lib/jwt";
+import { signUserToken } from "@/lib/user-token";
 import { oneWeekFromNow } from "@/utils/date";
 import { comparePassword } from "@/utils/hash";
-import { setAuthCookies } from "@/utils/jwt";
-import { signUserToken } from "@/utils/user-token";
 import type { loginSchema } from "../auth.v1.schema";
 
 export const credentialLoginHandler = async (
