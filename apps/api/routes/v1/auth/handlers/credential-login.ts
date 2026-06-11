@@ -8,7 +8,6 @@ import { comparePassword } from "@/utils/hash";
 import { setAuthCookies } from "@/utils/jwt";
 import { signUserToken } from "@/utils/user-token";
 import type { loginSchema } from "../auth.v1.schema";
-import { REFRESH_PATH } from ".";
 
 export const credentialLoginHandler = async (
   ctx: Context,
@@ -72,6 +71,6 @@ export const credentialLoginHandler = async (
     secret: env.REFRESH_SECRET,
   });
 
-  setAuthCookies(ctx, accessToken, refreshToken, REFRESH_PATH);
+  setAuthCookies({ ctx, accessToken, refreshToken });
   return { userId: foundUser.id };
 };

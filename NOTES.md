@@ -43,6 +43,10 @@
 
 ## Notes
 
+### Web
+
+- Use `/api` routes instead of server actions
+
 ### DB
 
 - Possible to change the `lead_query_table` status field to accommodate cron by adding and/or removing some statuses
