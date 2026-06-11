@@ -6,7 +6,8 @@ import {
   roleMiddleware,
 } from "@/routes/middleware";
 import { zValidate } from "@/utils/z-validate";
-import { reviewRequestSchema } from "./access.v1.schema";
+import { inviteSchema, reviewRequestSchema } from "./access.v1.schema";
+import { inviteUserHandler } from "./handlers/invite-user";
 import { reviewRequestHandler } from "./handlers/review-request";
 
 export const accessV1Router = new Hono<AuthVariables>();
@@ -27,3 +28,15 @@ accessV1Router.post(
     }
   },
 );
+
+accessV1Router.post("/invite", zValidate("json", inviteSchema), async (ctx) => {
+  try {
+    const valid = ctx.req.valid("json");
+    const inviterId = ctx.get("userId");
+    const result = await inviteUserHandler(valid, inviterId);
+    return ctx.json(result, 201);
+  } catch (err) {
+    if (err instanceof HTTPException) throw err;
+    return ctx.json({ error: "Internal Server Error" }, 500);
+  }
+});
