@@ -3,7 +3,7 @@ import { createMiddleware } from "hono/factory";
 import { HTTPException } from "hono/http-exception";
 import env from "@/config/env";
 import type { UserRole } from "@/db/types";
-import { type AccessTokenPayload, verifyUserToken } from "@/utils/user-token";
+import { type AccessTokenPayload, verifyUserToken } from "@/lib/user-token";
 
 export type AuthVariables = {
   Variables: AccessTokenPayload;

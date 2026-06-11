@@ -1,8 +1,11 @@
 import { randomBytes } from "node:crypto";
 import { HTTPException } from "hono/http-exception";
 import type { z } from "zod";
+import env from "@/config/env";
 import { makeDB } from "@/db";
+import { sendEmail } from "@/lib/sendEmail";
 import { oneWeekFromNow } from "@/utils/date";
+import { INVITATION_TEMPLATE } from "@/utils/email-templates";
 import type { reviewRequestSchema } from "../access.v1.schema";
 
 export const reviewRequestHandler = async (
@@ -32,6 +35,7 @@ export const reviewRequestHandler = async (
         .set({ status: review, reviewedBy: reviewerId })
         .execute();
 
+      const token = randomBytes(32).toString("base64url");
       await tx
         .insertInto("invites")
         .values({
@@ -39,13 +43,22 @@ export const reviewRequestHandler = async (
           accessRequestId: accessRequest.id,
           name: accessRequest.name,
           email: accessRequest.email,
+          token,
           role: "member",
-          token: randomBytes(32).toString("base64url"),
           expiresAt: oneWeekFromNow(),
         })
         .execute();
 
-      // SEND INVITE EMAIL HERE
+      const url = `${env.WEB_ORIGIN}/invite?token=${token}`;
+      await sendEmail({
+        to: accessRequest.email,
+        subject: "You're invited to join Kurn",
+        html: INVITATION_TEMPLATE({
+          url,
+          name: accessRequest.name,
+          role: "member",
+        }),
+      });
     });
 
   return {

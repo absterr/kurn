@@ -18,10 +18,10 @@
 - [x] **[DB]** Add auth tables and relationships (excluding leads and lead_queries)
 - [x] **[API]** Move auth and its dependencies from worker to api
 - [x] **[API]** Add admin-based (request/invite) auth and middleware
-- [ ] **[API]** Add email sending
-- [ ] **[DB]** Add auth relationships to leads and lead_queries tables
+- [x] **[API]** Add email sending
 - [ ] **[API]** Add rate-limits and what not
 - [ ] **[DB]** Change lead_queries and leads statuses to better reflect audit flow
+- [ ] **[DB]** Add auth relationships to leads and lead_queries tables
 - [ ] **[Worker]** Implement deduplication on leads module
 - [ ] **[Worker]** Implement AI audit for leads module
 - [ ] **[Worker]** Implement async cold email

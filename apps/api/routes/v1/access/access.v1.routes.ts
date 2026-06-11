@@ -11,9 +11,11 @@ import {
   reviewRequestSchema,
   revokeInviteSchema,
 } from "./access.v1.schema";
-import { revokeInviteHandler } from "./handlers";
-import { inviteUserHandler } from "./handlers/invite-user";
-import { reviewRequestHandler } from "./handlers/review-request";
+import {
+  inviteUserHandler,
+  reviewRequestHandler,
+  revokeInviteHandler,
+} from "./handlers";
 
 export const accessV1Router = new Hono<AuthVariables>();
 accessV1Router.use("/*", authMiddleware, roleMiddleware("admin"));

@@ -10,6 +10,10 @@ const envSchema = z.object({
   DATABASE_URL: z.url(),
   ACCESS_SECRET: z.string(),
   REFRESH_SECRET: z.string(),
+  USER_GMAIL: z.email(),
+  GOOGLE_CLIENT_ID: z.string(),
+  GOOGLE_CLIENT_SECRET: z.string(),
+  GOOGLE_REFRESH_TOKEN: z.string(),
 });
 
 const env = envSchema.parse(process.env);
