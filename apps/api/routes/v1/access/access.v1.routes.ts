@@ -6,7 +6,12 @@ import {
   roleMiddleware,
 } from "@/routes/middleware";
 import { zValidate } from "@/utils/z-validate";
-import { inviteSchema, reviewRequestSchema } from "./access.v1.schema";
+import {
+  inviteSchema,
+  reviewRequestSchema,
+  revokeInviteSchema,
+} from "./access.v1.schema";
+import { revokeInviteHandler } from "./handlers";
 import { inviteUserHandler } from "./handlers/invite-user";
 import { reviewRequestHandler } from "./handlers/review-request";
 
@@ -40,3 +45,19 @@ accessV1Router.post("/invite", zValidate("json", inviteSchema), async (ctx) => {
     return ctx.json({ error: "Internal Server Error" }, 500);
   }
 });
+
+accessV1Router.post(
+  "/revoke",
+  zValidate("json", revokeInviteSchema),
+  async (ctx) => {
+    try {
+      const valid = ctx.req.valid("json");
+      const reviewerId = ctx.get("userId");
+      const result = await revokeInviteHandler(valid, reviewerId);
+      return ctx.json(result, 200);
+    } catch (err) {
+      if (err instanceof HTTPException) throw err;
+      return ctx.json({ error: "Internal Server Error" }, 500);
+    }
+  },
+);

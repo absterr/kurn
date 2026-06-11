@@ -58,5 +58,6 @@ export const invites = pgTable("invites", {
     .notNull()
     .references(() => users.id),
   ...timestamps,
+  revokedBy: uuid("revoked_by").references(() => users.id),
   expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
 });

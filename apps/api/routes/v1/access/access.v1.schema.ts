@@ -3,8 +3,14 @@ import { z } from "zod";
 const ACCESS_REQUEST_STATUSES = ["approved", "rejected"] as const;
 const USER_ROLE = ["member", "admin"] as const;
 
+const getIDSchema = () => z.uuid("Invalid ID");
+
+export const revokeInviteSchema = z.object({
+  inviteId: getIDSchema(),
+});
+
 export const reviewRequestSchema = z.object({
-  requestId: z.uuid("Invalid request ID"),
+  requestId: getIDSchema(),
   review: z.enum(ACCESS_REQUEST_STATUSES, { error: "Invalid review status" }),
 });
 
