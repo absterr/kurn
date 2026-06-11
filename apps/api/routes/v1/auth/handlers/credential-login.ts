@@ -66,7 +66,7 @@ export const credentialLoginHandler = async (
   });
 
   const refreshToken = signUserToken({
-    payload: { sessionId: session.id },
+    payload: { sessionId: session.id, version: session.version },
     options: { expiresIn: "7d" },
     secret: env.REFRESH_SECRET,
   });

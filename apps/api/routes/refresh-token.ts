@@ -3,12 +3,15 @@ import { getCookie } from "hono/cookie";
 import { HTTPException } from "hono/http-exception";
 import env from "@/config/env";
 import { makeDB } from "@/db";
-import { refreshAuthCookies } from "@/utils/jwt";
+import { ONE_DAY_MS, oneWeekFromNow } from "@/utils/date";
+import { setAuthCookies } from "@/utils/jwt";
 import {
   type RefreshTokenPayload,
   signUserToken,
   verifyUserToken,
 } from "@/utils/user-token";
+
+const MAX_SESSION_AGE = 30 * ONE_DAY_MS;
 
 export const refreshTokenHandler = async (ctx: Context) => {
   const token = getCookie(ctx, "refreshToken");
@@ -31,6 +34,7 @@ export const refreshTokenHandler = async (ctx: Context) => {
   const validSession = await makeDB()
     .selectFrom("sessions")
     .where("id", "=", payload.sessionId)
+    .where("version", "=", payload.version)
     .where("expiresAt", ">", new Date())
     .selectAll()
     .executeTakeFirst();
@@ -39,13 +43,35 @@ export const refreshTokenHandler = async (ctx: Context) => {
     throw new HTTPException(401, { message: "Invalid or expired session" });
   }
 
+  const now = Date.now();
+  const sessionAge = now - new Date(validSession.createdAt).getTime();
+  const willExpireSoon = validSession.expiresAt.getTime() - now <= ONE_DAY_MS;
+  const withinMaxAge = sessionAge < MAX_SESSION_AGE;
+  const shouldRotate = willExpireSoon && withinMaxAge;
+  const nextVersion = validSession.version + 1;
+
+  await makeDB()
+    .updateTable("sessions")
+    .set({
+      version: nextVersion,
+      ...(shouldRotate && { expiresAt: oneWeekFromNow() }),
+    })
+    .where("id", "=", validSession.id)
+    .execute();
+
   const sessionAccount = await makeDB()
     .selectFrom("accounts")
     .where("id", "=", validSession.accountId)
     .selectAll()
     .executeTakeFirstOrThrow();
 
-  const newAccessToken = signUserToken({
+  const refreshToken = signUserToken({
+    payload: { sessionId: validSession.id, version: validSession.version },
+    options: { expiresIn: "7d" },
+    secret: env.REFRESH_SECRET,
+  });
+
+  const accessToken = signUserToken({
     payload: {
       accountId: sessionAccount.id,
       role: sessionAccount.role,
@@ -56,6 +82,6 @@ export const refreshTokenHandler = async (ctx: Context) => {
     secret: env.ACCESS_SECRET,
   });
 
-  refreshAuthCookies({ ctx, newAccessToken });
+  setAuthCookies({ ctx, accessToken, refreshToken });
   return { message: "Token refreshed" };
 };

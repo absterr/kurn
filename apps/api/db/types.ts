@@ -100,6 +100,7 @@ export interface Sessions {
   id: Generated<string>;
   updatedAt: Generated<Timestamp>;
   userAgent: string | null;
+  version: Generated<number>;
 }
 
 export interface Users {

@@ -40,34 +40,6 @@ export const setAuthCookies = ({
   });
 };
 
-export const refreshAuthCookies = ({
-  ctx,
-  newAccessToken,
-  newRefreshToken,
-}: {
-  ctx: Context;
-  newAccessToken: string;
-  newRefreshToken?: string;
-}) => {
-  setCookie(ctx, "accessToken", newAccessToken, {
-    ...defaults,
-    expires: fifteenMinsFromNow(),
-  });
-  setCookie(ctx, "logged_in", "true", {
-    secure,
-    sameSite: "Lax",
-    httpOnly: false,
-    expires: fifteenMinsFromNow(),
-  });
-  if (newRefreshToken) {
-    setCookie(ctx, "refreshToken", newRefreshToken, {
-      ...defaults,
-      path: REFRESH_PATH,
-      expires: oneWeekFromNow(),
-    });
-  }
-};
-
 export const clearAuthCookies = (ctx: Context) => {
   deleteCookie(ctx, "accessToken");
   deleteCookie(ctx, "refreshToken", { path: REFRESH_PATH });

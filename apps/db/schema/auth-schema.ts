@@ -1,5 +1,6 @@
 import { sql } from "drizzle-orm";
 import {
+  integer,
   pgEnum,
   pgTable,
   timestamp,
@@ -44,6 +45,7 @@ export const sessions = pgTable("sessions", {
   accountId: uuid("account_id")
     .notNull()
     .references(() => accounts.id, { onDelete: "cascade" }),
+  version: integer("version").notNull().default(1),
   userAgent: varchar("user_agent", { length: 255 }),
   expiresAt: timestamp("expires_at").notNull(),
   ...timestamps,
