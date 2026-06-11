@@ -1,6 +1,7 @@
 import { sql } from "drizzle-orm";
 import { boolean, jsonb, pgTable, uuid, varchar } from "drizzle-orm/pg-core";
 import { timestamps } from "./timestamps";
+import { users } from "./users-schema";
 
 type LeadQueryStatus =
   | "cancelled"
@@ -27,6 +28,9 @@ type EmailDraft = {
 
 export const leadQueries = pgTable("lead_queries", {
   id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
   keyword: varchar("keyword", { length: 255 }).notNull(),
   location: varchar("location", { length: 255 }),
   status: varchar("status", { length: 255 })

@@ -74,6 +74,7 @@ export interface LeadQueries {
   location: string | null;
   status: Generated<string>;
   updatedAt: Generated<Timestamp>;
+  userId: string;
 }
 
 export interface Leads {
