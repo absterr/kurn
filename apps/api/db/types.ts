@@ -61,6 +61,7 @@ export interface Invites {
   expiresAt: Timestamp;
   id: Generated<string>;
   name: string;
+  revokedBy: string | null;
   role: UserRole;
   status: Generated<InviteStatus>;
   token: string;

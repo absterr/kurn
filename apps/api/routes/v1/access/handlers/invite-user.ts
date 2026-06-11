@@ -1,13 +1,15 @@
 import { randomBytes } from "node:crypto";
 import { HTTPException } from "hono/http-exception";
+import type { Selectable } from "kysely";
 import type { z } from "zod";
 import { makeDB } from "@/db";
+import type { Users } from "@/db/types";
 import { oneWeekFromNow } from "@/utils/date";
 import type { inviteSchema } from "../access.v1.schema";
 
 export const inviteUserHandler = async (
   data: z.infer<typeof inviteSchema>,
-  inviterId: string,
+  inviterId: Selectable<Users>["id"],
 ) => {
   const { name, email, roles } = data;
 
