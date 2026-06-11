@@ -1,7 +1,7 @@
 import { HTTPException } from "hono/http-exception";
 import type { z } from "zod";
 import { makeDB } from "@/db";
-import type { reviewRequestSchema } from "../admin.v1.schema";
+import type { reviewRequestSchema } from "../access.v1.schema";
 
 export const reviewRequestHandler = async (
   data: z.infer<typeof reviewRequestSchema>,

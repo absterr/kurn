@@ -1,12 +1,18 @@
 import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
+import {
+  type AuthVariables,
+  authMiddleware,
+  roleMiddleware,
+} from "@/routes/middleware";
 import { zValidate } from "@/utils/z-validate";
-import { reviewRequestSchema } from "./admin.v1.schema";
+import { reviewRequestSchema } from "./access.v1.schema";
 import { reviewRequestHandler } from "./handlers/review-request";
 
-export const adminV1Router = new Hono();
+export const accessV1Router = new Hono<AuthVariables>();
+accessV1Router.use("/*", authMiddleware, roleMiddleware("admin"));
 
-adminV1Router.post(
+accessV1Router.post(
   "/review",
   zValidate("json", reviewRequestSchema),
   async (ctx) => {
