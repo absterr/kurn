@@ -18,7 +18,8 @@ accessV1Router.post(
   async (ctx) => {
     try {
       const valid = ctx.req.valid("json");
-      const result = await reviewRequestHandler(valid);
+      const reviewerId = ctx.get("userId");
+      const result = await reviewRequestHandler(valid, reviewerId);
       return ctx.json(result, 201);
     } catch (err) {
       if (err instanceof HTTPException) throw err;
