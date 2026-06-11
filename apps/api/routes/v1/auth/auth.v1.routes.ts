@@ -7,9 +7,12 @@ import {
   passwordSchema,
   tokenSchema,
 } from "./auth.v1.schema";
-import { accessRequestHandler, credentialLoginHandler } from "./handlers";
-import { credentialRegisterHandler } from "./handlers/credential-register";
-import { validateRegisterTokenHandler } from "./handlers/validate-token";
+import {
+  accessRequestHandler,
+  credentialLoginHandler,
+  credentialRegisterHandler,
+  validateRegisterTokenHandler,
+} from "./handlers";
 
 export const authV1Router = new Hono();
 
