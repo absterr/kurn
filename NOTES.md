@@ -19,7 +19,7 @@
 - [x] **[API]** Move auth and its dependencies from worker to api
 - [x] **[API]** Add admin-based (request/invite) auth and middleware
 - [x] **[API]** Add email sending
-- [ ] **[API]** Add rate-limits and what not
+- [x] **[API]** Add rate-limits and what not
 - [ ] **[DB]** Change lead_queries and leads statuses to better reflect audit flow
 - [ ] **[DB]** Add auth relationships to leads and lead_queries tables
 - [ ] **[Worker]** Implement deduplication on leads module
