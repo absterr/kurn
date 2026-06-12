@@ -4,7 +4,7 @@ import {
   type AuthVariables,
   authMiddleware,
   roleMiddleware,
-} from "@/routes/middleware";
+} from "@/lib/middleware";
 import { zValidate } from "@/utils/z-validate";
 import {
   inviteSchema,
@@ -18,7 +18,7 @@ import {
 } from "./handlers";
 
 export const accessV1Router = new Hono<AuthVariables>();
-accessV1Router.use("/*", authMiddleware, roleMiddleware("admin"));
+accessV1Router.use("*", authMiddleware, roleMiddleware("admin"));
 
 accessV1Router.post(
   "/review",

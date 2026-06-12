@@ -41,8 +41,16 @@ app.get("/refresh", async (ctx) => {
 
 app.onError((err, ctx) => {
   if (err instanceof HTTPException) {
+    const res = err.getResponse();
+    const contentType = res.headers.get("Content-Type") ?? "";
+
+    if (contentType.includes("application/json")) {
+      return res;
+    }
+
     return ctx.json({ error: err.message }, err.status);
   }
+
   return ctx.json({ error: "Something went wrong" }, 500);
 });
 

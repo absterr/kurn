@@ -4,13 +4,13 @@ import {
   type AuthVariables,
   authMiddleware,
   roleMiddleware,
-} from "@/routes/middleware";
+} from "@/lib/middleware";
 import { zValidate } from "@/utils/z-validate";
 import { createLeadsQuery } from "./leads.v1.handlers";
 import { leadsQuerySchema } from "./leads.v1.schema";
 
 export const leadsV1Router = new Hono<AuthVariables>();
-leadsV1Router.use("/*", authMiddleware, roleMiddleware("member"));
+leadsV1Router.use("*", authMiddleware, roleMiddleware("member"));
 
 leadsV1Router.post("/", zValidate("json", leadsQuerySchema), async (ctx) => {
   try {
