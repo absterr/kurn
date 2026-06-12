@@ -12,8 +12,9 @@ import type { loginSchema } from "../auth.v1.schema";
 export const credentialLoginHandler = async (
   ctx: Context,
   data: z.infer<typeof loginSchema>,
+  userAgent: string | undefined,
 ) => {
-  const { email, password, role, userAgent } = data;
+  const { email, password, role } = data;
 
   const foundUser = await makeDB()
     .selectFrom("users")

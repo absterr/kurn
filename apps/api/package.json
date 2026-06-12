@@ -20,6 +20,8 @@
   },
   "dependencies": {
     "@hono/zod-validator": "^0.8.0",
+    "@upstash/ratelimit": "^2.0.8",
+    "@upstash/redis": "^1.38.0",
     "dotenv": "^17.4.2",
     "hono": "^4.12.23",
     "jsonwebtoken": "^9.0.3",

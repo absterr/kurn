@@ -19,7 +19,6 @@ export const loginSchema = z.object({
   email: getEmailSchema(),
   password: getPasswordSchema("Password is required"),
   role: z.enum(USER_ROLE, { error: "Role is required" }),
-  userAgent: string().optional(),
 });
 
 export const passwordSchema = z.object({
