@@ -10,14 +10,14 @@ export type AuthVariables = {
 };
 
 export const authMiddleware = createMiddleware(async (ctx, next) => {
-  const token = getCookie(ctx, "accessToken");
+  const accessToken = getCookie(ctx, "accessToken");
 
-  if (!token) {
+  if (!accessToken) {
     throw new HTTPException(401, { message: "No token provided" });
   }
 
   const { error, payload } = verifyUserToken<AccessTokenPayload>({
-    token,
+    token: accessToken,
     secret: env.ACCESS_SECRET,
   });
 

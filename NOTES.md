@@ -19,16 +19,18 @@
 - [x] **[API]** Move auth and its dependencies from worker to api
 - [x] **[API]** Add admin-based (request/invite) auth and middleware
 - [x] **[API]** Add email sending
+- [x] **[DB]** Add auth relationships to leads and lead_queries tables
 - [x] **[API]** Add rate-limits and what not
+- [ ] **[API]** Review invite-user and request-review endpoints against schema and related routes
 - [ ] **[DB]** Change lead_queries and leads statuses to better reflect audit flow
-- [ ] **[DB]** Add auth relationships to leads and lead_queries tables
+- [ ] **[API]** Implement password reset endpoint (and tables)
+- [ ] **[Web]** Add auth-based pages and routes (using /api)
 - [ ] **[Worker]** Implement deduplication on leads module
 - [ ] **[Worker]** Implement AI audit for leads module
 - [ ] **[Worker]** Implement async cold email
 - [ ] **[Worker]** Implement API key rotation
 - [ ] **[Worker]** Deliberate and plan the job module flow (take ideas from career-ops)
 - [ ] **[Worker]** Implement basic job module
-- [ ] **[Web]** Add auth-based pages
 - [ ] **[Web]** Add admin-based pages
 - [ ] **[API]** Add admin-based routes
 
