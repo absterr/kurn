@@ -15,6 +15,7 @@ export const credentialRegisterHandler = async (
     .selectFrom("invites")
     .where("token", "=", token)
     .where("status", "=", "pending")
+    .where("expiresAt", ">", new Date())
     .selectAll()
     .executeTakeFirst();
 
@@ -44,6 +45,13 @@ export const credentialRegisterHandler = async (
           providerId: "CREDENTIAL",
           role: invite.role,
         })
+        .execute();
+
+      await tx
+        .updateTable("invites")
+        .set({ status: "accepted", expiresAt: new Date() })
+        .where("id", "=", invite.id)
+        .where("token", "=", token)
         .execute();
     });
 
