@@ -1,6 +1,7 @@
 import { email, string, z } from "zod";
 
 const USER_ROLE = ["member", "admin"] as const;
+const TOKEN_LENGTH = 43;
 
 const getEmailSchema = () =>
   email({ error: "Email is required" }).min(6, "A valid email is required");
@@ -35,5 +36,8 @@ export const passwordSchema = z
   });
 
 export const tokenSchema = z.object({
-  token: z.string(),
+  token: z
+    .string()
+    .length(TOKEN_LENGTH)
+    .regex(/^[A-Za-z0-9_-]+$/, "Invalid token"),
 });

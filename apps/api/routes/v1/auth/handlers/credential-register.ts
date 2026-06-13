@@ -1,30 +1,29 @@
 import { HTTPException } from "hono/http-exception";
-import type { z } from "zod";
 import { makeDB } from "@/db";
 import { hashPassword } from "@/utils/hash";
-import type { passwordSchema, tokenSchema } from "../auth.v1.schema";
 
-export const credentialRegisterHandler = async (
-  queryParam: z.infer<typeof tokenSchema>,
-  body: z.infer<typeof passwordSchema>,
-) => {
-  const { token } = queryParam;
-  const { password } = body;
-
-  const invite = await makeDB()
-    .selectFrom("invites")
-    .where("token", "=", token)
-    .where("status", "=", "pending")
-    .where("expiresAt", ">", new Date())
-    .selectAll()
-    .executeTakeFirst();
-
-  if (!invite)
-    throw new HTTPException(401, { message: "Invalid or expired token" });
-
+export const credentialRegisterHandler = async ({
+  token,
+  password,
+}: {
+  token: string;
+  password: string;
+}) => {
   await makeDB()
     .transaction()
     .execute(async (tx) => {
+      const invite = await tx
+        .selectFrom("invites")
+        .where("token", "=", token)
+        .where("status", "=", "pending")
+        .where("expiresAt", ">", new Date())
+        .selectAll()
+        .executeTakeFirst();
+
+      if (!invite) {
+        throw new HTTPException(401, { message: "Invalid or expired token" });
+      }
+
       const newUser = await tx
         .insertInto("users")
         .values({
@@ -42,7 +41,7 @@ export const credentialRegisterHandler = async (
           userId: newUser.id,
           password: hashedPassword,
           accountId: newUser.id,
-          providerId: "CREDENTIAL",
+          providerId: "credential",
           role: invite.role,
         })
         .execute();

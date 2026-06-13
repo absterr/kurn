@@ -58,7 +58,7 @@ export const verifications = pgTable("verifications", {
     .references(() => users.id, { onDelete: "cascade" }),
   accountRole: accountRoleEnum("account_role").notNull(),
   verificationType: verificationTypeEnum("verification_type").notNull(),
-  token: varchar("token", { length: 255 }).unique(),
+  token: varchar("token", { length: 255 }).notNull().unique(),
   expiresAt: timestamp("expires_at").notNull(),
   ...timestamps,
 });

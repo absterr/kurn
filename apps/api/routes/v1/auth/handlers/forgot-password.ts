@@ -1,4 +1,3 @@
-import { randomBytes } from "node:crypto";
 import { HTTPException } from "hono/http-exception";
 import type { z } from "zod";
 import env from "@/config/env";
@@ -6,6 +5,7 @@ import { makeDB } from "@/db";
 import { sendEmail } from "@/lib/sendEmail";
 import { fifteenMinsFromNow } from "@/utils/date";
 import { PASSWORD_RESET_TEMPLATE } from "@/utils/email-templates";
+import { generateToken } from "@/utils/hash";
 import type { userDetailsSchema } from "../auth.v1.schema";
 
 export const forgotPasswordHandler = async (
@@ -13,22 +13,22 @@ export const forgotPasswordHandler = async (
 ) => {
   const { email, role } = data;
 
-  const userInfo = await makeDB()
-    .selectFrom("users")
-    .innerJoin("accounts", "accounts.userId", "userId")
-    .where("users.email", "=", email)
-    .where("role", "=", role)
-    .select(["users.email"])
-    .select(["accounts.userId", "accounts.role"])
-    .executeTakeFirst();
-
-  if (!userInfo) {
-    throw new HTTPException(404, { message: "User not found" });
-  }
-
   await makeDB()
     .transaction()
     .execute(async (tx) => {
+      const userInfo = await tx
+        .selectFrom("users")
+        .innerJoin("accounts", "accounts.userId", "userId")
+        .where("users.email", "=", email)
+        .where("role", "=", role)
+        .select(["users.email"])
+        .select(["accounts.userId", "accounts.role"])
+        .executeTakeFirst();
+
+      if (!userInfo) {
+        throw new HTTPException(404, { message: "User not found" });
+      }
+
       await tx
         .updateTable("verifications")
         .where("userId", "=", userInfo.userId)
@@ -37,8 +37,7 @@ export const forgotPasswordHandler = async (
         .set({ expiresAt: new Date() })
         .execute();
 
-      const token = randomBytes(32).toString("base64url");
-
+      const token = generateToken();
       await tx
         .insertInto("verifications")
         .values({

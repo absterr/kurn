@@ -1,17 +1,12 @@
 import { HTTPException } from "hono/http-exception";
-import type { z } from "zod";
 import { makeDB } from "@/db";
-import type { tokenSchema } from "../auth.v1.schema";
 
-export const validateRegisterTokenHandler = async (
-  data: z.infer<typeof tokenSchema>,
-) => {
-  const { token } = data;
-
+export const validateRegisterTokenHandler = async (token: string) => {
   const invite = await makeDB()
     .selectFrom("invites")
     .where("token", "=", token)
     .where("status", "=", "pending")
+    .where("expiresAt", ">", new Date())
     .selectAll()
     .executeTakeFirst();
 

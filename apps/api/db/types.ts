@@ -122,7 +122,7 @@ export interface Verifications {
   createdAt: Generated<Timestamp>;
   expiresAt: Timestamp;
   id: Generated<string>;
-  token: string | null;
+  token: string;
   updatedAt: Generated<Timestamp>;
   userId: string;
   verificationType: VerificationType;

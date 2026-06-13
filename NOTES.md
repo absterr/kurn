@@ -22,7 +22,7 @@
 - [x] **[DB]** Add auth relationships to leads and lead_queries tables
 - [x] **[API]** Add rate-limits and what not
 - [x] **[DB]** Change lead_queries and leads statuses to better reflect audit flow
-- [ ] **[API]** Implement password reset endpoint (and tables)
+- [x] **[API]** Implement password reset endpoint (and tables)
 - [ ] **[Web]** Add auth-based pages and routes (using /api)
 - [ ] **[Worker]** Implement deduplication on leads module
 - [ ] **[Worker]** Implement AI audit for leads module

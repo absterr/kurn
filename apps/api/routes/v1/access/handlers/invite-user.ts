@@ -1,4 +1,3 @@
-import { randomBytes } from "node:crypto";
 import { HTTPException } from "hono/http-exception";
 import type { Selectable } from "kysely";
 import type { z } from "zod";
@@ -8,6 +7,7 @@ import type { Users } from "@/db/types";
 import { sendEmail } from "@/lib/sendEmail";
 import { oneWeekFromNow } from "@/utils/date";
 import { INVITATION_TEMPLATE } from "@/utils/email-templates";
+import { generateToken } from "@/utils/hash";
 import type { inviteSchema } from "../access.v1.schema";
 
 export const inviteUserHandler = async (
@@ -50,7 +50,7 @@ export const inviteUserHandler = async (
         .execute();
 
       for (const role of roles) {
-        const token = randomBytes(32).toString("base64url");
+        const token = generateToken();
         await tx
           .insertInto("invites")
           .values({
