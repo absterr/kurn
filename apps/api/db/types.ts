@@ -26,6 +26,8 @@ export type JsonPrimitive = boolean | number | string | null;
 
 export type JsonValue = JsonArray | JsonObject | JsonPrimitive;
 
+export type LeadCompletionStatus = "completed" | "partial";
+
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
 export type UserRole = "admin" | "member";
@@ -82,14 +84,15 @@ export interface Leads {
   address: string | null;
   auditDiagnosis: string[] | null;
   companyName: string;
-  completionStatus: Generated<string>;
+  completionStatus: Generated<LeadCompletionStatus>;
   createdAt: Generated<Timestamp>;
-  emailDraft: Json | null;
+  emailDraft: Json;
   emails: string[] | null;
   id: Generated<string>;
   leadQueryId: string;
   mapLink: string;
   phone: string | null;
+  reviewed: Generated<boolean>;
   updatedAt: Generated<Timestamp>;
   website: string | null;
   websiteReachable: boolean | null;
@@ -115,6 +118,7 @@ export interface Users {
 }
 
 export interface Verifications {
+  accountRole: UserRole;
   createdAt: Generated<Timestamp>;
   expiresAt: Timestamp;
   id: Generated<string>;
