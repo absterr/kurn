@@ -21,7 +21,6 @@
 - [x] **[API]** Add email sending
 - [x] **[DB]** Add auth relationships to leads and lead_queries tables
 - [x] **[API]** Add rate-limits and what not
-- [ ] **[API]** Review invite-user and request-review endpoints against schema and related routes
 - [ ] **[DB]** Change lead_queries and leads statuses to better reflect audit flow
 - [ ] **[API]** Implement password reset endpoint (and tables)
 - [ ] **[Web]** Add auth-based pages and routes (using /api)

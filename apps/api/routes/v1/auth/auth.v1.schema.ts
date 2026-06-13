@@ -21,10 +21,15 @@ export const loginSchema = z.object({
   role: z.enum(USER_ROLE, { error: "Role is required" }),
 });
 
-export const passwordSchema = z.object({
-  password: getPasswordSchema("Password is required"),
-  confirmPassword: getPasswordSchema("This field is required"),
-});
+export const passwordSchema = z
+  .object({
+    password: getPasswordSchema("Password is required"),
+    confirmPassword: getPasswordSchema("This field is required"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 
 export const tokenSchema = z.object({
   token: z.string(),

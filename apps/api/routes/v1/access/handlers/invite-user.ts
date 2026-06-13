@@ -16,21 +16,6 @@ export const inviteUserHandler = async (
 ) => {
   const { name, email, roles } = data;
 
-  const acceptedInvites = await makeDB()
-    .selectFrom("invites")
-    .where("email", "=", email)
-    .where("status", "=", "accepted")
-    .where("role", "in", roles)
-    .selectAll()
-    .execute();
-
-  if (acceptedInvites.length > 0) {
-    const conflictingRoles = acceptedInvites.map((i) => i.role).join(", ");
-    throw new HTTPException(409, {
-      message: `Invite already accepted for: ${conflictingRoles}`,
-    });
-  }
-
   const existingUserAccounts = await makeDB()
     .selectFrom("users")
     .innerJoin("accounts", "accounts.userId", "users.id")
@@ -61,7 +46,7 @@ export const inviteUserHandler = async (
         .where("status", "=", "pending")
         .where("role", "in", roles)
         .where("expiresAt", ">", new Date())
-        .set({ status: "revoked" })
+        .set({ status: "revoked", expiresAt: new Date() })
         .execute();
 
       for (const role of roles) {
