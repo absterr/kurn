@@ -8,11 +8,13 @@ import {
   loginSchema,
   passwordSchema,
   tokenSchema,
+  userDetailsSchema,
 } from "./auth.v1.schema";
 import {
   accessRequestHandler,
   credentialLoginHandler,
   credentialRegisterHandler,
+  forgotPasswordHandler,
   validateRegisterTokenHandler,
 } from "./handlers";
 
@@ -86,6 +88,21 @@ authV1Router.post(
         validQueryParam,
         validBody,
       );
+      return ctx.json(result, 201);
+    } catch (err) {
+      if (err instanceof HTTPException) throw err;
+      return ctx.json({ error: "Something went wrong" }, 500);
+    }
+  },
+);
+
+authV1Router.post(
+  "/forgot-password",
+  zValidate("json", userDetailsSchema),
+  async (ctx) => {
+    try {
+      const valid = ctx.req.valid("json");
+      const result = await forgotPasswordHandler(valid);
       return ctx.json(result, 201);
     } catch (err) {
       if (err instanceof HTTPException) throw err;
