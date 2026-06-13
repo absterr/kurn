@@ -37,13 +37,12 @@ export const accessRequestHandler = async (
     });
 
   try {
-    const newAccessRequest = await makeDB()
+    await makeDB()
       .insertInto("accessRequests")
       .values({ email, name, status: "pending" })
-      .returningAll()
-      .executeTakeFirstOrThrow();
+      .execute();
 
-    return newAccessRequest;
+    return { message: "Access request submitted successfully" };
   } catch (err) {
     if (err instanceof DatabaseError && err.code === UNIQUE_VIOLATION) {
       throw new HTTPException(409, {

@@ -1,4 +1,3 @@
-import { randomBytes } from "node:crypto";
 import { HTTPException } from "hono/http-exception";
 import type { z } from "zod";
 import env from "@/config/env";
@@ -6,6 +5,7 @@ import { makeDB } from "@/db";
 import { sendEmail } from "@/lib/sendEmail";
 import { oneWeekFromNow } from "@/utils/date";
 import { INVITATION_TEMPLATE } from "@/utils/email-templates";
+import { generateToken } from "@/utils/hash";
 import type { reviewRequestSchema } from "../access.v1.schema";
 
 export const reviewRequestHandler = async (
@@ -14,28 +14,28 @@ export const reviewRequestHandler = async (
 ) => {
   const { requestId, review } = data;
 
-  const accessRequest = await makeDB()
-    .selectFrom("accessRequests")
-    .where("id", "=", requestId)
-    .where("status", "=", "pending")
-    .selectAll()
-    .executeTakeFirst();
-
-  if (!accessRequest)
-    throw new HTTPException(404, {
-      message: "Access request not found or has been reviewed",
-    });
-
   await makeDB()
     .transaction()
     .execute(async (tx) => {
+      const accessRequest = await tx
+        .selectFrom("accessRequests")
+        .where("id", "=", requestId)
+        .where("status", "=", "pending")
+        .selectAll()
+        .executeTakeFirst();
+
+      if (!accessRequest)
+        throw new HTTPException(404, {
+          message: "Access request not found or has been reviewed",
+        });
+
       await tx
         .updateTable("accessRequests")
         .where("id", "=", accessRequest.id)
         .set({ status: review, reviewedBy: reviewerId })
         .execute();
 
-      const token = randomBytes(32).toString("base64url");
+      const token = generateToken();
       await tx
         .insertInto("invites")
         .values({

@@ -15,14 +15,16 @@ import {
   credentialLoginHandler,
   credentialRegisterHandler,
   forgotPasswordHandler,
+  resetPasswordHandler,
   validateRegisterTokenHandler,
 } from "./handlers";
 
 const authRateLimiter = createMiddleware(async (ctx, next) => {
   const ip = ctx.req.header("x-forwarded-for") ?? "unknown";
   const path = new URL(ctx.req.url).pathname;
+  const noEmailPaths = ["/register", "/reset-password"];
 
-  if (path.endsWith("/register")) {
+  if (noEmailPaths.some((p) => path.endsWith(p))) {
     await authRateLimit(ip, null);
   } else {
     const body = await ctx.req.json();
@@ -66,8 +68,8 @@ authV1Router.post(
 // USES QUERY PARAM
 authV1Router.get("/register", zValidate("query", tokenSchema), async (ctx) => {
   try {
-    const valid = ctx.req.valid("query");
-    const result = await validateRegisterTokenHandler(valid);
+    const { token } = ctx.req.valid("query");
+    const result = await validateRegisterTokenHandler(token);
     return ctx.json(result, 200);
   } catch (err) {
     if (err instanceof HTTPException) throw err;
@@ -82,12 +84,9 @@ authV1Router.post(
   zValidate("json", passwordSchema),
   async (ctx) => {
     try {
-      const validQueryParam = ctx.req.valid("query");
-      const validBody = ctx.req.valid("json");
-      const result = await credentialRegisterHandler(
-        validQueryParam,
-        validBody,
-      );
+      const { token } = ctx.req.valid("query");
+      const { password } = ctx.req.valid("json");
+      const result = await credentialRegisterHandler({ token, password });
       return ctx.json(result, 201);
     } catch (err) {
       if (err instanceof HTTPException) throw err;
@@ -104,6 +103,23 @@ authV1Router.post(
       const valid = ctx.req.valid("json");
       const result = await forgotPasswordHandler(valid);
       return ctx.json(result, 201);
+    } catch (err) {
+      if (err instanceof HTTPException) throw err;
+      return ctx.json({ error: "Something went wrong" }, 500);
+    }
+  },
+);
+
+authV1Router.post(
+  "/reset-password",
+  zValidate("query", tokenSchema),
+  zValidate("json", passwordSchema),
+  async (ctx) => {
+    try {
+      const { token } = ctx.req.valid("query");
+      const { password } = ctx.req.valid("json");
+      const result = await resetPasswordHandler({ token, password });
+      return ctx.json(result, 200);
     } catch (err) {
       if (err instanceof HTTPException) throw err;
       return ctx.json({ error: "Something went wrong" }, 500);

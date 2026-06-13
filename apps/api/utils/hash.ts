@@ -19,3 +19,5 @@ export async function comparePassword(password: string, storedHash: string) {
 
   return timingSafeEqual(hash, Buffer.from(key, "hex"));
 }
+
+export const generateToken = () => randomBytes(32).toString("base64url");
