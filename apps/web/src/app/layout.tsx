@@ -26,7 +26,17 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <ThemeProvider>
           <TooltipProvider>{children}</TooltipProvider>
-          <Toaster />
+          <Toaster
+            richColors
+            position="bottom-right"
+            toastOptions={{
+              classNames: {
+                toast: `${poppins.className} antialiased rounded-md shadow-md border text-sm`,
+                success: "bg-green-100 border-green-500 text-green-900",
+                error: "bg-red-100 border-red-500 text-red-900",
+              },
+            }}
+          />
         </ThemeProvider>
       </body>
     </html>

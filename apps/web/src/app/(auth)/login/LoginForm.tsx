@@ -17,7 +17,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { loginUser } from "@/lib/actions";
-import { APIError } from "@/lib/api-error";
 import { loginSchema } from "@/lib/validators";
 import { useRole } from "../_Role/role-provider";
 
