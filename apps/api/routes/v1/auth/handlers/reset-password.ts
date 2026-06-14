@@ -9,6 +9,8 @@ export const resetPasswordHandler = async ({
   token: string;
   password: string;
 }) => {
+  const hashedPassword = await hashPassword(password);
+
   await makeDB()
     .transaction()
     .execute(async (tx) => {
@@ -32,8 +34,6 @@ export const resetPasswordHandler = async ({
         .where("role", "=", passwordResetVerification.accountRole)
         .select(["id"])
         .executeTakeFirst();
-
-      const hashedPassword = await hashPassword(password);
 
       if (existingCredentialAccount) {
         await tx

@@ -9,6 +9,8 @@ export const credentialRegisterHandler = async ({
   token: string;
   password: string;
 }) => {
+  const hashedPassword = await hashPassword(password);
+
   await makeDB()
     .transaction()
     .execute(async (tx) => {
@@ -32,8 +34,6 @@ export const credentialRegisterHandler = async ({
         })
         .returning(["id"])
         .executeTakeFirstOrThrow();
-
-      const hashedPassword = await hashPassword(password);
 
       await tx
         .insertInto("accounts")
