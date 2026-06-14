@@ -4,7 +4,6 @@ import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { findLeads } from "@/lib/actions";
 
 const leadsQueryFormSchema = z.object({
   keyword: z.string().min(1, "Keyword is required"),
@@ -27,22 +26,8 @@ export default function LeadsQueryForm() {
     },
   });
 
-  const onSaveQuery = ({
-    keyword,
-    location,
-  }: {
-    keyword: string;
-    location: string;
-  }) => {
-    startTransition(async () => {
-      try {
-        // Save lead query (saveLeds(keyword, location))
-        await findLeads(keyword, location);
-        // Update cache state here
-      } catch (err) {
-        console.log(err);
-      }
-    });
+  const onSaveQuery = () => {
+    startTransition(async () => {});
   };
 
   return (

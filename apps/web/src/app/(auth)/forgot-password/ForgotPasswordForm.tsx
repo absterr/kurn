@@ -2,16 +2,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleAlert } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { getEmailSchema } from "@/lib/validators";
-
-const emailSchema = z.object({
-  email: getEmailSchema(),
-});
+import type { z } from "zod";
+import { userDetailsSchema } from "@/lib/validators";
 
 const ForgotPasswordForm = () => {
-  const form = useForm<z.infer<typeof emailSchema>>({
-    resolver: zodResolver(emailSchema),
+  const form = useForm<z.infer<typeof userDetailsSchema>>({
+    resolver: zodResolver(userDetailsSchema),
     defaultValues: {
       email: "",
     },

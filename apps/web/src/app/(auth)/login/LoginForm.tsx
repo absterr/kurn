@@ -2,28 +2,50 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleAlert } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import type { z } from "zod";
 import GithubIcon from "@/components/icons/GithubIcon";
 import GoogleIcon from "@/components/icons/GoogleIcon";
+import LoadingSpinner from "@/components/icons/LoadingSpinner";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { loginFormSchema } from "@/lib/validators";
+import { loginUser } from "@/lib/actions";
+import { APIError } from "@/lib/api-error";
+import { loginSchema } from "@/lib/validators";
+import { useRole } from "../_Role/role-provider";
 
 const LoginForm = () => {
-  const form = useForm<z.infer<typeof loginFormSchema>>({
-    resolver: zodResolver(loginFormSchema),
+  const { role } = useRole();
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const form = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
       password: "",
+      role,
     },
   });
 
-  const onSubmit = () => {};
+  const onSubmit = (body: z.infer<typeof loginSchema>) => {
+    startTransition(async () => {
+      const { error } = await loginUser(body);
+
+      if (error) {
+        toast.error(error);
+        return;
+      }
+
+      router.replace("/");
+    });
+  };
 
   const socialLoginList = [
     { name: "Google", icon: GoogleIcon },
@@ -46,9 +68,9 @@ const LoginForm = () => {
       </div>
 
       <div className="flex items-center gap-4 py-5">
-        <div className="flex-1 h-px bg-foreground/20"></div>
+        <div className="flex-1 border-t border-foreground/20"></div>
         <span className="text-foreground/50 text-xs md:text-sm">or</span>
-        <div className="flex-1 h-px bg-foreground/20"></div>
+        <div className="flex-1 border-t border-foreground/20"></div>
       </div>
 
       <form
@@ -86,9 +108,10 @@ const LoginForm = () => {
 
         <button
           type="submit"
+          disabled={isPending}
           className="w-full h-12 rounded-xl bg-foreground text-background hover:bg-foreground/80 hover:cursor-pointer font-medium text-sm md:text-base transition-colors"
         >
-          Log in
+          {isPending ? <LoadingSpinner /> : "Log in"}
         </button>
       </form>
     </>
