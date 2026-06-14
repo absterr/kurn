@@ -1,19 +1,37 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleAlert } from "lucide-react";
+import { useTransition } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import type { z } from "zod";
-import { userDetailsSchema } from "@/lib/validators";
+import { forgotPasswordHandler } from "@/actions/auth-actions";
+import LoadingSpinner from "@/components/icons/LoadingSpinner";
+import { userDetailsSchema } from "@/lib/schema/auth-schema";
+import { useRole } from "../_Role/role-provider";
 
 const ForgotPasswordForm = () => {
+  const { role } = useRole();
+  const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof userDetailsSchema>>({
     resolver: zodResolver(userDetailsSchema),
     defaultValues: {
       email: "",
+      role,
     },
   });
 
-  const onSubmit = () => {};
+  const onSubmit = (body: z.infer<typeof userDetailsSchema>) => {
+    startTransition(async () => {
+      const { data, error } = await forgotPasswordHandler(body);
+      if (error || !data) {
+        toast.error(error);
+        return;
+      }
+
+      toast.success(data.message);
+    });
+  };
 
   return (
     <form
@@ -37,9 +55,10 @@ const ForgotPasswordForm = () => {
 
       <button
         type="submit"
+        disabled={isPending}
         className="w-full h-12 rounded-xl bg-foreground text-background hover:bg-foreground/80 hover:cursor-pointer font-medium text-sm md:text-base transition-colors"
       >
-        Send Reset Link
+        {isPending ? <LoadingSpinner /> : "Send Reset Link"}
       </button>
     </form>
   );

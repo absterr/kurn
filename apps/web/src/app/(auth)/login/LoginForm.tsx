@@ -7,7 +7,7 @@ import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
-import { loginUser } from "@/actions/auth-actions";
+import { loginHandler } from "@/actions/auth-actions";
 import GithubIcon from "@/components/icons/GithubIcon";
 import GoogleIcon from "@/components/icons/GoogleIcon";
 import LoadingSpinner from "@/components/icons/LoadingSpinner";
@@ -17,7 +17,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { loginSchema } from "@/lib/validators";
+import { loginSchema } from "@/lib/schema/auth-schema";
 import { useRole } from "../_Role/role-provider";
 
 const LoginForm = () => {
@@ -35,7 +35,7 @@ const LoginForm = () => {
 
   const onSubmit = (body: z.infer<typeof loginSchema>) => {
     startTransition(async () => {
-      const { error } = await loginUser(body);
+      const { error } = await loginHandler(body);
 
       if (error) {
         toast.error(error);
