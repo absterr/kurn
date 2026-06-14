@@ -2,7 +2,7 @@ import Link from "next/link";
 import RoleSwitch from "../_Role/RoleSwitch";
 import LoginForm from "./LoginForm";
 
-export default function LoginPage() {
+export default function Login() {
   return (
     <div>
       <h1 className="text-xl md:text-2xl font-semibold text-center pb-6 md:pb-8">

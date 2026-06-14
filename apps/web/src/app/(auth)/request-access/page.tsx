@@ -1,7 +1,7 @@
 import Link from "next/link";
 import RequestAccessForm from "./RequestAccessForm";
 
-export default function RequestAccessPage() {
+export default function RequestAccess() {
   return (
     <div>
       <h1 className="text-xl md:text-2xl font-semibold text-center pb-6 md:pb-8">

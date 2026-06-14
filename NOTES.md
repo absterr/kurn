@@ -23,7 +23,7 @@
 - [x] **[API]** Add rate-limits and what not
 - [x] **[DB]** Change lead_queries and leads statuses to better reflect audit flow
 - [x] **[API]** Implement password reset endpoint (and tables)
-- [ ] **[Web]** Add auth-based pages and routes (using /api)
+- [x] **[Web]** Add auth-based pages and routes (using /api)
 - [ ] **[Web]** Validate web env variables using T3.env oss
 - [ ] **[Web]** Implement middleware (proxy.ts) to frontend routes
 - [ ] **[Worker]** Implement deduplication on leads module

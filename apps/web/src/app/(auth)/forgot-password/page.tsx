@@ -2,7 +2,7 @@ import Link from "next/link";
 import RoleSwitch from "../_Role/RoleSwitch";
 import ForgotPasswordForm from "./ForgotPasswordForm";
 
-export default function LoginPage() {
+export default function ForgotPassword() {
   return (
     <div>
       <h1 className="text-xl md:text-2xl font-semibold text-center pb-2 md:pb-4">
