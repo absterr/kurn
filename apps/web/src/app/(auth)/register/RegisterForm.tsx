@@ -1,10 +1,14 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleAlert } from "lucide-react";
+import { useTransition } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import type { z } from "zod";
+import { registerHandler } from "@/actions/auth-actions";
 import GithubIcon from "@/components/icons/GithubIcon";
 import GoogleIcon from "@/components/icons/GoogleIcon";
+import LoadingSpinner from "@/components/icons/LoadingSpinner";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -13,7 +17,8 @@ import {
 } from "@/components/ui/tooltip";
 import { passwordSchema } from "@/lib/schema/auth-schema";
 
-const RegisterForm = () => {
+const RegisterForm = ({ token }: { token: string }) => {
+  const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof passwordSchema>>({
     resolver: zodResolver(passwordSchema),
     defaultValues: {
@@ -22,7 +27,18 @@ const RegisterForm = () => {
     },
   });
 
-  const onSubmit = () => {};
+  const onSubmit = (body: z.infer<typeof passwordSchema>) => {
+    startTransition(async () => {
+      const { data, error } = await registerHandler(body, token);
+
+      if (error || !data) {
+        toast.error(error);
+        return;
+      }
+
+      toast.success(data.message);
+    });
+  };
 
   const socialLoginList = [
     { name: "Google", icon: GoogleIcon },
@@ -75,9 +91,10 @@ const RegisterForm = () => {
 
         <button
           type="submit"
+          disabled={isPending}
           className="w-full h-12 rounded-xl bg-foreground text-background hover:bg-foreground/80 hover:cursor-pointer font-medium text-sm md:text-base transition-colors"
         >
-          Register
+          {isPending ? <LoadingSpinner /> : "Register"}
         </button>
       </form>
     </>

@@ -36,9 +36,7 @@ export const passwordSchema = z
     path: ["confirmPassword"],
   });
 
-export const tokenSchema = z.object({
-  token: z
-    .string()
-    .length(TOKEN_LENGTH)
-    .regex(/^[A-Za-z0-9_-]+$/, "Invalid token"),
-});
+export const tokenSchema = z
+  .string()
+  .length(TOKEN_LENGTH)
+  .regex(/^[A-Za-z0-9_-]+$/, "Invalid token");

@@ -1,13 +1,24 @@
 import RegisterForm from "./RegisterForm";
 
-export default function LoginPage() {
+export default async function RegisterPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ token?: string }>;
+}) {
+  const { token } = await searchParams;
+
+  if (!token) {
+    // Return Not found page
+    return <div></div>;
+  }
+
   return (
     <div>
       <h1 className="text-xl md:text-2xl font-semibold text-center pb-6 md:pb-8">
         Register
       </h1>
 
-      <RegisterForm />
+      <RegisterForm token={token} />
 
       <p className="text-xs text-foreground/50 text-center pt-6">
         By continuing, you agree to Kurn's{" "}
