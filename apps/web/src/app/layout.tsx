@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { ThemeProvider } from "./theme-provider";
+import { ThemeProvider } from "./_Theme/theme-provider";
 
 const poppins = Poppins({
   subsets: ["latin"],

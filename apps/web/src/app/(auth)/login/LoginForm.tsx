@@ -34,7 +34,7 @@ const LoginForm = () => {
     <>
       <div className="flex gap-2 items-center justify-center">
         {socialLoginList.map(({ name, icon: Icon }) => (
-          <Tooltip key={name}>
+          <Tooltip key={name} delayDuration={200}>
             <TooltipTrigger asChild>
               <Button className="bg-foreground hover:bg-foreground/80 dark:bg-foreground/5 dark:hover:bg-foreground/10 cursor-pointer py-5 px-12">
                 <Icon />

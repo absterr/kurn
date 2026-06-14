@@ -7,10 +7,10 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ThemeSwitch } from "@/app/_Theme/ThemeSwitch";
 import AppIcon from "@/components/icons/AppIcon";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "./SidebarProvider";
-import { ThemeSwitch } from "./ThemeSwitch";
 
 const NavItem = ({
   icon,
