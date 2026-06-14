@@ -2,8 +2,8 @@
 import { Root, Thumb } from "@radix-ui/react-switch";
 import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useTheme } from "@/app/theme-provider";
 import { cn } from "@/lib/utils";
+import { useTheme } from "./theme-provider";
 
 export function ThemeSwitch() {
   const { theme, setTheme } = useTheme();
