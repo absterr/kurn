@@ -3,7 +3,9 @@ import { z } from "zod";
 import { apiFetch, handleFetchErrors } from "@/lib/api";
 import type {
   loginSchema,
+  passwordSchema,
   requestAccessSchema,
+  tokenSchema,
   userDetailsSchema,
 } from "@/lib/schema/auth-schema";
 
@@ -34,3 +36,13 @@ export const forgotPasswordHandler = async (
 export const requestAccessHandler = async (
   body: z.infer<typeof requestAccessSchema>,
 ) => authPost("/v1/auth/request-access", body);
+
+export const registerHandler = async (
+  body: z.infer<typeof passwordSchema>,
+  token: z.infer<typeof tokenSchema>,
+) => authPost(`/v1/auth/register?token=${token}`, body);
+
+export const resetPasswordHandler = async (
+  body: z.infer<typeof passwordSchema>,
+  token: z.infer<typeof tokenSchema>,
+) => authPost(`/v1/auth/reset-password?token=${token}`, body);
