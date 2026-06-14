@@ -18,3 +18,13 @@ export const requestAccessFormSchema = z.object({
   name: z.string({ error: "Name is required" }),
   email: getEmailSchema(),
 });
+
+export const passwordSchema = z
+  .object({
+    password: getPasswordSchema("Password is required"),
+    confirmPassword: getPasswordSchema("This field is required"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
