@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleAlert } from "lucide-react";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
-import { passwordSchema } from "@/lib/validators";
+import { passwordSchema } from "@/lib/schema/auth-schema";
 
 const ResetPasswordForm = () => {
   const form = useForm<z.infer<typeof passwordSchema>>({

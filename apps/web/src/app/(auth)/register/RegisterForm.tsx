@@ -11,7 +11,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { passwordSchema } from "@/lib/validators";
+import { passwordSchema } from "@/lib/schema/auth-schema";
 
 const RegisterForm = () => {
   const form = useForm<z.infer<typeof passwordSchema>>({
