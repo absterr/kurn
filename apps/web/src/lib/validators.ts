@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const getEmailSchema = () =>
+export const getEmailSchema = () =>
   z.email({ error: "Email is required" }).min(6, "A valid email is required");
 
 const getPasswordSchema = (errorMessage: string) =>
