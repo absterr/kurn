@@ -1,7 +1,8 @@
 "use client";
 import { createContext, useContext, useState } from "react";
 
-export type Role = "member" | "admin";
+export const USER_ROLE = ["member", "admin"] as const;
+export type Role = (typeof USER_ROLE)[number];
 
 interface RoleContextType {
   role: Role;

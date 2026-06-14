@@ -4,17 +4,17 @@ import { HTTPException } from "hono/http-exception";
 import { authRateLimit } from "@/lib/rate-limit";
 import { zValidate } from "@/utils/z-validate";
 import {
-  accessRequestSchema,
   loginSchema,
   passwordSchema,
+  requestAccessSchema,
   tokenSchema,
   userDetailsSchema,
 } from "./auth.v1.schema";
 import {
-  accessRequestHandler,
   credentialLoginHandler,
   credentialRegisterHandler,
   forgotPasswordHandler,
+  requestAccessHandler,
   resetPasswordHandler,
   validateRegisterTokenHandler,
 } from "./handlers";
@@ -46,21 +46,21 @@ authV1Router.post("/login", zValidate("json", loginSchema), async (ctx) => {
     return ctx.json(result, 201);
   } catch (err) {
     if (err instanceof HTTPException) throw err;
-    return ctx.json({ error: "Something went wrong" }, 500);
+    return ctx.json({ error: "An unexpected error occurred" }, 500);
   }
 });
 
 authV1Router.post(
-  "/request",
-  zValidate("json", accessRequestSchema),
+  "/request-access",
+  zValidate("json", requestAccessSchema),
   async (ctx) => {
     try {
       const valid = ctx.req.valid("json");
-      const result = await accessRequestHandler(valid);
+      const result = await requestAccessHandler(valid);
       return ctx.json(result, 201);
     } catch (err) {
       if (err instanceof HTTPException) throw err;
-      return ctx.json({ error: "Something went wrong" }, 500);
+      return ctx.json({ error: "An unexpected error occurred" }, 500);
     }
   },
 );
@@ -73,7 +73,7 @@ authV1Router.get("/register", zValidate("query", tokenSchema), async (ctx) => {
     return ctx.json(result, 200);
   } catch (err) {
     if (err instanceof HTTPException) throw err;
-    return ctx.json({ error: "Something went wrong" }, 500);
+    return ctx.json({ error: "An unexpected error occurred" }, 500);
   }
 });
 
@@ -90,7 +90,7 @@ authV1Router.post(
       return ctx.json(result, 201);
     } catch (err) {
       if (err instanceof HTTPException) throw err;
-      return ctx.json({ error: "Something went wrong" }, 500);
+      return ctx.json({ error: "An unexpected error occurred" }, 500);
     }
   },
 );
@@ -105,7 +105,7 @@ authV1Router.post(
       return ctx.json(result, 201);
     } catch (err) {
       if (err instanceof HTTPException) throw err;
-      return ctx.json({ error: "Something went wrong" }, 500);
+      return ctx.json({ error: "An unexpected error occurred" }, 500);
     }
   },
 );
@@ -122,7 +122,7 @@ authV1Router.post(
       return ctx.json(result, 200);
     } catch (err) {
       if (err instanceof HTTPException) throw err;
-      return ctx.json({ error: "Something went wrong" }, 500);
+      return ctx.json({ error: "An unexpected error occurred" }, 500);
     }
   },
 );

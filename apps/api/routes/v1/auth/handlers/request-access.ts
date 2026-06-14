@@ -3,12 +3,12 @@ import { DatabaseError } from "pg";
 import type { z } from "zod";
 import { makeDB } from "@/db";
 import { oneWeekAgo } from "@/utils/date";
-import type { accessRequestSchema } from "../auth.v1.schema";
+import type { requestAccessSchema } from "../auth.v1.schema";
 
 const UNIQUE_VIOLATION = "23505" as const;
 
-export const accessRequestHandler = async (
-  data: z.infer<typeof accessRequestSchema>,
+export const requestAccessHandler = async (
+  data: z.infer<typeof requestAccessSchema>,
 ) => {
   const { email, name } = data;
 

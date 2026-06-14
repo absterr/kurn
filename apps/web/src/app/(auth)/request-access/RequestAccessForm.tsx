@@ -3,11 +3,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleAlert } from "lucide-react";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
-import { requestAccessFormSchema } from "@/lib/validators";
+import { requestAccessSchema } from "@/lib/validators";
 
 const RequestAccessForm = () => {
-  const form = useForm<z.infer<typeof requestAccessFormSchema>>({
-    resolver: zodResolver(requestAccessFormSchema),
+  const form = useForm<z.infer<typeof requestAccessSchema>>({
+    resolver: zodResolver(requestAccessSchema),
     defaultValues: {
       name: "",
       email: "",
