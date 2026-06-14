@@ -7,9 +7,9 @@ import {
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
-import { accountRoleEnum } from "./auth-schema";
+import { accountRoleEnum } from "./auth.tables";
 import { timestamps } from "./timestamps";
-import { users } from "./users-schema";
+import { users } from "./user.tables";
 
 export const accessRequestStatusEnum = pgEnum("access_request_status", [
   "pending",
