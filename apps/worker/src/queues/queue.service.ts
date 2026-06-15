@@ -3,14 +3,14 @@ import { Cron, CronExpression } from "@nestjs/schedule";
 import { Kysely } from "kysely";
 import { KYSELY_DB } from "@/db/db.module";
 import { DB } from "@/db/types";
-import { LeadsV1Service } from "./v1/leads/leads.v1.service";
+import { LeadsService } from "./leads/leads.service";
 
 @Injectable()
 export class QueueService {
   private readonly logger = new Logger(QueueService.name);
   constructor(
     @Inject(KYSELY_DB) private readonly db: Kysely<DB>,
-    private readonly leadsV1Service: LeadsV1Service,
+    private readonly leadsService: LeadsService,
   ) {}
 
   @Cron(CronExpression.EVERY_HOUR)
@@ -26,7 +26,7 @@ export class QueueService {
 
       if (awaitingQueries.length === 0) return;
 
-      await this.leadsV1Service.queueLeadQueries(awaitingQueries);
+      await this.leadsService.queueLeadQueries(awaitingQueries);
 
       this.logger.log(`Queued ${awaitingQueries.length} awaiting lead queries`);
     } catch (error) {

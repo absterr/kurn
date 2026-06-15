@@ -15,6 +15,8 @@ export default function Login() {
         <p className="text-xs text-foreground/50 text-center">
           By continuing, you agree to Kurn's{" "}
           <a
+            target="_blank"
+            rel="noopener noreferrer"
             href="https://www.example.com/terms"
             className="text-foreground/70 hover:text-foreground underline"
           >
@@ -22,6 +24,8 @@ export default function Login() {
           </a>{" "}
           and{" "}
           <a
+            target="_blank"
+            rel="noopener noreferrer"
             href="https://www.example.com/privacy"
             className="text-foreground/70 hover:text-foreground underline"
           >
