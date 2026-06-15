@@ -36,7 +36,7 @@ export enum CronInterval {
   H24 = "24h",
 }
 
-export class JobsV1Dto {
+export class JobsDto {
   // @IsUUID()
   // userId: string;
 

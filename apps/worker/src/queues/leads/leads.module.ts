@@ -3,7 +3,7 @@ import { Module } from "@nestjs/common";
 import { EnvModule } from "@/config/env/env.module";
 import { DatabaseModule } from "@/db/db.module";
 import { SharedModule } from "@/lib/shared/shared.module";
-import { LeadsV1Service } from "./leads.v1.service";
+import { LeadsService } from "./leads.service";
 import { LeadAuditProcessor } from "./processors/lead-audit.processor";
 import { LeadSearchProcessor } from "./processors/lead-search.processor";
 import { OutreachDraftProcessor } from "./processors/outreach-draft.processor";
@@ -29,7 +29,7 @@ import { OutreachDraftService } from "./providers/outreach-draft.service";
     SharedModule,
   ],
   providers: [
-    LeadsV1Service,
+    LeadsService,
     AuditLeadsService,
     GoogleMapsScraper,
     OutreachDraftService,
@@ -37,6 +37,6 @@ import { OutreachDraftService } from "./providers/outreach-draft.service";
     LeadSearchProcessor,
     OutreachDraftProcessor,
   ],
-  exports: [LeadsV1Service],
+  exports: [LeadsService],
 })
-export class LeadsV1Module {}
+export class LeadsModule {}

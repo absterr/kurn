@@ -8,6 +8,7 @@ import validate from "./validate";
     ConfigModule.forRoot({
       validate,
       isGlobal: true,
+      envFilePath: [".env.local", ".env"],
     }),
   ],
   providers: [EnvProvider],

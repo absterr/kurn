@@ -3,17 +3,17 @@ import { Kysely } from "kysely";
 import { KYSELY_DB } from "@/db/db.module";
 import { DB } from "@/db/types";
 import toCron from "@/utils/to-cron";
-import { JobsV1Dto } from "../jobs.v1.dto";
+import { JobsDto } from "../jobs.dto";
 import { CronScheduler } from "./cron-scheduler";
 
 @Injectable()
-export class JobsV1Service {
+export class JobsService {
   constructor(
     @Inject(KYSELY_DB) private readonly db: Kysely<DB>,
     private readonly cronScheduler: CronScheduler,
   ) {}
 
-  async findJobs(dto: JobsV1Dto) {
+  async findJobs(dto: JobsDto) {
     const jobQuery = await this.db
       .insertInto("jobQueries")
       .values(dto)

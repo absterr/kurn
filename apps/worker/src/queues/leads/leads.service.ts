@@ -5,7 +5,7 @@ import { Selectable } from "kysely";
 import { LeadQueries } from "@/db/types";
 
 @Injectable()
-export class LeadsV1Service {
+export class LeadsService {
   constructor(
     @InjectQueue("lead-search") private readonly leadSearchQueue: Queue,
   ) {}
