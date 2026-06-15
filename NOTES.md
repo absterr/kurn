@@ -28,11 +28,21 @@
 - [ ] **[Worker]** Implement deduplication on leads module
 - [ ] **[Worker]** Implement AI audit for leads module
 - [ ] **[Worker]** Implement async cold email
+- [ ] **[API]** Implement social login enpoints and integrate with frontend
+- [ ] **[API]** Implement guest token endpoint
+- [ ] **[Web]** Implement guest token UI
+- [ ] **[Web]** Implement fetch for leads endpoints
+- [ ] **[Web]** Add not-found and error pages
 - [ ] **[Worker]** Implement API key rotation
 - [ ] **[Worker]** Deliberate and plan the job module flow (take ideas from career-ops)
 - [ ] **[Worker]** Implement basic job module
+- [ ] **[API]** Implement job endpoints
+- [ ] **[Web]** Implement job pages
+- [ ] **[Web]** Implement member dashboard pages
 - [ ] **[Web]** Add admin-based pages
 - [ ] **[API]** Add admin-based routes
+- [ ] **[API]** Implement simultaneous member and admin login sessions
+- [ ] **[Web]** Implement 'last used' login method feature on login page
 
 ---
 
@@ -43,17 +53,27 @@
 1. ....
 2. ....
 
+### [Web/API] Guest endpoint
+
+1. Add guest token endpoint
+   - apps/api/routes/guest/index.ts (POST) → returns a signed JWT with {role:"guest"}
+   - No DB write needed – token encodes the role for client‑side routing.
+
+2. Frontend sign‑in button
+   - Add a “Continue as Guest” button on the Login and Request access forms.
+   - Call POST /api/guest via the existing fetch wrapper, store the token in localStorage.
+
+3. Render based on role
+   - In the App Provider (or context) read the token at startup.
+   - If role==="guest" render the read‑only UI; otherwise show full‑auth menus and actions.
+
+4. Cleanup
+   - On page reload the token is cleared → UI falls back to the default guest state.
+   - No server‑side persistence required.
+
 ---
 
 ## Notes
-
-### Web
-
-- Use `/api` routes instead of server actions
-
-### DB
-
-- Possible to change the `lead_query_table` status field to accommodate cron by adding and/or removing some statuses
 
 ### Worker
 
@@ -67,4 +87,3 @@
 ## Considerations
 
 - Deploy worker on VPS or managed service?
-- Split DB schemas into `schema` and `migrations`?
