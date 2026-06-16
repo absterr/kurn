@@ -4,21 +4,29 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "clear && bun run --watch server.ts",
-    "start": "bun server.ts",
-    "db:gen": "bun --env-file .env --env-file .env.local kysely-codegen --dialect postgres --camel-case --out-file db/types.ts"
+    "build": "tsc -b && tsc-alias -p tsconfig.build.json",
+    "dev": "clear && nodemon src/server",
+    "start": "node dist/server",
+    "db:gen": "bun --env-file .env --env-file .env.local kysely-codegen --dialect postgres --camel-case --out-file db/types.ts",
+    "build:bun": "bun build src/server.ts --target=node --outdir dist",
+    "dev:bun": "clear && bun run --watch src/server"
   },
   "devDependencies": {
-    "@types/bun": "latest",
     "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^25.9.3",
     "@types/nodemailer": "^8.0.1",
     "@types/pg": "^8.20.0",
-    "kysely-codegen": "^0.20.0"
+    "kysely-codegen": "^0.20.0",
+    "nodemon": "^3.1.14",
+    "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.17",
+    "tsconfig-paths": "^4.2.0"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "dependencies": {
+    "@hono/node-server": "^2.0.5",
     "@hono/zod-validator": "^0.8.0",
     "@upstash/ratelimit": "^2.0.8",
     "@upstash/redis": "^1.38.0",
