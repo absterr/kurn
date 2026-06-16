@@ -4,7 +4,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "tsc -b && tsc-alias -p tsconfig.build.json",
+    "build": "tsc -b -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
     "dev": "clear && nodemon src/server",
     "start": "node dist/server",
     "db:gen": "bun --env-file .env --env-file .env.local kysely-codegen --dialect postgres --camel-case --out-file db/types.ts",
