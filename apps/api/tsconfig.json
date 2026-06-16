@@ -10,7 +10,6 @@
     // Bundler mode
     "moduleResolution": "NodeNext",
     "verbatimModuleSyntax": true,
-    "noEmit": true,
 
     // Path aliases
     "baseUrl": ".",
