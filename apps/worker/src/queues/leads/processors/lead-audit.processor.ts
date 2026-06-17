@@ -37,13 +37,13 @@ export class LeadAuditProcessor extends WorkerHost {
 
       const savedLeadsDetails = await Promise.all(
         filteredAuditedLeads.map(async (lead) => {
-          const { name, diagnosis, ...rest } = lead;
+          const { companyName, diagnosis, ...rest } = lead;
           const leadDetails = await this.db
             .insertInto("leads")
             .values({
               ...rest,
               leadQueryId,
-              companyName: name,
+              companyName,
               auditDiagnosis: diagnosis,
               completionStatus: "partial",
             })

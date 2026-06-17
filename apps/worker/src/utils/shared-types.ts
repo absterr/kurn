@@ -1,5 +1,5 @@
 export interface Lead {
-  name: string;
+  companyName: string;
   mapLink: string;
   address: string | null;
   phone: string | null;

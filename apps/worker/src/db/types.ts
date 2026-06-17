@@ -5,10 +5,14 @@
 
 import type { ColumnType } from "kysely";
 
+export type AccessRequestStatus = "approved" | "pending" | "rejected";
+
 export type Generated<T> =
   T extends ColumnType<infer S, infer I, infer U>
     ? ColumnType<S, I | undefined, U>
     : ColumnType<T, T | undefined, T>;
+
+export type InviteStatus = "accepted" | "expired" | "pending" | "revoked";
 
 export type Json = JsonValue;
 
@@ -22,63 +26,86 @@ export type JsonPrimitive = boolean | number | string | null;
 
 export type JsonValue = JsonArray | JsonObject | JsonPrimitive;
 
+export type LeadCompletionStatus = "completed" | "partial";
+
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
+export type UserRole = "admin" | "member";
+
+export type VerificationType = "email_change" | "password_reset";
+
+export interface AccessRequests {
+  createdAt: Generated<Timestamp>;
+  email: string;
+  id: Generated<string>;
+  name: string;
+  reviewedBy: string | null;
+  status: Generated<AccessRequestStatus>;
+  updatedAt: Generated<Timestamp>;
+}
+
 export interface Accounts {
-  accountId: string | null;
+  accountId: string;
   createdAt: Generated<Timestamp>;
   id: Generated<string>;
   password: string | null;
   providerId: string;
+  role: UserRole;
   updatedAt: Generated<Timestamp>;
   userId: string;
 }
 
-export interface JobQueries {
+export interface Invites {
+  accessRequestId: string | null;
   createdAt: Generated<Timestamp>;
-  cronInterval: string;
-  experienceLevel: Generated<string[]>;
+  createdBy: string;
+  email: string;
+  expiresAt: Timestamp;
   id: Generated<string>;
-  position: string;
-  startAt: string;
-  timeframePosted: string;
+  name: string;
+  revokedBy: string | null;
+  role: UserRole;
+  status: Generated<InviteStatus>;
+  token: string;
   updatedAt: Generated<Timestamp>;
-  workplaceType: Generated<string[]>;
 }
 
 export interface LeadQueries {
   createdAt: Generated<Timestamp>;
   id: Generated<string>;
   keyword: string;
-  location: string | null;
+  location: string;
   status: Generated<string>;
   updatedAt: Generated<Timestamp>;
+  userId: string;
 }
 
 export interface Leads {
   address: string | null;
   auditDiagnosis: string[] | null;
   companyName: string;
-  completionStatus: Generated<string>;
+  completionStatus: Generated<LeadCompletionStatus>;
   createdAt: Generated<Timestamp>;
-  emailDraft: Json | null;
+  emailDraft: Json;
   emails: string[] | null;
   id: Generated<string>;
   leadQueryId: string;
   mapLink: string;
   phone: string | null;
+  reviewed: Generated<boolean>;
   updatedAt: Generated<Timestamp>;
   website: string | null;
   websiteReachable: boolean | null;
 }
 
 export interface Sessions {
+  accountId: string;
   createdAt: Generated<Timestamp>;
   expiresAt: Timestamp;
   id: Generated<string>;
   updatedAt: Generated<Timestamp>;
   userAgent: string | null;
-  userId: string;
+  version: Generated<number>;
 }
 
 export interface Users {
@@ -91,18 +118,20 @@ export interface Users {
 }
 
 export interface Verifications {
+  accountRole: UserRole;
   createdAt: Generated<Timestamp>;
   expiresAt: Timestamp;
   id: Generated<string>;
+  token: string;
   updatedAt: Generated<Timestamp>;
   userId: string;
-  value: string | null;
-  verificationType: string;
+  verificationType: VerificationType;
 }
 
 export interface DB {
+  accessRequests: AccessRequests;
   accounts: Accounts;
-  jobQueries: JobQueries;
+  invites: Invites;
   leadQueries: LeadQueries;
   leads: Leads;
   sessions: Sessions;

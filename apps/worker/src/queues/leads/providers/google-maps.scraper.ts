@@ -28,11 +28,11 @@ export class GoogleMapsScraper {
 
   private async parseItems(page: Page, mapLink: string) {
     const nameEl = await page.$(".DUwDvf");
-    const name = (await nameEl?.textContent())?.trim() || "";
+    const companyName = (await nameEl?.textContent())?.trim() || "";
     const items = await page.$$(".AeaXub");
 
     const lead: Lead = {
-      name,
+      companyName,
       mapLink,
       address: null,
       phone: null,
@@ -50,7 +50,7 @@ export class GoogleMapsScraper {
     return lead;
   }
 
-  async scrape(keyword: string, location: string | null) {
+  async scrape(keyword: string, location: string) {
     const context = await this.browserContextProvider.getContext();
     const searchQuery = `${keyword} ${location}`;
     const searchUrl = `https://www.google.com/maps/search/${encodeURIComponent(searchQuery)}`;

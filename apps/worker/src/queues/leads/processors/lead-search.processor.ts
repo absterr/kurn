@@ -10,7 +10,7 @@ import { GoogleMapsScraper } from "../providers/google-maps.scraper";
 interface LeadSearchJobData {
   leadQueryId: string;
   keyword: string;
-  location: string | null;
+  location: string;
 }
 
 @Processor("lead-search")

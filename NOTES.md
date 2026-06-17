@@ -26,7 +26,7 @@
 - [x] **[Web]** Add auth-based pages and routes (using /api)
 - [x] **[Web]** Implement middleware (proxy.ts) to frontend routes
 - [x] **[API]** Move to node
-- [ ] **[Worker]** Implement deduplication on leads module
+- [x] **[Worker]** Implement deduplication on leads module
 - [ ] **[Worker]** Implement AI audit for leads module
 - [ ] **[Worker]** Implement async cold email
 - [ ] **[API]** Implement social login enpoints and integrate with frontend
