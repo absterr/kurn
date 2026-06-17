@@ -1,11 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import pLimit from "p-limit";
-import { WebCrawler } from "@/lib/shared/web-crawler";
 import { Lead } from "@/utils/shared-types";
 
 @Injectable()
 export class AuditLeadsService {
-  constructor(private readonly webCrawler: WebCrawler) {}
+  constructor() {}
 
   async auditLeads(mapsLeads: Lead[]) {
     const limit = pLimit(5);
@@ -33,7 +32,7 @@ export class AuditLeadsService {
             if (res.ok) {
               diagnosis = ["Website is reachable"];
               websiteReachable = true;
-              emails = await this.webCrawler.extractEmails(lead.website);
+              emails = [];
             } else {
               websiteReachable = false;
               diagnosis = [`Website returned an error (${res.status})`];
