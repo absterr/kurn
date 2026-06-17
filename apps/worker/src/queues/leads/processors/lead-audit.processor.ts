@@ -5,7 +5,7 @@ import { Kysely } from "kysely";
 import { KYSELY_DB } from "@/db/db.module";
 import { DB } from "@/db/types";
 import { Lead } from "@/utils/shared-types";
-import { AuditLeadsService } from "../providers/audit-leads.service";
+import { AuditLeadsService } from "../providers/audit-leads";
 
 interface AuditLeadsJobData {
   leadQueryId: string;
