@@ -27,14 +27,13 @@ export interface ViewportAuditResult {
   vitals: CoreWebVitals;
   consoleIssues: ConsoleIssue[];
   failedRequests: FailedRequest[];
-  emails: string[];
   error?: string;
 }
 
 export interface WebsiteAuditResult {
-  url: string;
   auditedAt: string;
   viewports: ViewportAuditResult[];
+  emails: string[];
 }
 
 @Injectable()
@@ -66,16 +65,36 @@ export class WebsiteAuditService {
     private readonly webCrawler: WebCrawler,
   ) {}
 
-  async audit(url: string): Promise<WebsiteAuditResult> {
-    const viewports = await Promise.all(
-      this.profiles.map((profile) => this.auditViewport(url, profile)),
-    );
+  async audit(websiteUrl: string): Promise<WebsiteAuditResult> {
+    const [viewports, emails] = await Promise.all([
+      Promise.all(
+        this.profiles.map((profile) => this.auditViewport(websiteUrl, profile)),
+      ),
+      this.crawlEmails(websiteUrl),
+    ]);
 
     return {
-      url,
       auditedAt: new Date().toISOString(),
       viewports,
+      emails,
     };
+  }
+
+  private async crawlEmails(websiteUrl: string): Promise<string[]> {
+    const context = await this.browserContextProvider.getContext();
+    const page = await context.newPage();
+    try {
+      await page.goto(websiteUrl, {
+        waitUntil: "domcontentloaded",
+        timeout: 30000,
+      });
+      return await this.webCrawler.extractEmails(page);
+    } catch {
+      return [];
+    } finally {
+      await page.close();
+      await context.close();
+    }
   }
 
   private async auditViewport(
@@ -97,7 +116,6 @@ export class WebsiteAuditService {
       inpMs: null,
     };
     let screenshotPath = "";
-    let emails: string[] = [];
     let errorMessage: string | undefined;
 
     const { consoleIssues, failedRequests } =
@@ -123,7 +141,6 @@ export class WebsiteAuditService {
         page,
         profile.name,
       );
-      emails = await this.webCrawler.extractEmails(page);
     } catch (err) {
       errorMessage = err instanceof Error ? err.message : String(err);
     } finally {
@@ -139,7 +156,6 @@ export class WebsiteAuditService {
       vitals,
       consoleIssues,
       failedRequests,
-      emails,
       error: errorMessage,
     };
   }

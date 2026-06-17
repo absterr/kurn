@@ -7,7 +7,7 @@ export class AuditLeadsService {
   constructor() {}
 
   async auditLeads(mapsLeads: Lead[]) {
-    const limit = pLimit(5);
+    const limit = pLimit(2);
 
     const auditedLeads = await Promise.all(
       mapsLeads.map((lead) =>
