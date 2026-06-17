@@ -37,19 +37,4 @@ export class CleanupService {
       this.logger.error("Error during verification cleanup:", error);
     }
   }
-
-  @Cron(CronExpression.EVERY_12_HOURS)
-  async deleteEmailVerifications(): Promise<void> {
-    try {
-      const deletedRows = await this.db
-        .deleteFrom("verifications")
-        .where("verificationType", "=", "email_verification")
-        .where("expiresAt", "<", sql<Date>`now()`)
-        .executeTakeFirstOrThrow();
-
-      this.logger.log(`Deleted ${deletedRows.numDeletedRows} verifications`);
-    } catch (error) {
-      this.logger.error("Error during verification cleanup:", error);
-    }
-  }
 }
