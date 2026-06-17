@@ -50,8 +50,17 @@ export class LeadSearchProcessor extends WorkerHost {
         .execute();
 
       const leads = await this.googleMapsScraper.scrape(keyword, location);
-      const dedupLeads = await this.deduplicateLeads(leadQueryId, leads);
+      if (leads.length < 2) {
+        if (leads.length === 0) throw new Error("No leads found");
 
+        await this.db
+          .updateTable("leadQueries")
+          .where("id", "=", leadQueryId)
+          .set({ status: "exhausted" })
+          .execute();
+      }
+
+      const dedupLeads = await this.deduplicateLeads(leadQueryId, leads);
       if (dedupLeads.length === 0) throw new Error("No new leads found");
 
       await this.leadAuditQueue.add(
