@@ -75,6 +75,7 @@ export class OutreachDraftProcessor extends WorkerHost {
         .updateTable("leadQueries")
         .set({ status: "successful" })
         .where("id", "=", leadQueryId)
+        .where("status", "!=", "exhausted")
         .execute();
     } catch (err) {
       const isLastAttempt = job.attemptsMade >= (job.opts.attempts ?? 1);
