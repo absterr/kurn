@@ -4,6 +4,7 @@ import { Job, Queue } from "bullmq";
 import { Kysely } from "kysely";
 import { KYSELY_DB } from "@/db/db.module";
 import { DB } from "@/db/types";
+import { Lead } from "@/utils/shared-types";
 import { GoogleMapsScraper } from "../providers/google-maps.scraper";
 
 interface LeadSearchJobData {
@@ -22,6 +23,22 @@ export class LeadSearchProcessor extends WorkerHost {
     super();
   }
 
+  private async deduplicateLeads(leadQueryId: string, leads: Lead[]) {
+    const filteredLeads = leads.filter(
+      (lead, index, self) =>
+        index === self.findIndex((l) => l.mapLink === lead.mapLink),
+    );
+    const savedLeads = await this.db
+      .selectFrom("leads")
+      .where("leadQueryId", "=", leadQueryId)
+      .select(["mapLink"])
+      .execute();
+
+    // O(N + M)
+    const savedMapLinks = new Set(savedLeads.map((l) => l.mapLink));
+    return filteredLeads.filter((lead) => !savedMapLinks.has(lead.mapLink));
+  }
+
   async process(job: Job<LeadSearchJobData>) {
     const { leadQueryId, keyword, location } = job.data;
 
@@ -33,12 +50,15 @@ export class LeadSearchProcessor extends WorkerHost {
         .execute();
 
       const leads = await this.googleMapsScraper.scrape(keyword, location);
+      const dedupLeads = await this.deduplicateLeads(leadQueryId, leads);
+
+      if (dedupLeads.length === 0) throw new Error("No new leads found");
 
       await this.leadAuditQueue.add(
         "lead-audit",
         {
           leadQueryId,
-          leads,
+          dedupLeads,
         },
         {
           attempts: 3,

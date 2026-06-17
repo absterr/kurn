@@ -6,6 +6,7 @@ import {
   jsonb,
   pgEnum,
   pgTable,
+  unique,
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
@@ -74,13 +75,14 @@ export const leads = pgTable(
     ...timestamps,
   },
   (table) => [
+    unique("leads_query_map_link_unique").on(table.mapLink, table.leadQueryId),
     check(
       "email_draft_check",
       sql`
-        jsonb_typeof(${table.emailDraft}) = 'object'
-        AND ${table.emailDraft} ? 'subject'
-        AND ${table.emailDraft} ? 'body'
-      `,
+          jsonb_typeof(${table.emailDraft}) = 'object'
+          AND ${table.emailDraft} ? 'subject'
+          AND ${table.emailDraft} ? 'body'
+        `,
     ),
   ],
 );
