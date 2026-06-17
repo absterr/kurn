@@ -23,22 +23,6 @@ export class LeadSearchProcessor extends WorkerHost {
     super();
   }
 
-  private async deduplicateLeads(leadQueryId: string, leads: Lead[]) {
-    const filteredLeads = leads.filter(
-      (lead, index, self) =>
-        index === self.findIndex((l) => l.mapLink === lead.mapLink),
-    );
-    const savedLeads = await this.db
-      .selectFrom("leads")
-      .where("leadQueryId", "=", leadQueryId)
-      .select(["mapLink"])
-      .execute();
-
-    // O(N + M)
-    const savedMapLinks = new Set(savedLeads.map((l) => l.mapLink));
-    return filteredLeads.filter((lead) => !savedMapLinks.has(lead.mapLink));
-  }
-
   async process(job: Job<LeadSearchJobData>) {
     const { leadQueryId, keyword, location } = job.data;
 
@@ -90,5 +74,21 @@ export class LeadSearchProcessor extends WorkerHost {
 
       throw err;
     }
+  }
+
+  private async deduplicateLeads(leadQueryId: string, leads: Lead[]) {
+    const filteredLeads = leads.filter(
+      (lead, index, self) =>
+        index === self.findIndex((l) => l.mapLink === lead.mapLink),
+    );
+    const savedLeads = await this.db
+      .selectFrom("leads")
+      .where("leadQueryId", "=", leadQueryId)
+      .select(["mapLink"])
+      .execute();
+
+    // O(N + M)
+    const savedMapLinks = new Set(savedLeads.map((l) => l.mapLink));
+    return filteredLeads.filter((lead) => !savedMapLinks.has(lead.mapLink));
   }
 }

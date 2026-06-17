@@ -85,6 +85,7 @@ export class OutreachDraftProcessor extends WorkerHost {
           .updateTable("leadQueries")
           .set({ status: "partial" })
           .where("id", "=", leadQueryId)
+          .where("status", "!=", "exhausted")
           .execute();
       }
 
