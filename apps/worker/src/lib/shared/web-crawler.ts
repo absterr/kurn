@@ -95,9 +95,7 @@ export class WebCrawler {
               }
             }
           } catch {
-            /*
-              Ignore navigation errors
-            */
+            // Ignore navigation errors
           } finally {
             if (!isInitial) {
               await targetPage.close();

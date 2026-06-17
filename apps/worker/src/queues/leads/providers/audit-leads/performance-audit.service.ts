@@ -67,8 +67,10 @@ export class PerformanceAuditService {
               window.__vitals!.inpCandidates.push(entry.duration);
             }
           }
-          // durationThreshold lowers the default 104ms cutoff so a quick
-          // simulated click still shows up as an entry.
+          /*
+            durationThreshold lowers the default 104ms cutoff so a quick
+            simulated click still shows up as an entry.
+          */
         }).observe({
           type: "event",
           buffered: true,
@@ -112,8 +114,10 @@ export class PerformanceAuditService {
       await page.mouse.move(50, 50);
       await page.mouse.click(50, 50);
     } catch {
-      // Some pages intercept/crash on a blind click at a fixed coordinate —
-      // safe to ignore, INP will just come back null for that run.
+      /*
+        Some pages intercept/crash on a blind click at a fixed coordinate
+        Safe to ignore, INP will just come back null for that run.
+      */
     }
   }
 }
