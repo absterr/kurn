@@ -74,7 +74,7 @@ export interface LeadQueries {
   createdAt: Generated<Timestamp>;
   id: Generated<string>;
   keyword: string;
-  location: string | null;
+  location: string;
   status: Generated<string>;
   updatedAt: Generated<Timestamp>;
   userId: string;

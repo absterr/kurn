@@ -20,6 +20,7 @@ const leadQueryStatuses = [
   "cancelled",
   "completed",
   "failed",
+  "exhausted",
   "partial",
   "paused",
   "pending",
@@ -40,7 +41,7 @@ export const leadQueries = pgTable(
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
     keyword: varchar("keyword", { length: 255 }).notNull(),
-    location: varchar("location", { length: 255 }),
+    location: varchar("location", { length: 255 }).notNull(),
     status: varchar("status", { length: 255 }).notNull().default("pending"),
     ...timestamps,
   },

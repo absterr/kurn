@@ -7,7 +7,7 @@
     "build": "tsc -b tsconfig.build.json && tsc-alias -p tsconfig.build.json",
     "dev": "clear && nodemon src/server",
     "start": "node dist/server",
-    "db:gen": "bun --env-file .env --env-file .env.local kysely-codegen --dialect postgres --camel-case --out-file db/types.ts",
+    "db:gen": "bun --env-file .env --env-file .env.local kysely-codegen --dialect postgres --camel-case --out-file src/db/types.ts",
     "build:bun": "bun build src/server.ts --target=node --outdir dist",
     "dev:bun": "clear && bun run --watch src/server"
   },
