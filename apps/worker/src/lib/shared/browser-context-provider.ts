@@ -1,5 +1,5 @@
 import { Injectable, OnModuleDestroy, OnModuleInit } from "@nestjs/common";
-import { Browser } from "playwright";
+import { Browser, BrowserContextOptions } from "playwright";
 import { chromium } from "playwright-extra";
 import stealth from "puppeteer-extra-plugin-stealth";
 
@@ -16,12 +16,17 @@ export class BrowserContextProvider implements OnModuleInit, OnModuleDestroy {
     });
   }
 
-  getContext() {
+  getBrowser() {
+    return this.browser;
+  }
+
+  getContext(overrides?: BrowserContextOptions) {
     return this.browser.newContext({
       userAgent:
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
       viewport: { width: 1920, height: 1080 },
       locale: "en-US",
+      ...overrides,
     });
   }
 
