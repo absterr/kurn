@@ -28,46 +28,18 @@ export class LeadAuditProcessor extends WorkerHost {
     try {
       const auditedLeads = await this.auditLeadsService.auditLeads(leads);
 
-      const filteredAuditedLeads = auditedLeads.filter(async (lead) => {
-        const leadHasEmails = lead.emails !== null && lead.emails.length > 0;
-        const leadIsReachable = leadHasEmails || lead.phone !== null;
+      // const filteredAuditedLeads = auditedLeads.filter(async (lead) => {
+      //   const leadHasEmails = lead.emails !== null && lead.emails.length > 0;
+      //   const leadIsReachable = leadHasEmails || lead.phone !== null;
 
-        return leadIsReachable;
-      });
-
-      const savedLeadsDetails = await Promise.all(
-        filteredAuditedLeads.map(async (lead) => {
-          const { companyName, diagnosis, ...rest } = lead;
-          const leadDetails = await this.db
-            .insertInto("leads")
-            .values({
-              ...rest,
-              leadQueryId,
-              companyName,
-              auditDiagnosis: diagnosis,
-              completionStatus: "partial",
-            })
-            .returning([
-              "id",
-              "leadQueryId",
-              "emails",
-              "websiteReachable",
-              "auditDiagnosis",
-              "companyName",
-              "phone",
-              "website",
-            ])
-            .executeTakeFirstOrThrow();
-
-          return leadDetails;
-        }),
-      );
+      //   return leadIsReachable;
+      // });
 
       await this.outreachDraftQueue.add(
         "outreach-draft",
         {
           leadQueryId,
-          leads: savedLeadsDetails,
+          leads: auditedLeads,
         },
         {
           attempts: 3,

@@ -1,10 +1,11 @@
 import { Injectable } from "@nestjs/common";
 import pLimit from "p-limit";
 import { Lead } from "@/utils/shared-types";
+import { WebsiteAuditService } from "./website-audit.service";
 
 @Injectable()
 export class AuditLeadsService {
-  constructor() {}
+  constructor(private readonly websiteAuditService: WebsiteAuditService) {}
 
   async auditLeads(mapsLeads: Lead[]) {
     const limit = pLimit(2);
@@ -13,41 +14,34 @@ export class AuditLeadsService {
       mapsLeads.map((lead) =>
         limit(async () => {
           let websiteReachable: boolean | null = null;
-          let diagnosis: string[] | null = null;
-          let emails: string[] | null = null;
 
           if (lead.website === null) {
-            diagnosis = ["No website", "Weak online presence"];
-
             return {
               ...lead,
-              emails,
               websiteReachable,
-              diagnosis,
             };
           }
 
           try {
             const res = await fetch(lead.website);
-            if (res.ok) {
-              diagnosis = ["Website is reachable"];
-              websiteReachable = true;
-              emails = [];
-            } else {
-              websiteReachable = false;
-              diagnosis = [`Website returned an error (${res.status})`];
-            }
+            if (!res.ok) throw new Error("Website not reachable");
+
+            websiteReachable = true;
+            const websiteAudits = this.websiteAuditService.audit(lead.website);
+
+            return {
+              ...lead,
+              websiteReachable,
+              websiteAudits,
+            };
           } catch {
             websiteReachable = false;
-            diagnosis = ["Website is unreachable"];
-          }
 
-          return {
-            ...lead,
-            emails,
-            websiteReachable,
-            diagnosis,
-          };
+            return {
+              ...lead,
+              websiteReachable,
+            };
+          }
         }),
       ),
     );
