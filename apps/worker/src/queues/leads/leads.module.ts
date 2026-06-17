@@ -7,7 +7,7 @@ import { LeadsService } from "./leads.service";
 import { LeadAuditProcessor } from "./processors/lead-audit.processor";
 import { LeadSearchProcessor } from "./processors/lead-search.processor";
 import { OutreachDraftProcessor } from "./processors/outreach-draft.processor";
-import { AuditLeadsService } from "./providers/audit-leads.service";
+import { AuditLeadsModule } from "./providers/audit-leads";
 import { GoogleMapsScraper } from "./providers/google-maps.scraper";
 import { OutreachDraftService } from "./providers/outreach-draft.service";
 
@@ -27,10 +27,10 @@ import { OutreachDraftService } from "./providers/outreach-draft.service";
     DatabaseModule,
     EnvModule,
     SharedModule,
+    AuditLeadsModule,
   ],
   providers: [
     LeadsService,
-    AuditLeadsService,
     GoogleMapsScraper,
     OutreachDraftService,
     LeadAuditProcessor,
