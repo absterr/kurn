@@ -1,11 +1,14 @@
 import { Hono } from "hono";
 import { accessV1Router } from "./v1/access/access.v1.routes.js";
 import { authV1Router } from "./v1/auth/auth.v1.routes.js";
+import { guestV1Router } from "./v1/guest.v1.routes.js";
 import { leadsV1Router } from "./v1/leads/leads.v1.routes.js";
 import { logoutV1Router } from "./v1/logout/logout.v1.route.js";
 
 const v1 = new Hono();
 v1.route("/auth", authV1Router);
+
+v1.route("/guest", guestV1Router);
 
 // Protected routes
 v1.route("/access", accessV1Router);
