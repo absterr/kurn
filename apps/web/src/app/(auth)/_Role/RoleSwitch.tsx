@@ -19,7 +19,7 @@ const RoleSwitch = () => {
 
   return (
     <TooltipProvider delayDuration={300}>
-      <div className="flex items-center justify-center p-2">
+      <div className="flex items-center justify-center px-2">
         <fieldset
           aria-label="User role"
           className="flex gap-1.5 rounded-lg p-1 bg-foreground/10"

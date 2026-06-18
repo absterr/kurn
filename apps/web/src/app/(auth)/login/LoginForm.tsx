@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/tooltip";
 import { loginSchema } from "@/lib/schema/auth-schema";
 import { useRole } from "../_Role/role-provider";
+import GuestLoginBtn from "../GuestLoginBtn";
 
 const LoginForm = () => {
   const { role } = useRole();
@@ -113,6 +114,44 @@ const LoginForm = () => {
           {isPending ? <LoadingSpinner /> : "Log in"}
         </button>
       </form>
+
+      {role === "member" && (
+        <div className="flex flex-col pt-6 gap-6 md:gap-8">
+          <p className="text-xs text-foreground/50 text-center">
+            By continuing, you agree to Kurn's{" "}
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://www.example.com/terms"
+              className="text-foreground/70 hover:text-foreground underline"
+            >
+              Terms of Service
+            </a>{" "}
+            and{" "}
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://www.example.com/privacy"
+              className="text-foreground/70 hover:text-foreground underline"
+            >
+              Privacy Policy
+            </a>
+          </p>
+
+          <div className="flex flex-col items-center gap-4">
+            <p className="text-xs md:text-sm text-foreground/50 text-center">
+              Looking to get started?{" "}
+              <Link
+                href={"/request-access"}
+                className=" text-foreground/70 hover:text-foreground underline lg:no-underline lg:hover:underline"
+              >
+                Request access
+              </Link>
+            </p>
+            <GuestLoginBtn />
+          </div>
+        </div>
+      )}
     </>
   );
 };

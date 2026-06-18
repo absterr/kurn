@@ -1,4 +1,5 @@
 import Link from "next/link";
+import GuestLoginBtn from "../GuestLoginBtn";
 import RequestAccessForm from "./RequestAccessForm";
 
 export default function RequestAccess() {
@@ -19,6 +20,9 @@ export default function RequestAccess() {
           Log in
         </Link>
       </p>
+      <div className="py-6 flex items-center justify-center">
+        <GuestLoginBtn />
+      </div>
     </div>
   );
 }
