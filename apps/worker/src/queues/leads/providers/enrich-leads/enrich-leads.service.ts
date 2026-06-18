@@ -1,11 +1,19 @@
-import { GoogleGenAI } from "@google/genai";
-import { Injectable } from "@nestjs/common";
+import {
+  Content,
+  Type as GenAIType,
+  GenerateContentResponse,
+  GoogleGenAI,
+  Part,
+  Schema,
+} from "@google/genai";
+import { Injectable, Type as NestType } from "@nestjs/common";
 import { plainToInstance } from "class-transformer";
 import { validateOrReject } from "class-validator";
 import { EnvProvider } from "@/config/env/env.provider";
+import { buildAuditDiagnosisPrompt } from "@/utils/audit-prompt";
 import { AuditedLead } from "@/utils/audit-types";
 import { EMAIL_SYSTEM_PROMPT } from "@/utils/email-prompt";
-import { GeneratedEmailDto } from "./enrich-leads.dto";
+import { GeneratedAuditDto, GeneratedEmailDto } from "./enrich-leads.dto";
 
 export interface LeadAuditDetails {
   companyName: string;
@@ -28,47 +36,102 @@ export class EnrichLeadsService {
 
     if (!lead.website) {
       auditDiagnosis.push("No website found", "Weak online presence");
-      return { ...lead, auditDiagnosis };
+    } else if (!lead.websiteReachable) {
+      auditDiagnosis.push("Website is unreachable");
+    } else if (lead.websiteAudits) {
+      const leadContext = {
+        companyName: lead.companyName,
+        website: lead.website,
+      };
+      const { system, user } = await buildAuditDiagnosisPrompt(
+        leadContext,
+        lead.websiteAudits,
+      );
+
+      const resAuditDiagnosisSchema: Schema = {
+        type: GenAIType.OBJECT,
+        properties: {
+          auditDiagnosis: {
+            type: GenAIType.ARRAY,
+            items: { type: GenAIType.STRING },
+          },
+        },
+        required: ["auditDiagnosis"],
+      };
+
+      const response = await this.generateContext(
+        system,
+        user,
+        resAuditDiagnosisSchema,
+      );
+
+      const parsedDiagnosis = await this.parseModelResponse(
+        response,
+        GeneratedAuditDto,
+      );
+
+      auditDiagnosis.push(...parsedDiagnosis.auditDiagnosis);
+    } else {
+      auditDiagnosis.push("Missing audit data");
     }
 
-    if (!lead.websiteReachable) {
-      auditDiagnosis.push("Website is unreachable", "Weak online presence");
-      return { ...lead, auditDiagnosis };
-    }
-
-    // Diagnose the lead based on website audits if available
+    return auditDiagnosis;
   }
 
   async generateEmail(lead: LeadAuditDetails) {
     const hasWebsite = lead.website !== null;
 
-    const audit = {
+    const input = {
+      companyName: lead.companyName,
       hasWebsite,
       websiteReachable: lead.websiteReachable,
-      diagnosis: lead.auditDiagnosis,
+      auditDiagnosis: lead.auditDiagnosis,
     };
 
-    const input = { companyName: lead.companyName, audit };
-
-    const response = await this.genAI.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: "Generate the email",
-      config: {
-        systemInstruction: EMAIL_SYSTEM_PROMPT(input),
-        responseMimeType: "application/json",
-        responseSchema: {
-          type: "object",
-          properties: {
-            subject: { type: "string" },
-            body: { type: "string" },
-          },
-          required: ["subject", "body"],
+    const resEmailSchema: Schema = {
+      type: GenAIType.OBJECT,
+      properties: {
+        subject: { type: GenAIType.STRING },
+        body: {
+          type: GenAIType.STRING,
         },
       },
-    });
+      required: ["subject", "body"],
+    };
 
-    const result = response.text;
-    if (!result) throw new Error("Failed to generate email");
+    const response = await this.generateContext(
+      EMAIL_SYSTEM_PROMPT(input),
+      "Generate the email",
+      resEmailSchema,
+    );
+
+    const emailDto = await this.parseModelResponse(response, GeneratedEmailDto);
+    const emailDraft = JSON.stringify(emailDto);
+    return emailDraft;
+  }
+
+  private generateContext(
+    systemInstruction: string,
+    contents: string | Part | Part[] | Content | Content[],
+    responseSchema: Schema,
+  ) {
+    return this.genAI.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents,
+      config: {
+        systemInstruction,
+        responseMimeType: "application/json",
+        responseSchema,
+      },
+    });
+  }
+
+  private async parseModelResponse<T>(
+    modelResponse: GenerateContentResponse,
+    dtoClass: NestType<T>,
+  ) {
+    const result = modelResponse.text;
+    if (!result) throw new Error("Failed to generate response");
 
     let parsed: unknown;
     try {
@@ -77,10 +140,9 @@ export class EnrichLeadsService {
       throw new Error("Invalid JSON response");
     }
 
-    const dto = plainToInstance(GeneratedEmailDto, parsed);
-    await validateOrReject(dto);
+    const dto = plainToInstance(dtoClass, parsed);
+    await validateOrReject(dto as Object);
 
-    const draft = JSON.stringify(dto);
-    return draft;
+    return dto;
   }
 }
