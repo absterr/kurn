@@ -18,7 +18,7 @@ export class QueueService {
     try {
       const awaitingQueries = await this.db
         .selectFrom("leadQueries")
-        .where("status", "in", ["pending", "successful", "failed", "partial"])
+        .where("status", "in", ["pending", "successful", "failed"])
         .selectAll()
         .execute();
 
