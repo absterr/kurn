@@ -8,8 +8,8 @@ import { LeadAuditProcessor } from "./processors/lead-audit.processor";
 import { LeadEnrichmentProcessor } from "./processors/lead-enrichment.processor";
 import { LeadSearchProcessor } from "./processors/lead-search.processor";
 import { AuditLeadsModule } from "./providers/audit-leads";
+import { EnrichLeadsService } from "./providers/enrich-leads";
 import { GoogleMapsScraper } from "./providers/google-maps.scraper";
-import { LeadEnrichmentService } from "./providers/lead-enrichment.service";
 
 @Module({
   imports: [
@@ -31,8 +31,8 @@ import { LeadEnrichmentService } from "./providers/lead-enrichment.service";
   ],
   providers: [
     LeadsService,
+    EnrichLeadsService,
     GoogleMapsScraper,
-    LeadEnrichmentService,
     LeadAuditProcessor,
     LeadSearchProcessor,
     LeadEnrichmentProcessor,
