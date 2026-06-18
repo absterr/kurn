@@ -1,4 +1,3 @@
-import Link from "next/link";
 import RoleSwitch from "../_Role/RoleSwitch";
 import LoginForm from "./LoginForm";
 
@@ -10,40 +9,9 @@ export default function Login() {
       </h1>
 
       <LoginForm />
-
-      <div className="flex flex-col py-6 gap-8">
-        <p className="text-xs text-foreground/50 text-center">
-          By continuing, you agree to Kurn's{" "}
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://www.example.com/terms"
-            className="text-foreground/70 hover:text-foreground underline"
-          >
-            Terms of Service
-          </a>{" "}
-          and{" "}
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://www.example.com/privacy"
-            className="text-foreground/70 hover:text-foreground underline"
-          >
-            Privacy Policy
-          </a>
-        </p>
-
-        <p className="text-xs md:text-sm text-foreground/50 text-center">
-          Looking to get started?{" "}
-          <Link
-            href={"/request-access"}
-            className=" text-foreground/70 hover:text-foreground underline lg:no-underline lg:hover:underline"
-          >
-            Request access
-          </Link>
-        </p>
+      <div className="flex justify-center py-5">
+        <div className="h-1.5 w-1.5 rounded-full bg-foreground/70 self-center" />
       </div>
-
       <RoleSwitch />
     </div>
   );

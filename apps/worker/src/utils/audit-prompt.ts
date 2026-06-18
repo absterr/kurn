@@ -39,7 +39,7 @@ const SYSTEM_PROMPT = `
   - First contentful paint: good <= 1.8s, poor > 3s
   - Largest contentful paint: good <= 2.5s, poor > 4s
   - Cumulative layout shift: good <= 0.1, poor > 0.25
-  - Interaction latency: good <= 200ms, poor > 500ms (this is a single simulated click, not a real user session — treat it as directional only, not a precise measurement)
+  - Interaction latency: good <= 200ms, poor > 500ms (This is a single simulated click, not a real user session. Treat it as directional only, not a precise measurement)
 `.trim();
 
 const fmtMs = (value: number | null) => {
