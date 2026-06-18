@@ -22,12 +22,14 @@ export interface LeadAuditDetails {
 }
 
 @Injectable()
-export class OutreachDraftService {
+export class LeadEnrichmentService {
   private readonly genAI: GoogleGenAI;
 
   constructor(private readonly env: EnvProvider) {
     this.genAI = new GoogleGenAI({ apiKey: this.env.get("GEMINI_API_KEY") });
   }
+
+  async diagnoseLead(lead: LeadAuditDetails) {}
 
   async generateEmail(lead: LeadAuditDetails) {
     const hasWebsite = lead.website !== null;

@@ -1,7 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import pLimit from "p-limit";
 import { Lead } from "@/utils/shared-types";
-import { WebsiteAuditService } from "./website-audit.service";
+import {
+  WebsiteAuditResult,
+  WebsiteAuditService,
+} from "./website-audit.service";
 
 @Injectable()
 export class AuditLeadsService {
@@ -14,11 +17,15 @@ export class AuditLeadsService {
       mapsLeads.map((lead) =>
         limit(async () => {
           let websiteReachable: boolean | null = null;
+          let websiteAudits: WebsiteAuditResult | null = null;
+          let emails: string[] | null = null;
 
           if (lead.website === null) {
             return {
               ...lead,
+              emails,
               websiteReachable,
+              websiteAudits,
             };
           }
 
@@ -27,21 +34,30 @@ export class AuditLeadsService {
             if (!res.ok) throw new Error("Website not reachable");
 
             websiteReachable = true;
-            const websiteAudits = this.websiteAuditService.audit(lead.website);
+            emails = await this.websiteAuditService.crawlEmails(lead.website);
 
-            return {
-              ...lead,
-              websiteReachable,
-              websiteAudits,
-            };
+            if (lead.phone === null && emails.length === 0) {
+              return {
+                ...lead,
+                emails,
+                websiteReachable,
+                websiteAudits,
+              };
+            }
+
+            websiteAudits = await this.websiteAuditService.auditWebsite(
+              lead.website,
+            );
           } catch {
             websiteReachable = false;
-
-            return {
-              ...lead,
-              websiteReachable,
-            };
           }
+
+          return {
+            ...lead,
+            emails,
+            websiteReachable,
+            websiteAudits,
+          };
         }),
       ),
     );

@@ -33,7 +33,6 @@ export interface ViewportAuditResult {
 export interface WebsiteAuditResult {
   auditedAt: string;
   viewports: ViewportAuditResult[];
-  emails: string[];
 }
 
 @Injectable()
@@ -65,22 +64,18 @@ export class WebsiteAuditService {
     private readonly webCrawler: WebCrawler,
   ) {}
 
-  async audit(websiteUrl: string): Promise<WebsiteAuditResult> {
-    const [viewports, emails] = await Promise.all([
-      Promise.all(
-        this.profiles.map((profile) => this.auditViewport(websiteUrl, profile)),
-      ),
-      this.crawlEmails(websiteUrl),
-    ]);
+  async auditWebsite(websiteUrl: string): Promise<WebsiteAuditResult> {
+    const viewports = await Promise.all(
+      this.profiles.map((profile) => this.auditViewport(websiteUrl, profile)),
+    );
 
     return {
       auditedAt: new Date().toISOString(),
       viewports,
-      emails,
     };
   }
 
-  private async crawlEmails(websiteUrl: string): Promise<string[]> {
+  async crawlEmails(websiteUrl: string): Promise<string[]> {
     const context = await this.browserContextProvider.getContext();
     const page = await context.newPage();
     try {
