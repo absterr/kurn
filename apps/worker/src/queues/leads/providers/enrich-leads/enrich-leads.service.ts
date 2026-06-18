@@ -1,3 +1,4 @@
+import * as fs from "node:fs/promises";
 import {
   Content,
   Type as GenAIType,
@@ -71,6 +72,13 @@ export class EnrichLeadsService {
       );
 
       auditDiagnosis.push(...parsedDiagnosis.auditDiagnosis);
+
+      // Clean up screenshot files
+      await Promise.all(
+        lead.websiteAudits.viewports.map((port) =>
+          this.deleteScreenshot(port.screenshotPath),
+        ),
+      );
     } else {
       auditDiagnosis.push("Missing audit data");
     }
@@ -141,8 +149,18 @@ export class EnrichLeadsService {
     }
 
     const dto = plainToInstance(dtoClass, parsed);
-    await validateOrReject(dto as Object);
+    await validateOrReject(dto as Record<string, string>);
 
     return dto;
+  }
+
+  private async deleteScreenshot(screenshotPath: string) {
+    if (!screenshotPath) return;
+
+    try {
+      await fs.unlink(screenshotPath);
+    } catch {
+      // Ignore cleanup errors
+    }
   }
 }

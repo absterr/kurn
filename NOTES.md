@@ -28,7 +28,7 @@
 - [x] **[API]** Move to node
 - [x] **[Worker]** Implement deduplication on leads module
 - [x] **[Worker]** Implement multiple lead website audit services including UI audit, performance audit
-- [ ] **[Worker]** Implement AI diagnosis for leads
+- [x] **[Worker]** Implement AI diagnosis for leads
 - [ ] **[Worker]** Implement async cold email
 - [ ] **[API]** Implement guest token endpoint
 - [ ] **[Web]** Implement guest token UI

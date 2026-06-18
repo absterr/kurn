@@ -35,7 +35,7 @@ export class PerformanceAuditService {
         new PerformanceObserver((list) => {
           const entries = list.getEntries();
           const last = entries[entries.length - 1];
-          if (last) window.__vitals!.lcp = last.startTime;
+          if (last && window.__vitals) window.__vitals.lcp = last.startTime;
         }).observe({ type: "largest-contentful-paint", buffered: true });
       } catch {
         // LCP not supported in this engine/context
@@ -44,8 +44,8 @@ export class PerformanceAuditService {
       try {
         new PerformanceObserver((list) => {
           for (const entry of list.getEntries() as LayoutShiftEntry[]) {
-            if (!entry.hadRecentInput) {
-              window.__vitals!.cls += entry.value;
+            if (!entry.hadRecentInput && window.__vitals) {
+              window.__vitals.cls += entry.value;
             }
           }
         }).observe({ type: "layout-shift", buffered: true });
@@ -57,7 +57,7 @@ export class PerformanceAuditService {
         new PerformanceObserver((list) => {
           for (const entry of list.getEntries() as EventTimingEntry[]) {
             if (typeof entry.duration === "number") {
-              window.__vitals!.inpCandidates.push(entry.duration);
+              window.__vitals?.inpCandidates.push(entry.duration);
             }
           }
           /*
