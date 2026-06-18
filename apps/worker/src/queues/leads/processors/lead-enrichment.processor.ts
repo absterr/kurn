@@ -24,19 +24,46 @@ export class LeadEnrichmentProcessor extends WorkerHost {
 
   async process(job: Job<AuditLeadsJobData>) {
     const { leadQueryId, auditedLeads } = job.data;
-    const limit = pLimit(4);
+    const limit = pLimit(3);
 
     try {
       const diagnosedLeads = await Promise.all(
-        auditedLeads.map((lead) => limit(async () => {})),
+        auditedLeads.map((lead) =>
+          limit(async () => {
+            const auditDiagnosis =
+              await this.enrichLeadsService.diagnoseLead(lead);
+
+            const { websiteAudits, ...rest } = lead;
+
+            const emailDraft = await this.enrichLeadsService.generateEmail({
+              ...rest,
+              auditDiagnosis,
+            });
+
+            return {
+              ...rest,
+              auditDiagnosis,
+              emailDraft,
+            };
+          }),
+        ),
       );
 
-      await this.db
-        .updateTable("leadQueries")
-        .set({ status: "successful" })
-        .where("id", "=", leadQueryId)
-        .where("status", "!=", "exhausted")
-        .execute();
+      await this.db.transaction().execute(async (tx) => {
+        for (const lead of diagnosedLeads) {
+          await tx
+            .insertInto("leads")
+            .values({ leadQueryId, ...lead })
+            .execute();
+        }
+
+        await tx
+          .updateTable("leadQueries")
+          .set({ status: "successful" })
+          .where("id", "=", leadQueryId)
+          .where("status", "!=", "exhausted")
+          .execute();
+      });
     } catch (err) {
       const isLastAttempt = job.attemptsMade >= (job.opts.attempts ?? 1);
 
