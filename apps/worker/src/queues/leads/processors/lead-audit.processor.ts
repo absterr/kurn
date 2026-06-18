@@ -17,7 +17,7 @@ export class LeadAuditProcessor extends WorkerHost {
   constructor(
     @Inject(KYSELY_DB) private readonly db: Kysely<DB>,
     private readonly auditLeadsService: AuditLeadsService,
-    @InjectQueue("outreach-draft") private readonly outreachDraftQueue: Queue,
+    @InjectQueue("lead-enrichment") private readonly leadEnrichmentQueue: Queue,
   ) {
     super();
   }
@@ -28,18 +28,15 @@ export class LeadAuditProcessor extends WorkerHost {
     try {
       const auditedLeads = await this.auditLeadsService.auditLeads(leads);
 
-      // const filteredAuditedLeads = auditedLeads.filter(async (lead) => {
-      //   const leadHasEmails = lead.emails !== null && lead.emails.length > 0;
-      //   const leadIsReachable = leadHasEmails || lead.phone !== null;
+      const filteredAuditedLeads = auditedLeads.filter(async (lead) => {
+        return lead.websiteAudits !== null;
+      });
 
-      //   return leadIsReachable;
-      // });
-
-      await this.outreachDraftQueue.add(
-        "outreach-draft",
+      await this.leadEnrichmentQueue.add(
+        "lead-enrichment",
         {
           leadQueryId,
-          leads: auditedLeads,
+          leads: filteredAuditedLeads,
         },
         {
           attempts: 3,

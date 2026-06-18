@@ -5,11 +5,11 @@ import { DatabaseModule } from "@/db/db.module";
 import { SharedModule } from "@/lib/shared/shared.module";
 import { LeadsService } from "./leads.service";
 import { LeadAuditProcessor } from "./processors/lead-audit.processor";
+import { LeadEnrichmentProcessor } from "./processors/lead-enrichment.processor";
 import { LeadSearchProcessor } from "./processors/lead-search.processor";
-import { OutreachDraftProcessor } from "./processors/outreach-draft.processor";
 import { AuditLeadsModule } from "./providers/audit-leads";
 import { GoogleMapsScraper } from "./providers/google-maps.scraper";
-import { OutreachDraftService } from "./providers/outreach-draft.service";
+import { LeadEnrichmentService } from "./providers/lead-enrichment.service";
 
 @Module({
   imports: [
@@ -21,7 +21,7 @@ import { OutreachDraftService } from "./providers/outreach-draft.service";
         name: "lead-audit",
       },
       {
-        name: "outreach-draft",
+        name: "lead-enrichment",
       },
     ),
     DatabaseModule,
@@ -32,10 +32,10 @@ import { OutreachDraftService } from "./providers/outreach-draft.service";
   providers: [
     LeadsService,
     GoogleMapsScraper,
-    OutreachDraftService,
+    LeadEnrichmentService,
     LeadAuditProcessor,
     LeadSearchProcessor,
-    OutreachDraftProcessor,
+    LeadEnrichmentProcessor,
   ],
   exports: [LeadsService],
 })
