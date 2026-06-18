@@ -2,18 +2,7 @@ import { Injectable } from "@nestjs/common";
 import * as fs from "fs";
 import * as path from "path";
 import { Page } from "playwright";
-
-export interface ConsoleIssue {
-  type: "error" | "warning" | "uncaught-exception";
-  text: string;
-  location?: string;
-}
-
-export interface FailedRequest {
-  url: string;
-  failure: string | null;
-  resourceType: string;
-}
+import { ConsoleIssue, FailedRequest } from "@/utils/audit-types";
 
 @Injectable()
 export class UiAuditService {

@@ -1,9 +1,15 @@
 import { GoogleGenAI } from "@google/genai";
 import { Injectable } from "@nestjs/common";
 import { plainToInstance } from "class-transformer";
-import { IsString, validateOrReject } from "class-validator";
+import {
+  ArrayNotEmpty,
+  IsArray,
+  IsString,
+  validateOrReject,
+} from "class-validator";
 import { EnvProvider } from "@/config/env/env.provider";
 import { EMAIL_SYSTEM_PROMPT } from "@/utils/system-prompts";
+import { AuditedLead } from "../processors/lead-enrichment.processor";
 
 class GeneratedEmailDto {
   @IsString()
@@ -11,6 +17,13 @@ class GeneratedEmailDto {
 
   @IsString()
   body: string;
+}
+
+class GeneratedAuditDto {
+  @IsArray()
+  @ArrayNotEmpty()
+  @IsString({ each: true })
+  auditDiagnosis: string[];
 }
 
 export interface LeadAuditDetails {
@@ -29,7 +42,7 @@ export class LeadEnrichmentService {
     this.genAI = new GoogleGenAI({ apiKey: this.env.get("GEMINI_API_KEY") });
   }
 
-  async diagnoseLead(lead: LeadAuditDetails) {}
+  async diagnoseLead(lead: AuditedLead) {}
 
   async generateEmail(lead: LeadAuditDetails) {
     const hasWebsite = lead.website !== null;

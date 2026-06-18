@@ -1,10 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import pLimit from "p-limit";
+import { WebsiteAuditResult } from "@/utils/audit-types";
 import { Lead } from "@/utils/shared-types";
-import {
-  WebsiteAuditResult,
-  WebsiteAuditService,
-} from "./website-audit.service";
+import { WebsiteAuditService } from "./website-audit.service";
 
 @Injectable()
 export class AuditLeadsService {

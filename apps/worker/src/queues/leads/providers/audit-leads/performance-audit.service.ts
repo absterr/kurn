@@ -1,17 +1,10 @@
 import { Page } from "playwright";
+import { CoreWebVitals } from "@/utils/audit-types";
 
 declare global {
   interface Window {
     __vitals?: WebVitalsState;
   }
-}
-
-export interface CoreWebVitals {
-  ttfbMs: number | null;
-  fcpMs: number | null;
-  lcpMs: number | null;
-  cls: number | null;
-  inpMs: number | null;
 }
 
 interface WebVitalsState {
