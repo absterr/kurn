@@ -1,5 +1,5 @@
+import * as fs from "node:fs/promises";
 import { Part } from "@google/genai";
-import * as fs from "fs/promises";
 import { ViewportAuditResult, WebsiteAuditResult } from "./audit-types";
 
 export interface LeadContext {
