@@ -4,7 +4,6 @@ import {
   boolean,
   check,
   jsonb,
-  pgEnum,
   pgTable,
   unique,
   uuid,
@@ -21,17 +20,11 @@ const leadQueryStatuses = [
   "completed",
   "failed",
   "exhausted",
-  "partial",
   "paused",
   "pending",
   "processing",
   "successful",
 ] as const;
-
-export const leadCompletionStatus = pgEnum("lead_completion_status", [
-  "completed",
-  "partial",
-]);
 
 export const leadQueries = pgTable(
   "lead_queries",
@@ -60,9 +53,6 @@ export const leads = pgTable(
     leadQueryId: uuid("lead_query_id")
       .notNull()
       .references(() => leadQueries.id, { onDelete: "cascade" }),
-    completionStatus: leadCompletionStatus("completion_status")
-      .notNull()
-      .default("partial"),
     reviewed: boolean("reviewed").notNull().default(false),
     companyName: varchar("company_name", { length: 255 }).notNull(),
     mapLink: varchar("map_link", { length: 255 }).notNull(),
