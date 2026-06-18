@@ -6,7 +6,7 @@ import pLimit from "p-limit";
 import { KYSELY_DB } from "@/db/db.module";
 import { DB } from "@/db/types";
 import { AuditedLead } from "@/utils/audit-types";
-import { LeadEnrichmentService } from "../providers/lead-enrichment.service";
+import { EnrichLeadsService } from "../providers/enrich-leads";
 
 interface AuditLeadsJobData {
   leadQueryId: string;
@@ -17,7 +17,7 @@ interface AuditLeadsJobData {
 export class LeadEnrichmentProcessor extends WorkerHost {
   constructor(
     @Inject(KYSELY_DB) private readonly db: Kysely<DB>,
-    private readonly leadEnrichmentService: LeadEnrichmentService,
+    private readonly enrichLeadsService: EnrichLeadsService,
   ) {
     super();
   }
@@ -28,25 +28,8 @@ export class LeadEnrichmentProcessor extends WorkerHost {
 
     try {
       const diagnosedLeads = await Promise.all(
-        auditedLeads.map((lead) =>
-          limit(async () => {
-            /*
-              Diagnose leads
-              Generate email drafts
-            */
-          }),
-        ),
+        auditedLeads.map((lead) => limit(async () => {})),
       );
-
-      // Persist diagnosedLeads (instead of updating)
-
-      // leadsDrafts.forEach(async ({ leadId, emailDraft }) => {
-      //   await this.db
-      //     .updateTable("leads")
-      //     .set({ emailDraft })
-      //     .where("id", "=", leadId)
-      //     .execute();
-      // });
 
       await this.db
         .updateTable("leadQueries")

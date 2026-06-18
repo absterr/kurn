@@ -1,24 +1,22 @@
 interface OutreachInput {
   companyName: string;
-  audit: {
-    hasWebsite: boolean | null;
-    websiteReachable: boolean | null;
-    diagnosis: string[] | null;
-  };
+  hasWebsite: boolean | null;
+  websiteReachable: boolean | null;
+  auditDiagnosis: string[] | null;
 }
 
 export const EMAIL_SYSTEM_PROMPT = (input: OutreachInput) => {
-  const { companyName, audit } = input;
+  const { companyName, hasWebsite, websiteReachable, auditDiagnosis } = input;
 
-  const websiteStatus = !input.audit.hasWebsite
+  const websiteStatus = !hasWebsite
     ? "no website at all"
-    : !input.audit.websiteReachable
+    : !websiteReachable
       ? "a website that is currently unreachable"
       : "a live, reachable website";
 
   const diagnosisText =
-    audit.diagnosis !== null && audit.diagnosis.length > 0
-      ? audit.diagnosis.map((d) => `- ${d}.`).join("\n")
+    auditDiagnosis !== null && auditDiagnosis.length > 0
+      ? auditDiagnosis.map((d) => `- ${d}.`).join("\n")
       : "No specific issues were diagnosed beyond the website status above.";
 
   return `
@@ -48,5 +46,6 @@ export const EMAIL_SYSTEM_PROMPT = (input: OutreachInput) => {
     - Do not exaggerate
     - Do not mention "AI", "automated tools", or that this was generated.
     - If no website exists, lead with that gap as the opportunity.
+    - Output must match exactly this shape: {"subject": "...", "body": "..."}. Respond with raw JSON only.
     `.trim();
 };
