@@ -29,7 +29,9 @@ export class LeadAuditProcessor extends WorkerHost {
       const auditedLeads = await this.auditLeadsService.auditLeads(leads);
 
       const filteredAuditedLeads = auditedLeads.filter(async (lead) => {
-        return lead.websiteAudits !== null;
+        const hasPhone = lead.phone !== null;
+        const hasEmails = lead.emails !== null && lead.emails.length > 0;
+        return hasPhone || hasEmails;
       });
 
       await this.leadEnrichmentQueue.add(

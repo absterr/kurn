@@ -27,13 +27,15 @@
 - [x] **[Web]** Implement middleware (proxy.ts) to frontend routes
 - [x] **[API]** Move to node
 - [x] **[Worker]** Implement deduplication on leads module
-- [ ] **[Worker]** Implement AI audit for leads module
+- [x] **[Worker]** Implement multiple lead website audit services including UI audit, performance audit
+- [ ] **[Worker]** Implement AI diagnosis for leads
 - [ ] **[Worker]** Implement async cold email
-- [ ] **[API]** Implement social login enpoints and integrate with frontend
 - [ ] **[API]** Implement guest token endpoint
 - [ ] **[Web]** Implement guest token UI
 - [ ] **[Web]** Implement fetch for leads endpoints
+- [ ] **[Web]** Implement Suspense or loading.tsx for async pages
 - [ ] **[Web]** Add not-found and error pages
+- [ ] **[API]** Implement social login enpoints and integrate with frontend
 - [ ] **[Worker]** Implement API key rotation
 - [ ] **[Worker]** Deliberate and plan the job module flow (take ideas from career-ops)
 - [ ] **[Worker]** Implement basic job module

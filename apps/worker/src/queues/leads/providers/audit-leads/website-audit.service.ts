@@ -4,35 +4,16 @@ import { BrowserContextProvider } from "@/lib/shared/browser-context-provider";
 import { WebCrawler } from "@/lib/shared/web-crawler";
 import {
   CoreWebVitals,
-  PerformanceAuditService,
-} from "./performance-audit.service";
-import {
-  ConsoleIssue,
-  FailedRequest,
-  UiAuditService,
-} from "./ui-audit.service";
-
-type ViewportName = "mobile" | "tablet" | "desktop";
+  ViewportAuditResult,
+  ViewportName,
+  WebsiteAuditResult,
+} from "@/utils/audit-types";
+import { PerformanceAuditService } from "./performance-audit.service";
+import { UiAuditService } from "./ui-audit.service";
 
 interface ViewportProfile {
   name: ViewportName;
   contextOptions: BrowserContextOptions;
-}
-
-export interface ViewportAuditResult {
-  viewport: ViewportName;
-  screenshotPath: string;
-  httpStatus: number | null;
-  totalLoadTimeMs: number;
-  vitals: CoreWebVitals;
-  consoleIssues: ConsoleIssue[];
-  failedRequests: FailedRequest[];
-  error?: string;
-}
-
-export interface WebsiteAuditResult {
-  auditedAt: string;
-  viewports: ViewportAuditResult[];
 }
 
 @Injectable()
