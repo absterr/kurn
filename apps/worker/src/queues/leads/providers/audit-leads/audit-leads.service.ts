@@ -1,6 +1,5 @@
 import { Injectable } from "@nestjs/common";
 import pLimit from "p-limit";
-import { AuditedLead, WebsiteAuditResult } from "@/utils/audit-types";
 import { Lead } from "@/utils/shared-types";
 import { WebsiteAuditService } from "./website-audit.service";
 
@@ -8,57 +7,64 @@ import { WebsiteAuditService } from "./website-audit.service";
 export class AuditLeadsService {
   constructor(private readonly websiteAuditService: WebsiteAuditService) {}
 
+  private hasContact(phone: string | null, emails: string[] | null) {
+    const hasEmails = emails && emails.length > 0;
+    return phone !== null || hasEmails;
+  }
+
   async auditLeads(mapsLeads: Lead[]) {
     const limit = pLimit(2);
 
-    const auditedLeads: AuditedLead[] = await Promise.all(
-      mapsLeads.map((lead) =>
-        limit(async () => {
-          let websiteReachable: boolean | null = null;
-          let websiteAudits: WebsiteAuditResult | null = null;
-          let emails: string[] | null = null;
-
-          if (lead.website === null) {
-            return {
-              ...lead,
-              emails,
-              websiteReachable,
-              websiteAudits,
-            };
-          }
-
-          try {
-            const res = await fetch(lead.website);
-            if (!res.ok) throw new Error("Website not reachable");
-
-            websiteReachable = true;
-            emails = await this.websiteAuditService.crawlEmails(lead.website);
-
-            if (lead.phone === null && emails.length === 0) {
-              return {
-                ...lead,
-                emails,
-                websiteReachable,
-                websiteAudits,
-              };
+    const auditedLeads = (
+      await Promise.all(
+        mapsLeads.map((lead) =>
+          limit(async () => {
+            if (lead.website === null) {
+              return this.hasContact(lead.phone, null)
+                ? {
+                    ...lead,
+                    website: null,
+                    emails: null,
+                    websiteReachable: null,
+                    websiteAudits: null,
+                  }
+                : null;
             }
 
-            websiteAudits = await this.websiteAuditService.auditWebsite(
-              lead.website,
-            );
-          } catch {
-            websiteReachable = false;
-          }
+            try {
+              const res = await fetch(lead.website);
+              if (!res.ok) throw new Error("Website not reachable");
 
-          return {
-            ...lead,
-            emails,
-            websiteReachable,
-            websiteAudits,
-          };
-        }),
-      ),
-    );
+              const emails = await this.websiteAuditService.crawlEmails(
+                lead.website,
+              );
+
+              if (!this.hasContact(lead.phone, emails)) return null;
+
+              const websiteAudits = await this.websiteAuditService.auditWebsite(
+                lead.website,
+              );
+
+              return {
+                ...lead,
+                website: lead.website,
+                emails,
+                websiteReachable: true as const,
+                websiteAudits,
+              };
+            } catch {
+              return {
+                ...lead,
+                website: lead.website,
+                emails: null,
+                websiteReachable: false as const,
+                websiteAudits: null,
+              };
+            }
+          }),
+        ),
+      )
+    ).filter((lead) => lead !== null);
 
     return auditedLeads;
   }
