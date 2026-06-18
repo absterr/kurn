@@ -3,12 +3,10 @@ import app from "./app.js";
 import env from "./config/env.js";
 import { closeDB } from "./db/index.js";
 
-const PORT = env.API_PORT;
-
 const server = serve(
   {
     fetch: app.fetch,
-    port: PORT,
+    port: env.API_PORT,
   },
   (info) => {
     console.log(`API server is running on port ${info.port}`);
