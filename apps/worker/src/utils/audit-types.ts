@@ -37,12 +37,12 @@ export interface WebsiteAuditResult {
 }
 
 export type AuditedLead = {
-  websiteReachable: boolean | null;
   companyName: string;
   mapLink: string;
+  address: string | null;
   phone: string | null;
   website: string | null;
-  address: string | null;
+  websiteReachable: boolean | null;
   emails: string[] | null;
   websiteAudits: WebsiteAuditResult | null;
 };
