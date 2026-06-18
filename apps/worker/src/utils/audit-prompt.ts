@@ -4,10 +4,7 @@ import { ViewportAuditResult, WebsiteAuditResult } from "./audit-types";
 
 export interface LeadContext {
   companyName: string;
-  phone: string | null;
   website: string;
-  emails: string[];
-  category?: string | null;
 }
 
 type VitalRating = "good" | "needs improvement" | "poor" | "unknown";
@@ -106,15 +103,10 @@ export const buildAuditDiagnosisPrompt = async (
   lead: LeadContext,
   audit: WebsiteAuditResult,
 ) => {
-  const introLines: string[] = [
+  const introLines = [
     `Business: ${lead.companyName}`,
     `Website: ${lead.website}`,
-    `Phone on file: ${lead.phone ?? "none"}`,
   ];
-  if (lead.category) introLines.push(`Category: ${lead.category}`);
-  introLines.push(
-    `Emails found on site: ${lead.emails.length ? lead.emails.join(", ") : "none"}`,
-  );
 
   const user: Part[] = [{ text: introLines.join("\n") }];
 

@@ -5,19 +5,8 @@ import { Kysely } from "kysely";
 import pLimit from "p-limit";
 import { KYSELY_DB } from "@/db/db.module";
 import { DB } from "@/db/types";
-import { WebsiteAuditResult } from "@/utils/audit-types";
+import { AuditedLead } from "@/utils/audit-types";
 import { LeadEnrichmentService } from "../providers/lead-enrichment.service";
-
-export type AuditedLead = {
-  websiteReachable: boolean | null;
-  companyName: string;
-  mapLink: string;
-  phone: string | null;
-  website: string | null;
-  address: string | null;
-  emails: string[] | null;
-  websiteAudits: WebsiteAuditResult | null;
-};
 
 interface AuditLeadsJobData {
   leadQueryId: string;

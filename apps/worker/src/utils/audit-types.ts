@@ -35,3 +35,14 @@ export interface WebsiteAuditResult {
   auditedAt: string;
   viewports: ViewportAuditResult[];
 }
+
+export type AuditedLead = {
+  websiteReachable: boolean | null;
+  companyName: string;
+  mapLink: string;
+  phone: string | null;
+  website: string | null;
+  address: string | null;
+  emails: string[] | null;
+  websiteAudits: WebsiteAuditResult | null;
+};

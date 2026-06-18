@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import pLimit from "p-limit";
-import { WebsiteAuditResult } from "@/utils/audit-types";
+import { AuditedLead, WebsiteAuditResult } from "@/utils/audit-types";
 import { Lead } from "@/utils/shared-types";
 import { WebsiteAuditService } from "./website-audit.service";
 
@@ -11,7 +11,7 @@ export class AuditLeadsService {
   async auditLeads(mapsLeads: Lead[]) {
     const limit = pLimit(2);
 
-    const auditedLeads = await Promise.all(
+    const auditedLeads: AuditedLead[] = await Promise.all(
       mapsLeads.map((lead) =>
         limit(async () => {
           let websiteReachable: boolean | null = null;
