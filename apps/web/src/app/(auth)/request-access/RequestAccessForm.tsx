@@ -2,7 +2,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleAlert } from "lucide-react";
 import Link from "next/link";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
@@ -12,6 +12,7 @@ import { requestAccessSchema } from "@/lib/schema/auth-schema";
 import GuestLoginBtn from "../GuestLoginBtn";
 
 const RequestAccessForm = () => {
+  const [isFormLoading, setFormLoading] = useState(false);
   const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof requestAccessSchema>>({
     resolver: zodResolver(requestAccessSchema),
@@ -22,15 +23,19 @@ const RequestAccessForm = () => {
   });
 
   const onSubmit = (body: z.infer<typeof requestAccessSchema>) => {
-    startTransition(async () => {
-      const { data, error } = await requestAccessHandler(body);
-      if (error || !data) {
-        toast.error(error);
-        return;
-      }
-
-      toast.success(data.message);
-    });
+    setFormLoading(true);
+    try {
+      startTransition(async () => {
+        const { data, error } = await requestAccessHandler(body);
+        if (error || !data) {
+          toast.error(error);
+          return;
+        }
+        toast.success(data.message);
+      });
+    } finally {
+      setFormLoading(false);
+    }
   };
 
   return (
@@ -61,7 +66,7 @@ const RequestAccessForm = () => {
           disabled={isPending}
           className="w-full h-12 rounded-xl bg-foreground text-background hover:bg-foreground/80 hover:cursor-pointer font-medium text-sm md:text-base transition-colors"
         >
-          {isPending ? <LoadingSpinner /> : "Request Access"}
+          {isFormLoading ? <LoadingSpinner /> : "Request Access"}
         </button>
       </form>
 
