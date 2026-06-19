@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleAlert } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
@@ -24,6 +24,7 @@ import GuestLoginBtn from "../GuestLoginBtn";
 const LoginForm = () => {
   const { role } = useRole();
   const router = useRouter();
+  const [isFormLoading, setFormLoading] = useState(false);
   const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -35,16 +36,19 @@ const LoginForm = () => {
   });
 
   const onSubmit = (body: z.infer<typeof loginSchema>) => {
-    startTransition(async () => {
-      const { error } = await loginHandler(body);
-
-      if (error) {
-        toast.error(error);
-        return;
-      }
-
-      router.replace("/");
-    });
+    setFormLoading(true);
+    try {
+      startTransition(async () => {
+        const { error } = await loginHandler(body);
+        if (error) {
+          toast.error(error);
+          return;
+        }
+        router.replace("/");
+      });
+    } finally {
+      setFormLoading(false);
+    }
   };
 
   const socialLoginList = [
@@ -111,7 +115,7 @@ const LoginForm = () => {
           disabled={isPending}
           className="w-full h-12 rounded-xl bg-foreground text-background hover:bg-foreground/80 hover:cursor-pointer font-medium text-sm md:text-base transition-colors"
         >
-          {isPending ? <LoadingSpinner /> : "Log in"}
+          {isFormLoading ? <LoadingSpinner /> : "Log in"}
         </button>
       </form>
 

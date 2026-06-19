@@ -1,7 +1,7 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleAlert } from "lucide-react";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
@@ -18,6 +18,7 @@ import {
 import { passwordSchema } from "@/lib/schema/auth-schema";
 
 const RegisterForm = ({ token }: { token: string }) => {
+  const [isFormLoading, setFormLoading] = useState(false);
   const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof passwordSchema>>({
     resolver: zodResolver(passwordSchema),
@@ -28,16 +29,19 @@ const RegisterForm = ({ token }: { token: string }) => {
   });
 
   const onSubmit = (body: z.infer<typeof passwordSchema>) => {
-    startTransition(async () => {
-      const { data, error } = await registerHandler(body, token);
-
-      if (error || !data) {
-        toast.error(error);
-        return;
-      }
-
-      toast.success(data.message);
-    });
+    setFormLoading(true);
+    try {
+      startTransition(async () => {
+        const { data, error } = await registerHandler(body, token);
+        if (error || !data) {
+          toast.error(error);
+          return;
+        }
+        toast.success(data.message);
+      });
+    } finally {
+      setFormLoading(false);
+    }
   };
 
   const socialLoginList = [
@@ -94,7 +98,7 @@ const RegisterForm = ({ token }: { token: string }) => {
           disabled={isPending}
           className="w-full h-12 rounded-xl bg-foreground text-background hover:bg-foreground/80 hover:cursor-pointer font-medium text-sm md:text-base transition-colors"
         >
-          {isPending ? <LoadingSpinner /> : "Register"}
+          {isFormLoading ? <LoadingSpinner /> : "Register"}
         </button>
       </form>
     </>
