@@ -4,6 +4,7 @@ import { createMiddleware } from "hono/factory";
 import { HTTPException } from "hono/http-exception";
 import jwt from "jsonwebtoken";
 import env from "@/config/env.js";
+import { unauthenticatedMiddleware } from "@/lib/middleware.js";
 import { authRateLimit } from "@/lib/rate-limit.js";
 import { oneDayFromNow } from "@/utils/date.js";
 import { zValidate } from "@/utils/z-validate.js";
@@ -26,7 +27,7 @@ import {
 const authRateLimiter = createMiddleware(async (ctx, next) => {
   const ip = ctx.req.header("x-forwarded-for") ?? "unknown";
   const path = new URL(ctx.req.url).pathname;
-  const noEmailPaths = ["/register", "/reset-password"];
+  const noEmailPaths = ["/register", "/reset-password", "/guest"];
 
   if (noEmailPaths.some((p) => path.endsWith(p))) {
     await authRateLimit(ip, null);
@@ -40,7 +41,7 @@ const authRateLimiter = createMiddleware(async (ctx, next) => {
 });
 
 export const authV1Router = new Hono();
-authV1Router.use("*", authRateLimiter);
+authV1Router.use("*", unauthenticatedMiddleware, authRateLimiter);
 
 authV1Router.post("/login", zValidate("json", loginSchema), async (ctx) => {
   try {
@@ -132,17 +133,21 @@ authV1Router.post(
 );
 
 authV1Router.get("/guest", async (ctx) => {
-  const guestAccessToken = jwt.sign({ role: "guest" }, env.ACCESS_SECRET, {
-    expiresIn: "1d",
-    audience: ["guest"],
-  });
+  try {
+    const guestAccessToken = jwt.sign({ role: "guest" }, env.ACCESS_SECRET, {
+      expiresIn: "1d",
+      audience: ["guest"],
+    });
 
-  setCookie(ctx, "accessToken", guestAccessToken, {
-    sameSite: "Strict" as const,
-    httpOnly: true,
-    secure: env.API_ENV === "production",
-    expires: oneDayFromNow(),
-  });
-
-  return ctx.json({ success: true }, 200);
+    setCookie(ctx, "accessToken", guestAccessToken, {
+      sameSite: "Strict" as const,
+      httpOnly: true,
+      secure: env.API_ENV === "production",
+      expires: oneDayFromNow(),
+    });
+    return ctx.json({ success: true }, 200);
+  } catch (err) {
+    if (err instanceof HTTPException) throw err;
+    return ctx.json({ error: "An unexpected error occurred" }, 500);
+  }
 });

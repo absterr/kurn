@@ -29,13 +29,13 @@
 - [x] **[Worker]** Implement deduplication on leads module
 - [x] **[Worker]** Implement multiple lead website audit services including UI audit, performance audit
 - [x] **[Worker]** Implement AI diagnosis for leads
-- [ ] **[Worker]** Implement async cold email
-- [ ] **[API]** Implement guest token endpoint
-- [ ] **[Web]** Implement guest token UI
+- [x] **[API]** Implement guest token endpoint and frontend trigger
+- [ ] **[API]** Improve API auth middleware for auth routes (based on accessToken)
 - [ ] **[Web]** Implement fetch for leads endpoints
 - [ ] **[Web]** Implement Suspense or loading.tsx for async pages
 - [ ] **[Web]** Add not-found and error pages
 - [ ] **[API]** Implement social login enpoints and integrate with frontend
+- [ ] **[Worker]** Implement async cold email
 - [ ] **[Worker]** Implement API key rotation
 - [ ] **[Worker]** Deliberate and plan the job module flow (take ideas from career-ops)
 - [ ] **[Worker]** Implement basic job module

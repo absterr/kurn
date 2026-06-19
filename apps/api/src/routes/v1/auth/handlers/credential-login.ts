@@ -3,7 +3,7 @@ import { HTTPException } from "hono/http-exception";
 import type { z } from "zod";
 import env from "@/config/env.js";
 import { makeDB } from "@/db/index.js";
-import { setAuthCookies } from "@/lib/jwt.js";
+import { setAuthCookies } from "@/lib/cookies.js";
 import { signUserToken } from "@/lib/user-token.js";
 import { oneWeekFromNow } from "@/utils/date.js";
 import { comparePassword } from "@/utils/hash.js";

@@ -3,7 +3,7 @@ import { getCookie } from "hono/cookie";
 import { HTTPException } from "hono/http-exception";
 import env from "@/config/env.js";
 import { makeDB } from "@/db/index.js";
-import { clearAuthCookies } from "@/lib/jwt.js";
+import { clearAuthCookies } from "@/lib/cookies.js";
 import { authMiddleware } from "@/lib/middleware.js";
 import { type RefreshTokenPayload, verifyUserToken } from "@/lib/user-token.js";
 
