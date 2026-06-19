@@ -1,5 +1,3 @@
-import Link from "next/link";
-import GuestLoginBtn from "../GuestLoginBtn";
 import RequestAccessForm from "./RequestAccessForm";
 
 export default function RequestAccess() {
@@ -10,19 +8,6 @@ export default function RequestAccess() {
       </h1>
 
       <RequestAccessForm />
-
-      <p className="text-xs md:text-sm text-foreground/50 text-center pt-8">
-        Already have an account?{" "}
-        <Link
-          href={"/login"}
-          className=" text-foreground/70 hover:text-foreground underline lg:no-underline lg:hover:underline"
-        >
-          Log in
-        </Link>
-      </p>
-      <div className="py-6 flex items-center justify-center">
-        <GuestLoginBtn />
-      </div>
     </div>
   );
 }

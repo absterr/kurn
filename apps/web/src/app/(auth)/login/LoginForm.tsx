@@ -148,7 +148,10 @@ const LoginForm = () => {
                 Request access
               </Link>
             </p>
-            <GuestLoginBtn />
+            <GuestLoginBtn
+              isPending={isPending}
+              startTransition={startTransition}
+            />
           </div>
         </div>
       )}

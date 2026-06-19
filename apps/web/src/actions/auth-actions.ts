@@ -46,3 +46,14 @@ export const resetPasswordHandler = async (
   body: z.infer<typeof passwordSchema>,
   token: z.infer<typeof tokenSchema>,
 ) => authPost(`/v1/auth/reset-password?token=${token}`, body);
+
+export const guestLoginHandler = async () => {
+  try {
+    const data = await apiFetch("/v1/guest", {
+      method: "GET",
+    });
+    return { data, error: null };
+  } catch (err) {
+    return handleFetchErrors(err);
+  }
+};
