@@ -1,7 +1,11 @@
 import { Hono } from "hono";
+import { setCookie } from "hono/cookie";
 import { createMiddleware } from "hono/factory";
 import { HTTPException } from "hono/http-exception";
+import jwt from "jsonwebtoken";
+import env from "@/config/env.js";
 import { authRateLimit } from "@/lib/rate-limit.js";
+import { oneDayFromNow } from "@/utils/date.js";
 import { zValidate } from "@/utils/z-validate.js";
 import {
   loginSchema,
@@ -126,3 +130,19 @@ authV1Router.post(
     }
   },
 );
+
+authV1Router.get("/guest", async (ctx) => {
+  const guestAccessToken = jwt.sign({ role: "guest" }, env.ACCESS_SECRET, {
+    expiresIn: "1d",
+    audience: ["guest"],
+  });
+
+  setCookie(ctx, "accessToken", guestAccessToken, {
+    sameSite: "Strict" as const,
+    httpOnly: true,
+    secure: env.API_ENV === "production",
+    expires: oneDayFromNow(),
+  });
+
+  return ctx.json({ success: true }, 200);
+});

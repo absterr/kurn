@@ -10,6 +10,7 @@ import type {
 } from "@/lib/schema/auth-schema";
 
 const authResponseSchema = z.object({ message: z.string() });
+const apiAuthRoute = "/v1/auth";
 
 const authPost = async <T>(url: string, body: T) => {
   try {
@@ -27,29 +28,29 @@ const authPost = async <T>(url: string, body: T) => {
 };
 
 export const loginHandler = async (body: z.infer<typeof loginSchema>) =>
-  authPost("/v1/auth/login", body);
+  authPost(`${apiAuthRoute}/login`, body);
 
 export const forgotPasswordHandler = async (
   body: z.infer<typeof userDetailsSchema>,
-) => authPost("/v1/auth/forgot-password", body);
+) => authPost(`${apiAuthRoute}/forgot-password`, body);
 
 export const requestAccessHandler = async (
   body: z.infer<typeof requestAccessSchema>,
-) => authPost("/v1/auth/request-access", body);
+) => authPost(`${apiAuthRoute}/request-access`, body);
 
 export const registerHandler = async (
   body: z.infer<typeof passwordSchema>,
   token: z.infer<typeof tokenSchema>,
-) => authPost(`/v1/auth/register?token=${token}`, body);
+) => authPost(`${apiAuthRoute}/register?token=${token}`, body);
 
 export const resetPasswordHandler = async (
   body: z.infer<typeof passwordSchema>,
   token: z.infer<typeof tokenSchema>,
-) => authPost(`/v1/auth/reset-password?token=${token}`, body);
+) => authPost(`${apiAuthRoute}/reset-password?token=${token}`, body);
 
 export const guestLoginHandler = async () => {
   try {
-    const data = await apiFetch("/v1/guest", {
+    const data = await apiFetch(`${apiAuthRoute}/guest`, {
       method: "GET",
     });
     return { data, error: null };
