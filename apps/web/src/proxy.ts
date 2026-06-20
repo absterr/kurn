@@ -32,7 +32,7 @@ export async function proxy(request: NextRequest) {
 
   const payload = accessToken ? decodeAccessToken(accessToken) : null;
   const role = payload?.role as string | undefined;
-  const isAuthenticated = !!payload && !!role;
+  const isAuthenticated = payload !== null && role !== undefined;
 
   if (isAuthenticated && isAuthRoute) {
     return NextResponse.redirect(new URL("/", request.url));
