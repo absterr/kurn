@@ -32,7 +32,6 @@
 - [x] **[API]** Implement guest token endpoint and frontend trigger
 - [x] **[API]** Improve API auth middleware for auth routes (based on accessToken)
 - [x] **[Web]** Implement refresh logic to api fetch helper
-- [ ] **[Web]** Use server actions and forward cookies
 - [ ] **[Web]** Implement fetch for leads endpoints
 - [ ] **[Web]** Implement Suspense or loading.tsx for async pages
 - [ ] **[Web]** Add not-found and error pages
