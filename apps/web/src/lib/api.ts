@@ -15,10 +15,10 @@ export class APIError extends Error {
   }
 }
 
-export const apiFetch = async <TBody = unknown>(
+export const apiFetch = async <TBody = unknown, TResponse = unknown>(
   endpoint: string,
   { method, body, headers, timeout = 10_000 }: RequestOptions<TBody> = {},
-) => {
+): Promise<TResponse> => {
   const res = await fetch(`${endpoint}`, {
     method,
     headers: { "Content-Type": "application/json", ...headers },
@@ -28,6 +28,16 @@ export const apiFetch = async <TBody = unknown>(
   });
 
   if (!res.ok) {
+    if (res.status === 401) {
+      const refreshRes = await fetch("/refresh", {
+        method: "POST",
+        credentials: "include",
+      });
+      if (refreshRes.ok) {
+        return apiFetch(endpoint, { method, body, headers, timeout });
+      }
+      window.location.href = "/login";
+    }
     const errorData = await res.json().catch(() => null);
     throw new APIError(errorData?.error ?? "Request failed", res.status);
   }

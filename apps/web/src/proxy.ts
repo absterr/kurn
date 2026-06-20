@@ -30,34 +30,20 @@ export async function proxy(request: NextRequest) {
   const accessToken = request.cookies.get("accessToken")?.value;
   const isAuthRoute = isAuthPath(pathname);
 
-  if (!accessToken) {
-    if (isAuthRoute) {
-      return NextResponse.next();
-    }
+  const payload = accessToken ? decodeAccessToken(accessToken) : null;
+  const role = payload?.role as string | undefined;
+  const isAuthenticated = !!payload && !!role;
 
+  if (isAuthenticated && isAuthRoute) {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
+
+  if (!isAuthenticated && !isAuthRoute) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  const payload = decodeAccessToken(accessToken);
-  const role = payload?.role as string | undefined;
-
-  if (!payload || !role) {
-    if (isAuthRoute) {
-      return NextResponse.next();
-    }
-
-    const refreshUrl = new URL("/api/refresh", request.url);
-    refreshUrl.searchParams.set("next", pathname);
-    return NextResponse.redirect(refreshUrl);
-  }
-
-  if (payload && isAuthRoute) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
-  }
-
   const response = NextResponse.next();
-  response.headers.set("x-role", String(payload.role));
-
+  if (role) response.headers.set("x-role", role);
   return response;
 }
 
