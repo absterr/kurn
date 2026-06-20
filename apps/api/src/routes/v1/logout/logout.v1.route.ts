@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { getCookie } from "hono/cookie";
+import { deleteCookie, getCookie } from "hono/cookie";
 import { HTTPException } from "hono/http-exception";
 import env from "@/config/env.js";
 import { makeDB } from "@/db/index.js";
@@ -8,9 +8,9 @@ import { authMiddleware } from "@/lib/middleware.js";
 import { type RefreshTokenPayload, verifyUserToken } from "@/lib/user-token.js";
 
 export const logoutV1Router = new Hono();
-logoutV1Router.use("*", authMiddleware);
+logoutV1Router.use("/user", authMiddleware);
 
-logoutV1Router.get("/", async (ctx) => {
+logoutV1Router.get("/user", async (ctx) => {
   try {
     const refreshToken = getCookie(ctx, "refreshToken");
 
@@ -43,4 +43,9 @@ logoutV1Router.get("/", async (ctx) => {
     if (err instanceof HTTPException) throw err;
     return ctx.json({ error: "An unexpected error occurred" }, 500);
   }
+});
+
+logoutV1Router.get("/guest", async (ctx) => {
+  deleteCookie(ctx, "accessToken");
+  return ctx.json({ success: true }, 200);
 });
