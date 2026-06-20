@@ -19,7 +19,7 @@ export const apiFetch = async <TBody = unknown, TResponse = unknown>(
   endpoint: string,
   { method, body, headers, timeout = 10_000 }: RequestOptions<TBody> = {},
 ): Promise<TResponse> => {
-  const res = await fetch(`${endpoint}`, {
+  const res = await fetch(`/api/${endpoint}`, {
     method,
     headers: { "Content-Type": "application/json", ...headers },
     credentials: "include",
@@ -29,7 +29,7 @@ export const apiFetch = async <TBody = unknown, TResponse = unknown>(
 
   if (!res.ok) {
     if (res.status === 401) {
-      const refreshRes = await fetch("/refresh", {
+      const refreshRes = await fetch("/api/refresh", {
         method: "POST",
         credentials: "include",
       });
