@@ -7,7 +7,6 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
-import { loginHandler } from "@/actions/auth-actions";
 import GithubIcon from "@/components/icons/GithubIcon";
 import GoogleIcon from "@/components/icons/GoogleIcon";
 import LoadingSpinner from "@/components/icons/LoadingSpinner";
@@ -17,6 +16,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { loginHandler } from "@/lib/queries/auth-queries";
 import { loginSchema } from "@/lib/schema/auth-schema";
 import { useRole } from "../_Role/role-provider";
 import GuestLoginBtn from "../GuestLoginBtn";

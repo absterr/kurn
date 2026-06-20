@@ -1,4 +1,3 @@
-"use server";
 import { z } from "zod";
 import { apiFetch, handleFetchErrors } from "@/lib/api";
 import type {

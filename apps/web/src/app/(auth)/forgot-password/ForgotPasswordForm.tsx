@@ -5,8 +5,8 @@ import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
-import { forgotPasswordHandler } from "@/actions/auth-actions";
 import LoadingSpinner from "@/components/icons/LoadingSpinner";
+import { forgotPasswordHandler } from "@/lib/queries/auth-queries";
 import { userDetailsSchema } from "@/lib/schema/auth-schema";
 import { useRole } from "../_Role/role-provider";
 

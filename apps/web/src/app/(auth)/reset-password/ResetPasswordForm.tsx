@@ -5,8 +5,8 @@ import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
-import { resetPasswordHandler } from "@/actions/auth-actions";
 import LoadingSpinner from "@/components/icons/LoadingSpinner";
+import { resetPasswordHandler } from "@/lib/queries/auth-queries";
 import { passwordSchema } from "@/lib/schema/auth-schema";
 
 const ResetPasswordForm = ({ token }: { token: string }) => {

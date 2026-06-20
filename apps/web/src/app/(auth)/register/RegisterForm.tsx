@@ -5,7 +5,6 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
-import { registerHandler } from "@/actions/auth-actions";
 import GithubIcon from "@/components/icons/GithubIcon";
 import GoogleIcon from "@/components/icons/GoogleIcon";
 import LoadingSpinner from "@/components/icons/LoadingSpinner";
@@ -15,6 +14,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { registerHandler } from "@/lib/queries/auth-queries";
 import { passwordSchema } from "@/lib/schema/auth-schema";
 
 const RegisterForm = ({ token }: { token: string }) => {
