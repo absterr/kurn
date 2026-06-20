@@ -1,7 +1,5 @@
-import { jwtVerify } from "jose";
+import { decodeJwt } from "jose";
 import { type NextRequest, NextResponse } from "next/server";
-
-const ACCESS_SECRET = process.env.ACCESS_SECRET as string;
 
 const AUTH_ROUTES = [
   "/login",
@@ -13,11 +11,9 @@ const AUTH_ROUTES = [
 
 // const MEMBER_ROUTES = ["/dashboard", "/leads", "/jobs"] as const;
 
-const verifyAccessToken = async (token: string) => {
+const decodeAccessToken = (token: string) => {
   try {
-    const secret = new TextEncoder().encode(ACCESS_SECRET);
-    const { payload } = await jwtVerify(token, secret);
-    return payload;
+    return decodeJwt(token);
   } catch {
     return null;
   }
@@ -42,9 +38,10 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  const payload = await verifyAccessToken(accessToken);
+  const payload = decodeAccessToken(accessToken);
+  const role = payload?.role as string | undefined;
 
-  if (!payload) {
+  if (!payload || !role) {
     if (isAuthRoute) {
       return NextResponse.next();
     }
@@ -59,11 +56,7 @@ export async function proxy(request: NextRequest) {
   }
 
   const response = NextResponse.next();
-
-  if (payload.userId) response.headers.set("x-user-id", String(payload.userId));
-  if (payload.accountId)
-    response.headers.set("x-account-id", String(payload.accountId));
-  if (payload.role) response.headers.set("x-role", String(payload.role));
+  response.headers.set("x-role", String(payload.role));
 
   return response;
 }
