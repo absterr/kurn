@@ -1,4 +1,4 @@
-const API_URL = process.env.API_URL;
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 interface RequestOptions<B> {
   method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
@@ -24,6 +24,7 @@ export const apiFetch = async <TBody = unknown>(
   const res = await fetch(`${API_URL}${endpoint}`, {
     method,
     headers: { "Content-Type": "application/json", ...headers },
+    credentials: "include",
     body: body ? JSON.stringify(body) : undefined,
     signal: AbortSignal.timeout(timeout),
   });

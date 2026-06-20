@@ -6,8 +6,8 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
-import { requestAccessHandler } from "@/actions/auth-actions";
 import LoadingSpinner from "@/components/icons/LoadingSpinner";
+import { requestAccessHandler } from "@/lib/queries/auth-queries";
 import { requestAccessSchema } from "@/lib/schema/auth-schema";
 import GuestLoginBtn from "../GuestLoginBtn";
 

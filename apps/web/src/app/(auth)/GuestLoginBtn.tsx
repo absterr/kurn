@@ -2,8 +2,8 @@
 import { useRouter } from "next/navigation";
 import type { TransitionStartFunction } from "react";
 import { toast } from "sonner";
-import { guestLoginHandler } from "@/actions/auth-actions";
 import { Button } from "@/components/ui/button";
+import { guestLoginHandler } from "@/lib/queries/auth-queries";
 
 const GuestLoginBtn = ({
   isPending,
