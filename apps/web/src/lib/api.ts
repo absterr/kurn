@@ -1,5 +1,3 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
 interface RequestOptions<B> {
   method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   body?: B;
@@ -21,7 +19,7 @@ export const apiFetch = async <TBody = unknown>(
   endpoint: string,
   { method, body, headers, timeout = 10_000 }: RequestOptions<TBody> = {},
 ) => {
-  const res = await fetch(`${API_URL}${endpoint}`, {
+  const res = await fetch(`${endpoint}`, {
     method,
     headers: { "Content-Type": "application/json", ...headers },
     credentials: "include",
