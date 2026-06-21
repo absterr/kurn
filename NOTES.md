@@ -32,7 +32,9 @@
 - [x] **[API]** Implement guest token endpoint and frontend trigger
 - [x] **[API]** Improve API auth middleware for auth routes (based on accessToken)
 - [x] **[Web]** Implement refresh logic to api fetch helper
+- [ ] **[DB]** Seed an admin/member user
 - [ ] **[Web]** Implement fetch for leads endpoints
+- [ ] **[Web]** Add logout btn with guest/member logic
 - [ ] **[Web]** Implement Suspense or loading.tsx for async pages
 - [ ] **[Web]** Add not-found and error pages
 - [ ] **[API]** Implement social login enpoints and integrate with frontend

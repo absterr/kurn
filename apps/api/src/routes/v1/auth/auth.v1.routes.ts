@@ -19,6 +19,7 @@ import {
   credentialLoginHandler,
   credentialRegisterHandler,
   forgotPasswordHandler,
+  refreshTokenHandler,
   requestAccessHandler,
   resetPasswordHandler,
   validateRegisterTokenHandler,
@@ -27,7 +28,7 @@ import {
 const authRateLimiter = createMiddleware(async (ctx, next) => {
   const ip = ctx.req.header("x-forwarded-for") ?? "unknown";
   const path = new URL(ctx.req.url).pathname;
-  const noEmailPaths = ["/register", "/reset-password", "/guest"];
+  const noEmailPaths = ["/guest", "/refresh", "/register", "/reset-password"];
 
   if (noEmailPaths.some((p) => path.endsWith(p))) {
     await authRateLimit(ip, null);
@@ -149,5 +150,17 @@ authV1Router.get("/guest", async (ctx) => {
   } catch (err) {
     if (err instanceof HTTPException) throw err;
     return ctx.json({ error: "An unexpected error occurred" }, 500);
+  }
+});
+
+authV1Router.get("/refresh", async (ctx) => {
+  try {
+    const result = await refreshTokenHandler(ctx);
+    return ctx.json(result, 200);
+  } catch (err) {
+    if (err instanceof HTTPException) {
+      throw err;
+    }
+    return ctx.json({ error: "An unexpected error occured" }, 500);
   }
 });
