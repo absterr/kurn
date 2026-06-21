@@ -15,6 +15,8 @@ export class APIError extends Error {
   }
 }
 
+const REFRESH_PATH = "/api/v1/auth/refresh" as const;
+
 export const apiFetch = async <TBody = unknown, TResponse = unknown>(
   endpoint: string,
   { method, body, headers, timeout = 10_000 }: RequestOptions<TBody> = {},
@@ -29,7 +31,7 @@ export const apiFetch = async <TBody = unknown, TResponse = unknown>(
 
   if (!res.ok) {
     if (res.status === 401) {
-      const refreshRes = await fetch("/api/refresh", {
+      const refreshRes = await fetch(REFRESH_PATH, {
         method: "POST",
         credentials: "include",
       });

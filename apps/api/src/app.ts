@@ -4,7 +4,6 @@ import { HTTPException } from "hono/http-exception";
 import { logger } from "hono/logger";
 import env from "./config/env.js";
 import routes from "./routes/index.js";
-import { refreshTokenHandler } from "./routes/refresh-token.js";
 
 const app = new Hono().basePath("/api");
 const WEB_ORIGIN = env.WEB_ORIGIN;
@@ -24,19 +23,6 @@ app.get("/health", (ctx) => {
   return ctx.json({
     status: "healthy",
   });
-});
-
-// REFRESH USER TOKEN
-app.get("/refresh", async (ctx) => {
-  try {
-    const result = await refreshTokenHandler(ctx);
-    return ctx.json(result);
-  } catch (err) {
-    if (err instanceof HTTPException) {
-      throw err;
-    }
-    return ctx.json({ error: "Something went wrong" }, 500);
-  }
 });
 
 app.onError((err, ctx) => {

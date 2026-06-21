@@ -3,7 +3,7 @@ import { deleteCookie, setCookie } from "hono/cookie";
 import env from "@/config/env.js";
 import { fifteenMinsFromNow, oneWeekFromNow } from "../utils/date.js";
 
-const REFRESH_PATH = "/api/refresh" as const;
+const REFRESH_PATH = "/api/v1/auth/refresh" as const;
 const secure = env.API_ENV === "production";
 
 const defaults = {
