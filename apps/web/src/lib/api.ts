@@ -68,3 +68,15 @@ export const handleFetchErrors = (err: unknown) => {
     error: "Network error. Please check your connection.",
   };
 };
+
+export const handleTanstackQueryError = (err: unknown) => {
+  if (err instanceof APIError) {
+    throw err;
+  }
+
+  if (err instanceof DOMException && err.name === "TimeoutError") {
+    throw new APIError("Request timed out. Please try again.", 408);
+  }
+
+  throw new APIError("Network error. Please check your connection.", 0);
+};

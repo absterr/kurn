@@ -1,8 +1,5 @@
 import { z } from "zod";
 
-// createdAt: z.iso.datetime(),
-// updatedAt: z.iso.datetime(),
-
 // const leadQueryStatuses = [
 //   "cancelled",
 //   "completed",
@@ -14,6 +11,11 @@ import { z } from "zod";
 //   "successful",
 // ] as const;
 
+const dateSchema = {
+  createdAt: z.iso.datetime(),
+  updatedAt: z.iso.datetime(),
+};
+
 export const leadQueryFormSchema = z.object({
   keyword: z.string().min(1, "Keyword is required"),
   location: z.string().min(1, "Location is required"),
@@ -21,11 +23,15 @@ export const leadQueryFormSchema = z.object({
 
 export const leadQuerySchema = leadQueryFormSchema.extend({
   id: z.uuid(),
-  userId: z.uuid(),
   status: z.string(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  ...dateSchema,
 });
+
+export const leadQueryArraySchema = z.array(
+  leadQuerySchema.extend({
+    resultsCount: z.number().int().nonnegative(),
+  }),
+);
 
 export type LeadQueryForm = z.infer<typeof leadQueryFormSchema>;
 
@@ -47,6 +53,5 @@ export const leadSchema = z.object({
     })
     .optional(),
   reviewed: z.boolean(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  ...dateSchema,
 });
