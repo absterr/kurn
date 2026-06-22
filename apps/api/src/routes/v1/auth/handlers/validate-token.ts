@@ -13,5 +13,5 @@ export const validateRegisterTokenHandler = async (token: string) => {
   if (!invite)
     throw new HTTPException(401, { message: "Invalid or expired token" });
 
-  return invite;
+  return { message: "Valid token" };
 };

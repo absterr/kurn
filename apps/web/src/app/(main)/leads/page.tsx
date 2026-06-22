@@ -30,7 +30,7 @@ export default async function Leads() {
   return (
     <>
       <div className="hidden md:grid grid-cols-1 xl:grid-cols-2 gap-10 min-h-0 pt-4">
-        <LeadsQueryForm />
+        <LeadsQueryForm role={role} />
         <HydrationBoundary state={dehydrate(queryClient)}>
           <LeadsQueries role={role} />
         </HydrationBoundary>
@@ -39,7 +39,7 @@ export default async function Leads() {
       {/* "flex-col" and "min-h-0" lets ScrollArea stretch as needed for the content */}
       <div className="flex flex-col md:hidden min-h-0">
         <LeadsWrapper
-          form={<LeadsQueryForm />}
+          form={<LeadsQueryForm role={role} />}
           list={
             <HydrationBoundary state={dehydrate(queryClient)}>
               <LeadsQueries role={role} />
