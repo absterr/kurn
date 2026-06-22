@@ -1,5 +1,6 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { revalidatePath } from "next/cache";
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -32,7 +33,8 @@ export default function LeadsQueryForm() {
         return;
       }
 
-      toast.success("Lead query added successfully");
+      toast.success("Lead query added");
+      revalidatePath("/leads");
     });
   };
 

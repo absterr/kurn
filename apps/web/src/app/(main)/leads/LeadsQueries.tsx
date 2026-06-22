@@ -1,21 +1,31 @@
 "use client";
+import { useQuery } from "@tanstack/react-query";
 import { MapPin } from "lucide-react";
 import Link from "next/link";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { getLeadQueriesHandler } from "@/lib/queries/lead-queries";
 import { cn, formatDate } from "@/lib/utils";
 import type { LeadQuery } from "./mockLeadQueries";
 import { mockLeadQueries } from "./mockLeadQueries";
 
-export default function LeadsQueries() {
+export default function LeadsQueries({ role }: { role: string }) {
+  const { data: fetchedLeadsQueries = [] } = useQuery({
+    queryKey: ["leadQueries"],
+    queryFn: getLeadQueriesHandler,
+    enabled: false,
+  });
+
+  const leadQueries = role === "member" ? fetchedLeadsQueries : mockLeadQueries;
+
   // min-h-0: constrains grid child so descendants with h-full have a real boundary
   return (
     <div className="flex flex-col h-full min-h-0">
       <div className="flex items-center justify-between lg:px-6">
         <h2 className="font-medium text-base sm:text-lg">Leads Queries</h2>
-        {mockLeadQueries.length > 0 && (
+        {leadQueries.length > 0 && (
           <p className="text-xs sm:text-sm text-foreground/50">
-            {mockLeadQueries.length}{" "}
-            {mockLeadQueries.length === 1 ? "query" : "queries"}
+            {leadQueries.length}{" "}
+            {leadQueries.length === 1 ? "query" : "queries"}
           </p>
         )}
       </div>
@@ -23,10 +33,10 @@ export default function LeadsQueries() {
       {/* "min-h-0" allows this element to shrink within its flex/grid parent and enable overflow scrolling */}
       <ScrollArea className="min-h-0 w-full py-6">
         <div className="flex flex-col gap-y-4 lg:px-6">
-          {mockLeadQueries.length === 0 ? (
+          {leadQueries.length === 0 ? (
             <EmptyState />
           ) : (
-            mockLeadQueries.map((query) => (
+            leadQueries.map((query) => (
               <LeadQueryCard key={query.id} leadQuery={query} />
             ))
           )}

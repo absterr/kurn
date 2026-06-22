@@ -1,5 +1,6 @@
 import Sidebar from "./_Sidebar";
 import { SidebarProvider } from "./_Sidebar/SidebarProvider";
+import QueryProvider from "./QueryProvider";
 import Topbar from "./Topbar";
 
 export default function MainLayout({
@@ -15,7 +16,7 @@ export default function MainLayout({
           <Topbar />
           <main className="flex-1 rounded-xl bg-foreground/5 p-2 sm:p-4 flex min-h-0">
             <div className="overflow-hidden w-full max-w-7xl mx-auto">
-              {children}
+              <QueryProvider>{children}</QueryProvider>
             </div>
           </main>
         </div>

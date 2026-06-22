@@ -1,7 +1,26 @@
-import { apiFetch, handleFetchErrors } from "@/lib/api";
-import { type LeadQueryForm, leadQuerySchema } from "../schema/lead-schema";
+import {
+  apiFetch,
+  handleFetchErrors,
+  handleTanstackQueryError,
+} from "@/lib/api";
+import {
+  type LeadQueryForm,
+  leadQueryArraySchema,
+  leadQuerySchema,
+} from "../schema/lead-schema";
 
 const apiLeadsRoute = "/v1/leads" as const;
+
+export const getLeadQueriesHandler = async () => {
+  try {
+    const res = await apiFetch(apiLeadsRoute, { method: "GET" });
+    const data = leadQueryArraySchema.parse(res);
+
+    return data;
+  } catch (err) {
+    return handleTanstackQueryError(err);
+  }
+};
 
 export const addLeadQueryHandler = async (body: LeadQueryForm) => {
   try {
