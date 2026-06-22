@@ -1,18 +1,18 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { revalidatePath } from "next/cache";
-import { useTransition } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { addLeadQueryHandler } from "@/lib/queries/lead-queries";
 import {
+  type LeadQuery,
   type LeadQueryForm,
   leadQueryFormSchema,
 } from "@/lib/schema/lead-schema";
 
-export default function LeadsQueryForm() {
-  const [isPending, startTransition] = useTransition();
+export default function LeadsQueryForm({ role }: { role: string }) {
+  const queryClient = useQueryClient();
   const {
     register,
     handleSubmit,
@@ -25,17 +25,35 @@ export default function LeadsQueryForm() {
     },
   });
 
-  const onAddQuery = (body: LeadQueryForm) => {
-    startTransition(async () => {
-      const { error } = await addLeadQueryHandler(body);
-      if (error) {
-        toast.error(error);
-        return;
-      }
+  const { mutate, isPending } = useMutation({
+    mutationFn: addLeadQueryHandler,
+    onSuccess: (newLeadQuery) => {
+      queryClient.setQueryData(["leadQueries"], (old: LeadQuery[]) => [
+        newLeadQuery,
+        ...old,
+      ]);
 
       toast.success("Lead query added");
-      revalidatePath("/leads");
-    });
+    },
+    onError: (err) => {
+      toast.error(err.message);
+    },
+  });
+
+  const onAddQuery = (body: LeadQueryForm) => {
+    switch (role) {
+      case "member":
+        mutate(body);
+        break;
+
+      case "guest":
+        // do nothing yet
+        break;
+
+      default:
+        // do nothing yet
+        break;
+    }
   };
 
   return (

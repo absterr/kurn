@@ -1,3 +1,5 @@
+import type { LeadQuery, LeadQueryForm } from "@/lib/schema/lead-schema";
+
 export const mockLeadQueries = [
   {
     id: "a3f1c2d4-e5b6-7890-abcd-ef1234567890",
@@ -91,8 +93,16 @@ export const mockLeadQueries = [
   },
 ];
 
-export type LeadQuery = (typeof mockLeadQueries)[number];
-
 export function getLeadQuery(queryId: string) {
   return mockLeadQueries.find((l) => l.id === queryId);
 }
+
+export const createMockLeadQuery = (body: LeadQueryForm): LeadQuery => ({
+  id: crypto.randomUUID(),
+  keyword: body.keyword,
+  location: body.location,
+  status: "pending",
+  resultsCount: 0,
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
+});

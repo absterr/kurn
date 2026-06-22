@@ -28,11 +28,11 @@ export const addLeadQuery = async (
   queries: z.infer<typeof leadsQuerySchema>,
   memberId: Selectable<Users>["id"],
 ) => {
-  const leadsQuery = await makeDB()
+  const { userId, ...leadsQuery } = await makeDB()
     .insertInto("leadQueries")
     .values({ ...queries, userId: memberId })
     .returningAll()
     .executeTakeFirstOrThrow();
 
-  return leadsQuery;
+  return { ...leadsQuery, resultsCount: 0 };
 };

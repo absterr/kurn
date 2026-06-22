@@ -24,14 +24,11 @@ export const leadQueryFormSchema = z.object({
 export const leadQuerySchema = leadQueryFormSchema.extend({
   id: z.uuid(),
   status: z.string(),
+  resultsCount: z.number().int().nonnegative(),
   ...dateSchema,
 });
 
-export const leadQueryArraySchema = z.array(
-  leadQuerySchema.extend({
-    resultsCount: z.number().int().nonnegative(),
-  }),
-);
+export type LeadQuery = z.infer<typeof leadQuerySchema>;
 
 export type LeadQueryForm = z.infer<typeof leadQueryFormSchema>;
 

@@ -4,8 +4,8 @@ import { MapPin } from "lucide-react";
 import Link from "next/link";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { getLeadQueriesHandler } from "@/lib/queries/lead-queries";
+import type { LeadQuery } from "@/lib/schema/lead-schema";
 import { cn, formatDate } from "@/lib/utils";
-import type { LeadQuery } from "./mockLeadQueries";
 import { mockLeadQueries } from "./mockLeadQueries";
 
 export default function LeadsQueries({ role }: { role: string }) {

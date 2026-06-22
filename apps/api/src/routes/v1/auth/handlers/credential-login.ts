@@ -73,5 +73,5 @@ export const credentialLoginHandler = async (
   });
 
   setAuthCookies({ ctx, accessToken, refreshToken });
-  return { userId: foundUser.id };
+  return { message: "Login successful" };
 };
