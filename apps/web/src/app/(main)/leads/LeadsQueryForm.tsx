@@ -2,15 +2,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-
-const leadsQueryFormSchema = z.object({
-  keyword: z.string().min(1, "Keyword is required"),
-  location: z.string().min(1, "Location is required"),
-});
-
-type FormValues = z.infer<typeof leadsQueryFormSchema>;
+import { addLeadQueryHandler } from "@/lib/queries/lead-queries";
+import {
+  type LeadQueryForm,
+  leadQueryFormSchema,
+} from "@/lib/schema/lead-schema";
 
 export default function LeadsQueryForm() {
   const [isPending, startTransition] = useTransition();
@@ -18,22 +16,30 @@ export default function LeadsQueryForm() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormValues>({
-    resolver: zodResolver(leadsQueryFormSchema),
+  } = useForm<LeadQueryForm>({
+    resolver: zodResolver(leadQueryFormSchema),
     defaultValues: {
       keyword: "",
       location: "",
     },
   });
 
-  const onSaveQuery = () => {
-    startTransition(async () => {});
+  const onAddQuery = (body: LeadQueryForm) => {
+    startTransition(async () => {
+      const { error } = await addLeadQueryHandler(body);
+      if (error) {
+        toast.error(error);
+        return;
+      }
+
+      toast.success("Lead query added successfully");
+    });
   };
 
   return (
     <div>
       <h2 className="font-medium text-base sm:text-lg">Add Query</h2>
-      <form onSubmit={handleSubmit(onSaveQuery)}>
+      <form onSubmit={handleSubmit(onAddQuery)}>
         <div className="flex flex-col md:flex-row items-start gap-4 pt-4 pb-8">
           <div className="w-full">
             <div className="flex justify-between">
@@ -78,7 +84,7 @@ export default function LeadsQueryForm() {
             disabled={isPending}
             className="bg-foreground w-full sm:w-fit text-background p-5 cursor-pointer rounded-2xl"
           >
-            {isPending ? "Saving..." : "Save"}
+            {isPending ? "Adding..." : "Add"}
           </Button>
         </div>
       </form>

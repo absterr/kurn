@@ -1,0 +1,52 @@
+import { z } from "zod";
+
+// createdAt: z.iso.datetime(),
+// updatedAt: z.iso.datetime(),
+
+// const leadQueryStatuses = [
+//   "cancelled",
+//   "completed",
+//   "failed",
+//   "exhausted",
+//   "paused",
+//   "pending",
+//   "processing",
+//   "successful",
+// ] as const;
+
+export const leadQueryFormSchema = z.object({
+  keyword: z.string().min(1, "Keyword is required"),
+  location: z.string().min(1, "Location is required"),
+});
+
+export const leadQuerySchema = leadQueryFormSchema.extend({
+  id: z.uuid(),
+  userId: z.uuid(),
+  status: z.string(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+});
+
+export type LeadQueryForm = z.infer<typeof leadQueryFormSchema>;
+
+export const leadSchema = z.object({
+  id: z.uuid(),
+  leadQueryId: z.uuid(),
+  companyName: z.string(),
+  mapLink: z.string(),
+  address: z.string().optional(),
+  phone: z.string().optional(),
+  website: z.string().optional(),
+  websiteReachable: z.boolean().optional(),
+  auditDiagnosis: z.array(z.string()).optional(),
+  emails: z.array(z.string()).optional(),
+  emailDraft: z
+    .object({
+      subject: z.string(),
+      body: z.string(),
+    })
+    .optional(),
+  reviewed: z.boolean(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+});
