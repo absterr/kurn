@@ -3,7 +3,11 @@ import {
   handleFetchErrors,
   handleTanstackQueryError,
 } from "@/lib/api";
-import { type LeadQueryForm, leadQuerySchema } from "../schema/lead-schema";
+import {
+  type LeadQueryForm,
+  leadQuerySchema,
+  leadSchema,
+} from "../schema/lead-schema";
 
 const apiLeadsRoute = "/v1/leads" as const;
 
@@ -23,8 +27,21 @@ export const addLeadQueryHandler = async (body: LeadQueryForm) => {
     const res = await apiFetch(apiLeadsRoute, { method: "POST", body });
     const data = leadQuerySchema.parse(res);
 
-    return { data, error: null };
+    return data;
   } catch (err) {
-    return handleFetchErrors(err);
+    return handleTanstackQueryError(err);
+  }
+};
+
+export const getLeadsByQueryIdHandler = async (queryId: string) => {
+  try {
+    const res = await apiFetch(`${apiLeadsRoute}/${queryId}`, {
+      method: "GET",
+    });
+    const data = leadSchema.parse(res);
+
+    return data;
+  } catch (err) {
+    return handleTanstackQueryError(err);
   }
 };

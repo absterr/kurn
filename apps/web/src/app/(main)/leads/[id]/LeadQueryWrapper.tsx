@@ -9,8 +9,8 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import type { LeadQuery } from "@/lib/schema/lead-schema";
 import { cn } from "@/lib/utils";
-import type { LeadQuery } from "../mockLeadQueries";
 import LeadDetails from "./LeadDetails";
 import LeadHeader from "./LeadHeader";
 import LeadItem from "./LeadItem";
