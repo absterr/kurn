@@ -1,6 +1,6 @@
 import { MapPin } from "lucide-react";
+import type { LeadQuery } from "@/lib/schema/lead-schema";
 import { cn } from "@/lib/utils";
-import type { LeadQuery } from "../mockLeadQueries";
 
 export default function LeadQueryDetails({
   leadQuery,

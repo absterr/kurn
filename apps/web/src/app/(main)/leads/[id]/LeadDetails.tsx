@@ -9,14 +9,14 @@ import {
   Wifi,
   WifiOff,
 } from "lucide-react";
-import type { Lead } from "./mockLeads";
+import type { Lead } from "@/lib/schema/lead-schema";
 
 export default function LeadDetails({ lead }: { lead: Lead }) {
   return (
     <div className="flex flex-col">
       <ContactInfo lead={lead} />
 
-      {lead.auditDiagnosis.length > 0 && (
+      {lead.auditDiagnosis && lead.auditDiagnosis.length > 0 && (
         <div className="flex flex-col gap-4 py-6 border-t">
           <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
             <Stethoscope className="size-3.5" />
