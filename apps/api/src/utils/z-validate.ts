@@ -2,7 +2,7 @@ import { zValidator } from "@hono/zod-validator";
 import type { ZodType } from "zod";
 
 export const zValidate = <T extends ZodType>(
-  target: "json" | "query",
+  target: "json" | "query" | "param",
   schema: T,
 ) =>
   zValidator(target, schema, (result, ctx) => {

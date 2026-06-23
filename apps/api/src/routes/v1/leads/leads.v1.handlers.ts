@@ -36,3 +36,13 @@ export const addLeadQuery = async (
 
   return { ...leadsQuery, resultsCount: 0 };
 };
+
+export const getLeadsByQueryId = async (queryId: string) => {
+  const leads = await makeDB()
+    .selectFrom("leads")
+    .where("leadQueryId", "=", queryId)
+    .selectAll()
+    .execute();
+
+  return leads;
+};

@@ -6,8 +6,12 @@ import {
   roleMiddleware,
 } from "@/lib/middleware.js";
 import { zValidate } from "@/utils/z-validate.js";
-import { addLeadQuery, getLeadQueries } from "./leads.v1.handlers.js";
-import { leadsQuerySchema } from "./leads.v1.schema.js";
+import {
+  addLeadQuery,
+  getLeadQueries,
+  getLeadsByQueryId,
+} from "./leads.v1.handlers.js";
+import { leadQueryIdSchema, leadsQuerySchema } from "./leads.v1.schema.js";
 
 export const leadsV1Router = new Hono<AuthVariables>();
 leadsV1Router.use("*", authMiddleware, roleMiddleware("member"));
@@ -32,3 +36,17 @@ leadsV1Router.post("/", zValidate("json", leadsQuerySchema), async (ctx) => {
     return ctx.json({ error: "Something went wrong" }, 500);
   }
 });
+
+leadsV1Router.get(
+  "/:queryId",
+  zValidate("param", leadQueryIdSchema),
+  async (ctx) => {
+    try {
+      const queryId = ctx.req.param("queryId");
+      return ctx.json(await getLeadsByQueryId(queryId), 200);
+    } catch (err) {
+      if (err instanceof HTTPException) throw err;
+      return ctx.json({ error: "Something went wrong" }, 500);
+    }
+  },
+);

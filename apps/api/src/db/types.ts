@@ -26,8 +26,6 @@ export type JsonPrimitive = boolean | number | string | null;
 
 export type JsonValue = JsonArray | JsonObject | JsonPrimitive;
 
-export type LeadCompletionStatus = "completed" | "partial";
-
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
 export type UserRole = "admin" | "member";
@@ -84,7 +82,6 @@ export interface Leads {
   address: string | null;
   auditDiagnosis: string[] | null;
   companyName: string;
-  completionStatus: Generated<LeadCompletionStatus>;
   createdAt: Generated<Timestamp>;
   emailDraft: Json;
   emails: string[] | null;
