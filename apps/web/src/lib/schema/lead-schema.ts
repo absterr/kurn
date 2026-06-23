@@ -28,27 +28,27 @@ export const leadQuerySchema = leadQueryFormSchema.extend({
   ...dateSchema,
 });
 
-export type LeadQuery = z.infer<typeof leadQuerySchema>;
-
-export type LeadQueryForm = z.infer<typeof leadQueryFormSchema>;
-
 export const leadSchema = z.object({
   id: z.uuid(),
   leadQueryId: z.uuid(),
   companyName: z.string(),
   mapLink: z.string(),
-  address: z.string().optional(),
-  phone: z.string().optional(),
-  website: z.string().optional(),
-  websiteReachable: z.boolean().optional(),
-  auditDiagnosis: z.array(z.string()).optional(),
-  emails: z.array(z.string()).optional(),
+  address: z.string().nullable(),
+  phone: z.string().nullable(),
+  website: z.string().nullable(),
+  websiteReachable: z.boolean().nullable(),
+  auditDiagnosis: z.array(z.string()).nullable(),
+  emails: z.array(z.string()).nullable(),
   emailDraft: z
     .object({
       subject: z.string(),
       body: z.string(),
     })
-    .optional(),
+    .nullable(),
   reviewed: z.boolean(),
   ...dateSchema,
 });
+
+export type LeadQuery = z.infer<typeof leadQuerySchema>;
+export type LeadQueryForm = z.infer<typeof leadQueryFormSchema>;
+export type Lead = z.infer<typeof leadSchema>;
