@@ -1,7 +1,7 @@
 "use client";
 import { ArrowRight, MapPin, Phone } from "lucide-react";
+import type { Lead } from "@/lib/schema/lead-schema";
 import { formatDate } from "@/lib/utils";
-import type { Lead } from "./mockLeads";
 
 export default function LeadItem({
   lead,
@@ -20,17 +20,9 @@ export default function LeadItem({
         onClick={onClickAction}
         className="group flex items-start justify-between gap-3"
       >
-        <div className="flex flex-col gap-1">
-          <div className="flex items-center gap-2">
-            <p className="text-sm font-semibold text-foreground/90 underline xl:no-underline xl:group-hover:underline cursor-pointer truncate">
-              {lead.companyName}
-            </p>
-            <span className="inline-flex shrink-0 items-center gap-1.5 rounded-md px-2.5 py-1 text-xs text-foreground/80 font-medium">
-              <span className="h-1.5 w-1.5 rounded-full bg-foreground/80" />
-              {lead.completionStatus}
-            </span>
-          </div>
-        </div>
+        <p className="text-sm font-medium text-foreground/90 underline xl:no-underline xl:group-hover:underline cursor-pointer truncate">
+          {lead.companyName}
+        </p>
 
         <ArrowRight className="hidden xl:block xl:w-4 cursor-pointer" />
       </button>

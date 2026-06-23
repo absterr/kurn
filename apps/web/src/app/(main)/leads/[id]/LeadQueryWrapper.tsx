@@ -1,6 +1,8 @@
 "use client";
-import { type LucideIcon, MousePointer2, SearchX } from "lucide-react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { MousePointer2, SearchX } from "lucide-react";
 import { useEffect, useState } from "react";
+import EmptyState from "@/components/EmptyState";
 import {
   Drawer,
   DrawerClose,
@@ -9,13 +11,15 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import type { LeadQuery } from "@/lib/schema/lead-schema";
+import { getLeadsByQueryIdHandler } from "@/lib/queries/lead-queries";
+import type { Lead, LeadQuery } from "@/lib/schema/lead-schema";
 import { cn } from "@/lib/utils";
+import { getLeadQuery } from "../mockLeadQueries";
 import LeadDetails from "./LeadDetails";
 import LeadHeader from "./LeadHeader";
 import LeadItem from "./LeadItem";
 import LeadQueryDetails from "./LeadQueryDetails";
-import type { Lead } from "./mockLeads";
+import { getLeadsByQueryId } from "./mockLeads";
 
 const useMediaQuery = (query: string) => {
   const [matches, setMatches] = useState(
@@ -35,17 +39,42 @@ const useMediaQuery = (query: string) => {
 };
 
 export default function LeadQueryWrapper({
-  leadQuery,
-  leads,
+  id,
+  role,
 }: {
-  leadQuery: LeadQuery;
-  leads: Lead[];
+  id: string;
+  role: string;
 }) {
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
+  const queryClient = useQueryClient();
   const isDesktop = useMediaQuery("(min-width: 1280px)");
 
-  // "flex-col" and "min-h-0" lets ScrollArea stretch as needed for the content
-  // ScrollArea needs a child div with "flex" to define the content width bounds
+  const leadQueries = queryClient.getQueryData<LeadQuery[]>(["leadQueries"]);
+  const leadQuery =
+    role === "member"
+      ? leadQueries?.find((q) => q.id === id)
+      : getLeadQuery(id);
+
+  const { data = [] } = useQuery({
+    queryKey: ["leads", id],
+    queryFn: () => getLeadsByQueryIdHandler(id),
+    enabled: role === "member" && !!leadQuery,
+    staleTime: 1000 * 60,
+    gcTime: 1000 * 60 * 5,
+  });
+
+  if (!leadQuery) {
+    return (
+      <EmptyState
+        icon={SearchX}
+        headline="No query found"
+        message="No query was found for this lead"
+      />
+    );
+  }
+
+  const leads = role === "member" ? data : getLeadsByQueryId(id);
+
   return (
     <>
       <div
@@ -127,23 +156,3 @@ export default function LeadQueryWrapper({
     </>
   );
 }
-
-const EmptyState = ({
-  icon: Icon,
-  headline,
-  message,
-}: {
-  icon: LucideIcon;
-  headline: string;
-  message: string;
-}) => (
-  <div className="flex flex-col items-center justify-center w-full h-3/4 gap-3 text-center px-6">
-    <div className="size-8 rounded-full bg-muted flex items-center justify-center">
-      <Icon className="size-4 text-muted-foreground" />
-    </div>
-    <div>
-      <p className="text-sm font-medium">{headline}</p>
-      <p className="text-xs text-muted-foreground pt-1">{message}</p>
-    </div>
-  </div>
-);

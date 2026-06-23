@@ -57,6 +57,7 @@ export const config = {
     "/reset-password",
     "/dashboard",
     "/leads",
+    "/leads/:id",
     "/jobs",
   ],
 };

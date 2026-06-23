@@ -1,8 +1,4 @@
-import {
-  apiFetch,
-  handleFetchErrors,
-  handleTanstackQueryError,
-} from "@/lib/api";
+import { apiFetch, handleTanstackQueryError } from "@/lib/api";
 import {
   type LeadQueryForm,
   leadQuerySchema,
@@ -38,7 +34,7 @@ export const getLeadsByQueryIdHandler = async (queryId: string) => {
     const res = await apiFetch(`${apiLeadsRoute}/${queryId}`, {
       method: "GET",
     });
-    const data = leadSchema.parse(res);
+    const data = leadSchema.array().parse(res);
 
     return data;
   } catch (err) {
