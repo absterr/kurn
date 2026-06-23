@@ -6,8 +6,8 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import type { Lead } from "@/lib/schema/lead-schema";
 import { formatDate } from "@/lib/utils";
-import type { Lead } from "./mockLeads";
 
 export default function LeadHeader({
   lead,
@@ -26,19 +26,7 @@ export default function LeadHeader({
 
 const HeaderDetails = ({ lead }: { lead: Lead }) => (
   <header className="flex flex-col gap-2">
-    <div className="flex gap-3 items-center">
-      <h3 className="font-medium text-base">{lead.companyName}</h3>
-      <div className="flex items-center">
-        <span>
-          {lead.completionStatus === "completed" ? (
-            <CheckCircle2 className="size-3 mr-1" />
-          ) : (
-            <AlertCircle className="size-3 mr-1" />
-          )}
-        </span>
-        <span className="text-xs">{lead.completionStatus}</span>
-      </div>
-    </div>
+    <h3 className="font-medium text-base">{lead.companyName}</h3>
     <div className="flex items-center gap-1.5 mt-1 text-xs text-muted-foreground">
       <Clock className="size-3" />
       Added: {formatDate(lead.createdAt)}
