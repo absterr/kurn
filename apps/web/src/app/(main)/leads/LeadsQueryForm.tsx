@@ -29,8 +29,8 @@ export default function LeadsQueryForm({ role }: { role: string }) {
     mutationFn: addLeadQueryHandler,
     onSuccess: (newLeadQuery) => {
       queryClient.setQueryData(["leadQueries"], (old: LeadQuery[]) => [
+        ...(old ?? []),
         newLeadQuery,
-        ...old,
       ]);
 
       toast.success("Lead query added");

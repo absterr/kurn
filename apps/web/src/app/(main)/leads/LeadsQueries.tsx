@@ -12,7 +12,9 @@ export default function LeadsQueries({ role }: { role: string }) {
   const { data: fetchedLeadsQueries = [] } = useQuery({
     queryKey: ["leadQueries"],
     queryFn: getLeadQueriesHandler,
-    enabled: false,
+    staleTime: 1000 * 60,
+    gcTime: 1000 * 60 * 5,
+    enabled: role === "member",
   });
 
   const leadQueries = role === "member" ? fetchedLeadsQueries : mockLeadQueries;
