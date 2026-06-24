@@ -83,5 +83,5 @@ export const refreshTokenHandler = async (ctx: Context) => {
   });
 
   setAuthCookies({ ctx, accessToken, refreshToken });
-  return { message: "Token refreshed" };
+  return { success: true };
 };

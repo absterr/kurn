@@ -15,8 +15,8 @@ export class APIError extends Error {
   }
 }
 
-const REFRESH_PATH = "/api/v1/auth/refresh" as const;
-const authRoute = "/v1/auth";
+const REFRESH_ENDPOINT = "/api/v1/session/refresh" as const;
+const AUTH_ROUTE = "/v1/auth" as const;
 
 export const apiFetch = async <TBody = unknown, TResponse = unknown>(
   endpoint: string,
@@ -31,9 +31,9 @@ export const apiFetch = async <TBody = unknown, TResponse = unknown>(
   });
 
   if (!res.ok) {
-    const isAuthRoute = endpoint.startsWith(authRoute);
+    const isAuthRoute = endpoint.startsWith(AUTH_ROUTE);
     if (res.status === 401 && !isAuthRoute) {
-      const refreshRes = await fetch(REFRESH_PATH, {
+      const refreshRes = await fetch(REFRESH_ENDPOINT, {
         method: "POST",
         credentials: "include",
       });
