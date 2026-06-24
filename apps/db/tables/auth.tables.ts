@@ -47,7 +47,7 @@ export const sessions = pgTable("sessions", {
     .references(() => accounts.id, { onDelete: "cascade" }),
   version: integer("version").notNull().default(1),
   userAgent: varchar("user_agent", { length: 255 }),
-  expiresAt: timestamp("expires_at").notNull(),
+  expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
   ...timestamps,
 });
 
@@ -59,6 +59,6 @@ export const verifications = pgTable("verifications", {
   accountRole: accountRoleEnum("account_role").notNull(),
   verificationType: verificationTypeEnum("verification_type").notNull(),
   token: varchar("token", { length: 255 }).notNull().unique(),
-  expiresAt: timestamp("expires_at").notNull(),
+  expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
   ...timestamps,
 });

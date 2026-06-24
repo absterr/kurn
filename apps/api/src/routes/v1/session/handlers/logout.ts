@@ -2,7 +2,6 @@ import type { Context } from "hono";
 import { deleteCookie, getCookie } from "hono/cookie";
 import { HTTPException } from "hono/http-exception";
 import jwt from "jsonwebtoken";
-import { successProcessor } from "node_modules/zod/v4/core/json-schema-processors.cjs";
 import env from "@/config/env.js";
 import { makeDB } from "@/db/index.js";
 import { clearAuthCookies } from "@/lib/cookies.js";
