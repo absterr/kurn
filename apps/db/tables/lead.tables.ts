@@ -6,6 +6,7 @@ import {
   jsonb,
   pgTable,
   unique,
+  uniqueIndex,
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
@@ -42,6 +43,11 @@ export const leadQueries = pgTable(
     check(
       "lead_query_status_check",
       enumCheck(table.status, leadQueryStatuses),
+    ),
+    uniqueIndex("lead_queries_user_keyword_location_idx").on(
+      table.userId,
+      table.keyword,
+      table.location,
     ),
   ],
 );
