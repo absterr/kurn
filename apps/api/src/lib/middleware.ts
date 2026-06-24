@@ -14,7 +14,7 @@ export const authMiddleware = createMiddleware(async (ctx, next) => {
   const accessToken = getCookie(ctx, "accessToken");
 
   if (!accessToken) {
-    throw new HTTPException(401, { message: "No token provided" });
+    throw new HTTPException(401, { message: "Access token not provided" });
   }
 
   const { error, payload } = verifyUserToken<AccessTokenPayload>({

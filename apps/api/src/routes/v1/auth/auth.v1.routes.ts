@@ -19,7 +19,6 @@ import {
   credentialLoginHandler,
   credentialRegisterHandler,
   forgotPasswordHandler,
-  refreshTokenHandler,
   requestAccessHandler,
   resetPasswordHandler,
   validateRegisterTokenHandler,
@@ -150,17 +149,5 @@ authV1Router.get("/guest", async (ctx) => {
   } catch (err) {
     if (err instanceof HTTPException) throw err;
     return ctx.json({ error: "An unexpected error occurred" }, 500);
-  }
-});
-
-authV1Router.get("/refresh", async (ctx) => {
-  try {
-    const result = await refreshTokenHandler(ctx);
-    return ctx.json(result, 200);
-  } catch (err) {
-    if (err instanceof HTTPException) {
-      throw err;
-    }
-    return ctx.json({ error: "An unexpected error occured" }, 500);
   }
 });
