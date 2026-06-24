@@ -1,6 +1,5 @@
 import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
-import { DatabaseError } from "pg";
 import {
   type AuthVariables,
   authMiddleware,
@@ -14,7 +13,6 @@ import {
 } from "./leads.v1.handlers.js";
 import { leadQueryIdSchema, leadsQuerySchema } from "./leads.v1.schema.js";
 
-const UNIQUE_VIOLATION = "23505" as const;
 export const leadsV1Router = new Hono<AuthVariables>();
 leadsV1Router.use("*", authMiddleware, roleMiddleware("member"));
 
@@ -34,12 +32,6 @@ leadsV1Router.post("/", zValidate("json", leadsQuerySchema), async (ctx) => {
     const memberId = ctx.get("userId");
     return ctx.json(await addLeadQuery(valid, memberId), 201);
   } catch (err) {
-    if (err instanceof DatabaseError && err.code === UNIQUE_VIOLATION) {
-      throw new HTTPException(409, {
-        message: "Query with this keyword and location already exists",
-      });
-    }
-
     if (err instanceof HTTPException) throw err;
     return ctx.json({ error: "Something went wrong" }, 500);
   }
