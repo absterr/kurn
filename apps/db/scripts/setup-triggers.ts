@@ -1,5 +1,5 @@
 import { getTableName, sql } from "drizzle-orm";
-import { db } from "../drizzle";
+import { db, pool } from "../drizzle";
 import { tableNames } from "./table-names";
 
 async function setupTriggers() {
@@ -25,9 +25,12 @@ async function setupTriggers() {
     }
 
     console.log(`[✓] Triggers applied for ${tableNames.length} tables`);
+    process.exit(0);
   } catch (error) {
     console.error("[✗] Failed to set up triggers: ", error);
     process.exit(1);
+  } finally {
+    await pool.end();
   }
 }
 

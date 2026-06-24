@@ -29,6 +29,7 @@ export const credentialLoginHandler = async (
     .selectFrom("accounts")
     .where("userId", "=", foundUser.id)
     .where("role", "=", role)
+    .where("providerId", "=", "credential")
     .selectAll()
     .executeTakeFirst();
 

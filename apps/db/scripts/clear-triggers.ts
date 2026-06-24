@@ -1,5 +1,5 @@
 import { getTableName, sql } from "drizzle-orm";
-import { db } from "../drizzle";
+import { db, pool } from "../drizzle";
 import { tableNames } from "./table-names";
 
 async function clearTriggers() {
@@ -17,9 +17,12 @@ async function clearTriggers() {
         `);
 
     console.log(`[✓] Triggers dropped for ${tableNames.length} tables`);
+    process.exit(0);
   } catch (error) {
     console.error("[✗] Failed to drop triggers: ", error);
     process.exit(1);
+  } finally {
+    await pool.end();
   }
 }
 
