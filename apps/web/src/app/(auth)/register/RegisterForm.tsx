@@ -30,18 +30,16 @@ const RegisterForm = ({ token }: { token: string }) => {
 
   const onSubmit = (body: z.infer<typeof passwordSchema>) => {
     setFormLoading(true);
-    try {
-      startTransition(async () => {
-        const { data, error } = await registerHandler(body, token);
-        if (error || !data) {
-          toast.error(error);
-          return;
-        }
-        toast.success(data.message);
-      });
-    } finally {
-      setFormLoading(false);
-    }
+
+    startTransition(async () => {
+      const { data, error } = await registerHandler(body, token);
+      if (error || !data) {
+        toast.error(error);
+        setFormLoading(false);
+        return;
+      }
+      toast.success(data.message);
+    });
   };
 
   const socialLoginList = [
@@ -93,13 +91,13 @@ const RegisterForm = ({ token }: { token: string }) => {
           </div>
         ))}
 
-        <button
+        <Button
           type="submit"
           disabled={isPending}
           className="w-full h-12 rounded-xl bg-foreground text-background hover:bg-foreground/80 hover:cursor-pointer font-medium text-sm md:text-base transition-colors"
         >
           {isFormLoading ? <LoadingSpinner /> : "Register"}
-        </button>
+        </Button>
       </form>
     </>
   );

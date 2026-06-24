@@ -37,18 +37,16 @@ const LoginForm = () => {
 
   const onSubmit = (body: z.infer<typeof loginSchema>) => {
     setFormLoading(true);
-    try {
-      startTransition(async () => {
-        const { error } = await loginHandler(body);
-        if (error) {
-          toast.error(error);
-          return;
-        }
-        router.replace("/");
-      });
-    } finally {
-      setFormLoading(false);
-    }
+
+    startTransition(async () => {
+      const { error } = await loginHandler(body);
+      if (error) {
+        toast.error(error);
+        setFormLoading(false);
+        return;
+      }
+      router.replace("/");
+    });
   };
 
   const socialLoginList = [
@@ -110,13 +108,13 @@ const LoginForm = () => {
           </div>
         ))}
 
-        <button
+        <Button
           type="submit"
           disabled={isPending}
           className="w-full h-12 rounded-xl bg-foreground text-background hover:bg-foreground/80 hover:cursor-pointer font-medium text-sm md:text-base transition-colors"
         >
           {isFormLoading ? <LoadingSpinner /> : "Log in"}
-        </button>
+        </Button>
       </form>
 
       {role === "member" && (

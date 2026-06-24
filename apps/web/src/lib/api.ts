@@ -16,6 +16,7 @@ export class APIError extends Error {
 }
 
 const REFRESH_PATH = "/api/v1/auth/refresh" as const;
+const authRoute = "/v1/auth";
 
 export const apiFetch = async <TBody = unknown, TResponse = unknown>(
   endpoint: string,
@@ -30,7 +31,8 @@ export const apiFetch = async <TBody = unknown, TResponse = unknown>(
   });
 
   if (!res.ok) {
-    if (res.status === 401) {
+    const isAuthRoute = endpoint.startsWith(authRoute);
+    if (res.status === 401 && !isAuthRoute) {
       const refreshRes = await fetch(REFRESH_PATH, {
         method: "POST",
         credentials: "include",

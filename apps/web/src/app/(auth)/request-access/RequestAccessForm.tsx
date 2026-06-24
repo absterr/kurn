@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
 import LoadingSpinner from "@/components/icons/LoadingSpinner";
+import { Button } from "@/components/ui/button";
 import { requestAccessHandler } from "@/lib/queries/auth-queries";
 import { requestAccessSchema } from "@/lib/schema/auth-schema";
 import GuestLoginBtn from "../GuestLoginBtn";
@@ -24,18 +25,16 @@ const RequestAccessForm = () => {
 
   const onSubmit = (body: z.infer<typeof requestAccessSchema>) => {
     setFormLoading(true);
-    try {
-      startTransition(async () => {
-        const { data, error } = await requestAccessHandler(body);
-        if (error || !data) {
-          toast.error(error);
-          return;
-        }
-        toast.success(data.message);
-      });
-    } finally {
-      setFormLoading(false);
-    }
+
+    startTransition(async () => {
+      const { data, error } = await requestAccessHandler(body);
+      if (error || !data) {
+        toast.error(error);
+        setFormLoading(false);
+        return;
+      }
+      toast.success(data.message);
+    });
   };
 
   return (
@@ -61,13 +60,13 @@ const RequestAccessForm = () => {
           </div>
         ))}
 
-        <button
+        <Button
           type="submit"
           disabled={isPending}
           className="w-full h-12 rounded-xl bg-foreground text-background hover:bg-foreground/80 hover:cursor-pointer font-medium text-sm md:text-base transition-colors"
         >
           {isFormLoading ? <LoadingSpinner /> : "Request Access"}
-        </button>
+        </Button>
       </form>
 
       <p className="text-xs md:text-sm text-foreground/50 text-center pt-8">
