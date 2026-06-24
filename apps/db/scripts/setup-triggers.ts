@@ -8,7 +8,7 @@ async function setupTriggers() {
           CREATE OR REPLACE FUNCTION set_updated_at()
           RETURNS TRIGGER AS $$
           BEGIN
-            NEW.updated_at = now();
+            NEW.updated_at = now() AT TIME ZONE 'UTC';
             RETURN NEW;
           END;
           $$ LANGUAGE plpgsql;
