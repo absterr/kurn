@@ -1,4 +1,4 @@
-const LoadingSpinner = ({ size = 6 }: { size?: number }) => (
+const LoadingSpinner = ({ size = 8 }: { size?: number }) => (
   <div role="status">
     <svg
       aria-hidden="true"
