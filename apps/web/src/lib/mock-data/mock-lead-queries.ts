@@ -93,10 +93,6 @@ export const mockLeadQueries = [
   },
 ];
 
-export function getLeadQuery(queryId: string, queries: LeadQuery[]) {
-  return queries.find((l) => l.id === queryId);
-}
-
 export const createMockLeadQuery = (body: LeadQueryForm): LeadQuery => ({
   id: crypto.randomUUID(),
   keyword: body.keyword,
@@ -106,6 +102,10 @@ export const createMockLeadQuery = (body: LeadQueryForm): LeadQuery => ({
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
 });
+
+export const getLeadQuery = (queryId: string, queries: LeadQuery[]) => {
+  return queries.find((l) => l.id === queryId);
+};
 
 export const isDuplicate = (body: LeadQueryForm, queries: LeadQuery[]) =>
   queries.some(

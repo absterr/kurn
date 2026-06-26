@@ -3,7 +3,6 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import EmptyState from "@/components/EmptyState";
-import { LeadsProvider } from "@/lib/LeadsProvider";
 import LeadQueryWrapper from "./LeadQueryWrapper";
 
 export default async function LeadQuery({
@@ -27,9 +26,5 @@ export default async function LeadQuery({
     );
   }
 
-  return (
-    <LeadsProvider role={role}>
-      <LeadQueryWrapper id={id} role={role} />;
-    </LeadsProvider>
-  );
+  return <LeadQueryWrapper id={id} role={role} />;
 }

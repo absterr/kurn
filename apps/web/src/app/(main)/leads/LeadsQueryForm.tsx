@@ -4,7 +4,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { useLeads } from "@/lib/LeadsProvider";
 import {
   createMockLeadQuery,
   isDuplicate,
@@ -17,8 +16,10 @@ import {
 } from "@/lib/schema/lead-schema";
 
 export default function LeadsQueryForm({ role }: { role: string }) {
-  const { guestQueries, setGuestQueries } = useLeads();
   const queryClient = useQueryClient();
+  const guestQueries =
+    queryClient.getQueryData<LeadQuery[]>(["leadQueries"]) ?? [];
+
   const {
     register,
     reset,
@@ -49,24 +50,21 @@ export default function LeadsQueryForm({ role }: { role: string }) {
   });
 
   const onAddQuery = (body: LeadQueryForm) => {
-    switch (role) {
-      case "member":
-        mutate(body);
-        break;
-
-      case "guest":
-        if (isDuplicate(body, guestQueries)) {
-          toast.error("Query with this keyword and location already exists");
-          break;
-        }
-        setGuestQueries((prev) => [...prev, createMockLeadQuery(body)]);
-        toast.success("Lead query added");
-        break;
-
-      default:
-        // do nothing
-        break;
+    if (role === "guest") {
+      if (isDuplicate(body, guestQueries)) {
+        toast.error("Query with this keyword and location already exists");
+        return;
+      }
+      queryClient.setQueryData(["leadQueries"], (old: LeadQuery[] = []) => [
+        ...old,
+        createMockLeadQuery(body),
+      ]);
+      toast.success("Lead query added");
+      reset();
+      return;
     }
+
+    mutate(body);
   };
 
   return (

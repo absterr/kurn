@@ -5,7 +5,7 @@ import {
 } from "@tanstack/react-query";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { LeadsProvider } from "@/lib/LeadsProvider";
+import { mockLeadQueries } from "@/lib/mock-data/mock-lead-queries";
 import { getLeadQueriesHandler } from "@/lib/queries/lead-queries";
 import LeadsQueries from "./LeadsQueries";
 import LeadsQueryForm from "./LeadsQueryForm";
@@ -21,17 +21,16 @@ export default async function Leads() {
 
   const queryClient = new QueryClient();
 
-  if (role === "member") {
-    await queryClient.prefetchQuery({
-      queryKey: ["leadQueries"],
-      queryFn: getLeadQueriesHandler,
-      staleTime: 1000 * 60,
-      gcTime: 1000 * 60 * 5,
-    });
-  }
+  await queryClient.prefetchQuery({
+    queryKey: ["leadQueries"],
+    queryFn: getLeadQueriesHandler,
+    staleTime: 1000 * 60,
+    gcTime: 1000 * 60 * 5,
+    initialData: role === "member" ? undefined : mockLeadQueries,
+  });
 
   return (
-    <LeadsProvider role={role}>
+    <>
       <div className="hidden md:grid grid-cols-1 xl:grid-cols-2 gap-10 min-h-0 pt-4">
         <LeadsQueryForm role={role} />
         <HydrationBoundary state={dehydrate(queryClient)}>
@@ -50,6 +49,6 @@ export default async function Leads() {
           }
         />
       </div>
-    </LeadsProvider>
+    </>
   );
 }
