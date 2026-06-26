@@ -5,6 +5,7 @@ import {
 } from "@tanstack/react-query";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { LeadsProvider } from "@/lib/LeadsProvider";
 import { getLeadQueriesHandler } from "@/lib/queries/lead-queries";
 import LeadsQueries from "./LeadsQueries";
 import LeadsQueryForm from "./LeadsQueryForm";
@@ -30,7 +31,7 @@ export default async function Leads() {
   }
 
   return (
-    <>
+    <LeadsProvider role={role}>
       <div className="hidden md:grid grid-cols-1 xl:grid-cols-2 gap-10 min-h-0 pt-4">
         <LeadsQueryForm role={role} />
         <HydrationBoundary state={dehydrate(queryClient)}>
@@ -49,6 +50,6 @@ export default async function Leads() {
           }
         />
       </div>
-    </>
+    </LeadsProvider>
   );
 }

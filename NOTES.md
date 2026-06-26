@@ -34,20 +34,20 @@
 - [x] **[Web]** Implement refresh logic to api fetch helper
 - [x] **[Web]** Implement fetch for leads endpoints
 - [x] **[DB]** Seed an admin/member user (Code available)
+- [ ] **[Web]** use useState to persist guest leads data
 - [ ] **[Web]** Add logout btn with guest/member logic
+- [ ] **[Worker]** Implement async cold email
 - [ ] **[Web]** Implement Suspense or loading.tsx for async pages
 - [ ] **[Web]** Add not-found and error pages
 - [ ] **[API]** Implement social login enpoints and integrate with frontend
-- [ ] **[Worker]** Implement async cold email
 - [ ] **[Worker]** Implement API key rotation
+- [ ] **[Web]** Implement member dashboard pages
 - [ ] **[Worker]** Deliberate and plan the job module flow (take ideas from career-ops)
 - [ ] **[Worker]** Implement basic job module
 - [ ] **[API]** Implement job endpoints
 - [ ] **[Web]** Implement job pages
-- [ ] **[Web]** Implement member dashboard pages
 - [ ] **[Web]** Add admin-based pages
 - [ ] **[API]** Add admin-based routes
-- [ ] **[API]** Implement simultaneous member and admin login sessions
 - [ ] **[Web]** Implement 'last used' login method feature on login page
 
 ---
@@ -57,25 +57,12 @@
 ### [API] Job Module
 
 1. ....
+   - ....
+   - ....
+
 2. ....
-
-### [Web/API] Guest endpoint
-
-1. Add guest token endpoint
-   - apps/api/routes/guest/index.ts (POST) → returns a signed JWT with {role:"guest"}
-   - No DB write needed – token encodes the role for client‑side routing.
-
-2. Frontend sign‑in button
-   - Add a “Continue as Guest” button on the Login and Request access forms.
-   - Call POST /api/guest via the existing fetch wrapper, store the token in localStorage.
-
-3. Render based on role
-   - In the App Provider (or context) read the token at startup.
-   - If role==="guest" render the read‑only UI; otherwise show full‑auth menus and actions.
-
-4. Cleanup
-   - On page reload the token is cleared → UI falls back to the default guest state.
-   - No server‑side persistence required.
+   - ....
+   - ....
 
 ---
 
