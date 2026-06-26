@@ -11,7 +11,6 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useLeads } from "@/lib/LeadsProvider";
 import { getLeadQuery } from "@/lib/mock-data/mock-lead-queries";
 import { getLeadsByQueryId } from "@/lib/mock-data/mock-leads";
 import { getLeadsByQueryIdHandler } from "@/lib/queries/lead-queries";
@@ -46,23 +45,20 @@ export default function LeadQueryWrapper({
   id: string;
   role: string;
 }) {
-  const { guestQueries } = useLeads();
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const queryClient = useQueryClient();
   const isDesktop = useMediaQuery("(min-width: 1280px)");
 
-  const leadQueries = queryClient.getQueryData<LeadQuery[]>(["leadQueries"]);
-  const leadQuery =
-    role === "member"
-      ? leadQueries?.find((q) => q.id === id)
-      : getLeadQuery(id, guestQueries);
+  const leadQueries =
+    queryClient.getQueryData<LeadQuery[]>(["leadQueries"]) ?? [];
+  const leadQuery = getLeadQuery(id, leadQueries);
 
   const { data = [] } = useQuery({
     queryKey: ["leads", id],
     queryFn: () => getLeadsByQueryIdHandler(id),
-    enabled: role === "member" && !!leadQuery,
     staleTime: 1000 * 60,
     gcTime: 1000 * 60 * 5,
+    enabled: role === "member" && !!leadQuery,
   });
 
   if (!leadQuery) {
