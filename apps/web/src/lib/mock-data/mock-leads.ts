@@ -34,7 +34,7 @@ export const mockLeads: Lead[] = [
   // ── Coffee shops · Abuja ───────────────────────────────────────────────────
   {
     id: makeId(101),
-    leadQueryId: "a3f1c2d4-e5b6-7890-abcd-ef1234567890",
+    leadQueryId: "f55d5806-55f8-41a4-afa6-7bd5e719ea05",
     reviewed: false,
     companyName: "Brewed Awakenings",
     mapLink: "https://maps.google.com/?q=Brewed+Awakenings+Abuja",
@@ -53,7 +53,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(102),
-    leadQueryId: "a3f1c2d4-e5b6-7890-abcd-ef1234567890",
+    leadQueryId: "f55d5806-55f8-41a4-afa6-7bd5e719ea05",
     reviewed: false,
     companyName: "The Roast Room",
     mapLink: "https://maps.google.com/?q=The+Roast+Room+Abuja",
@@ -72,7 +72,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(103),
-    leadQueryId: "a3f1c2d4-e5b6-7890-abcd-ef1234567890",
+    leadQueryId: "f55d5806-55f8-41a4-afa6-7bd5e719ea05",
     reviewed: false,
     companyName: "Sip & Co.",
     mapLink: "https://maps.google.com/?q=Sip+and+Co+Abuja",
@@ -84,7 +84,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(104),
-    leadQueryId: "a3f1c2d4-e5b6-7890-abcd-ef1234567890",
+    leadQueryId: "f55d5806-55f8-41a4-afa6-7bd5e719ea05",
     reviewed: false,
     companyName: "Café Nura",
     mapLink: "https://maps.google.com/?q=Cafe+Nura+Abuja",
@@ -96,7 +96,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(105),
-    leadQueryId: "a3f1c2d4-e5b6-7890-abcd-ef1234567890",
+    leadQueryId: "f55d5806-55f8-41a4-afa6-7bd5e719ea05",
     reviewed: false,
     companyName: "Kafe Kwik",
     mapLink: "https://maps.google.com/?q=Kafe+Kwik+Abuja",
@@ -108,7 +108,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(106),
-    leadQueryId: "a3f1c2d4-e5b6-7890-abcd-ef1234567890",
+    leadQueryId: "f55d5806-55f8-41a4-afa6-7bd5e719ea05",
     reviewed: false,
     companyName: "Drip Coffee House",
     mapLink: "https://maps.google.com/?q=Drip+Coffee+House+Abuja",
@@ -127,7 +127,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(107),
-    leadQueryId: "a3f1c2d4-e5b6-7890-abcd-ef1234567890",
+    leadQueryId: "f55d5806-55f8-41a4-afa6-7bd5e719ea05",
     reviewed: false,
     companyName: "Morning Ritual Café",
     mapLink: "https://maps.google.com/?q=Morning+Ritual+Cafe+Abuja",
@@ -149,7 +149,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(108),
-    leadQueryId: "a3f1c2d4-e5b6-7890-abcd-ef1234567890",
+    leadQueryId: "f55d5806-55f8-41a4-afa6-7bd5e719ea05",
     reviewed: false,
     companyName: "The Blend Bar",
     mapLink: "https://maps.google.com/?q=The+Blend+Bar+Abuja",
@@ -161,7 +161,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(109),
-    leadQueryId: "a3f1c2d4-e5b6-7890-abcd-ef1234567890",
+    leadQueryId: "f55d5806-55f8-41a4-afa6-7bd5e719ea05",
     reviewed: false,
     companyName: "Grind & Grace",
     mapLink: "https://maps.google.com/?q=Grind+and+Grace+Abuja",
@@ -183,7 +183,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(110),
-    leadQueryId: "a3f1c2d4-e5b6-7890-abcd-ef1234567890",
+    leadQueryId: "f55d5806-55f8-41a4-afa6-7bd5e719ea05",
     reviewed: false,
     companyName: "Cuppa Lounge",
     mapLink: "https://maps.google.com/?q=Cuppa+Lounge+Abuja",
@@ -207,7 +207,7 @@ export const mockLeads: Lead[] = [
   // ── Hotels · Austin, TX ────────────────────────────────────────────────────
   {
     id: makeId(201),
-    leadQueryId: "b7e8d9f0-1a2b-3c4d-5e6f-7a8b9c0d1e2f",
+    leadQueryId: "3118a180-cacf-4448-93c3-4392f87b2746",
     reviewed: false,
     companyName: "Lone Star Inn",
     mapLink: "https://maps.google.com/?q=Lone+Star+Inn+Austin+TX",
@@ -229,7 +229,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(202),
-    leadQueryId: "b7e8d9f0-1a2b-3c4d-5e6f-7a8b9c0d1e2f",
+    leadQueryId: "3118a180-cacf-4448-93c3-4392f87b2746",
     reviewed: false,
     companyName: "Austin Palms Hotel",
     mapLink: "https://maps.google.com/?q=Austin+Palms+Hotel+TX",
@@ -248,7 +248,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(203),
-    leadQueryId: "b7e8d9f0-1a2b-3c4d-5e6f-7a8b9c0d1e2f",
+    leadQueryId: "3118a180-cacf-4448-93c3-4392f87b2746",
     reviewed: false,
     companyName: "The Capitol View Suites",
     mapLink: "https://maps.google.com/?q=Capitol+View+Suites+Austin",
@@ -260,7 +260,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(204),
-    leadQueryId: "b7e8d9f0-1a2b-3c4d-5e6f-7a8b9c0d1e2f",
+    leadQueryId: "3118a180-cacf-4448-93c3-4392f87b2746",
     reviewed: false,
     companyName: "Barton Creek Lodge",
     mapLink: "https://maps.google.com/?q=Barton+Creek+Lodge+Austin",
@@ -272,7 +272,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(205),
-    leadQueryId: "b7e8d9f0-1a2b-3c4d-5e6f-7a8b9c0d1e2f",
+    leadQueryId: "3118a180-cacf-4448-93c3-4392f87b2746",
     reviewed: false,
     companyName: "6th Street Hotel",
     mapLink: "https://maps.google.com/?q=6th+Street+Hotel+Austin",
@@ -294,7 +294,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(206),
-    leadQueryId: "b7e8d9f0-1a2b-3c4d-5e6f-7a8b9c0d1e2f",
+    leadQueryId: "3118a180-cacf-4448-93c3-4392f87b2746",
     reviewed: false,
     companyName: "East Austin Boutique Inn",
     mapLink: "https://maps.google.com/?q=East+Austin+Boutique+Inn",
@@ -306,7 +306,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(207),
-    leadQueryId: "b7e8d9f0-1a2b-3c4d-5e6f-7a8b9c0d1e2f",
+    leadQueryId: "3118a180-cacf-4448-93c3-4392f87b2746",
     reviewed: false,
     companyName: "Travis County Hotel",
     mapLink: "https://maps.google.com/?q=Travis+County+Hotel+Austin",
@@ -325,7 +325,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(208),
-    leadQueryId: "b7e8d9f0-1a2b-3c4d-5e6f-7a8b9c0d1e2f",
+    leadQueryId: "3118a180-cacf-4448-93c3-4392f87b2746",
     reviewed: false,
     companyName: "South Lamar Stays",
     mapLink: "https://maps.google.com/?q=South+Lamar+Stays+Austin",
@@ -344,7 +344,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(209),
-    leadQueryId: "b7e8d9f0-1a2b-3c4d-5e6f-7a8b9c0d1e2f",
+    leadQueryId: "3118a180-cacf-4448-93c3-4392f87b2746",
     reviewed: false,
     companyName: "Domain Suites Austin",
     mapLink: "https://maps.google.com/?q=Domain+Suites+Austin",
@@ -356,7 +356,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(210),
-    leadQueryId: "b7e8d9f0-1a2b-3c4d-5e6f-7a8b9c0d1e2f",
+    leadQueryId: "3118a180-cacf-4448-93c3-4392f87b2746",
     reviewed: false,
     companyName: "Rainey Street Inn",
     mapLink: "https://maps.google.com/?q=Rainey+Street+Inn+Austin",
@@ -377,7 +377,7 @@ export const mockLeads: Lead[] = [
   // ── Bakeries · Lagos ───────────────────────────────────────────────────────
   {
     id: makeId(301),
-    leadQueryId: "c1d2e3f4-a5b6-7c8d-9e0f-1a2b3c4d5e6f",
+    leadQueryId: "371a4ac1-915e-4d7f-a636-e83b43abdb89",
     reviewed: false,
     companyName: "Sweet Crumbs Bakery",
     mapLink: "https://maps.google.com/?q=Sweet+Crumbs+Bakery+Lagos",
@@ -396,7 +396,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(302),
-    leadQueryId: "c1d2e3f4-a5b6-7c8d-9e0f-1a2b3c4d5e6f",
+    leadQueryId: "371a4ac1-915e-4d7f-a636-e83b43abdb89",
     reviewed: false,
     companyName: "Golden Loaf Bakehouse",
     mapLink: "https://maps.google.com/?q=Golden+Loaf+Bakehouse+Lagos",
@@ -418,7 +418,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(303),
-    leadQueryId: "c1d2e3f4-a5b6-7c8d-9e0f-1a2b3c4d5e6f",
+    leadQueryId: "371a4ac1-915e-4d7f-a636-e83b43abdb89",
     reviewed: false,
     companyName: "Flour Power Cakes",
     mapLink: "https://maps.google.com/?q=Flour+Power+Cakes+Lagos",
@@ -430,7 +430,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(304),
-    leadQueryId: "c1d2e3f4-a5b6-7c8d-9e0f-1a2b3c4d5e6f",
+    leadQueryId: "371a4ac1-915e-4d7f-a636-e83b43abdb89",
     reviewed: false,
     companyName: "Oven Fresh Lagos",
     mapLink: "https://maps.google.com/?q=Oven+Fresh+Lagos",
@@ -442,7 +442,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(305),
-    leadQueryId: "c1d2e3f4-a5b6-7c8d-9e0f-1a2b3c4d5e6f",
+    leadQueryId: "371a4ac1-915e-4d7f-a636-e83b43abdb89",
     reviewed: false,
     companyName: "Butter & Beyond",
     mapLink: "https://maps.google.com/?q=Butter+and+Beyond+Lagos",
@@ -461,7 +461,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(306),
-    leadQueryId: "c1d2e3f4-a5b6-7c8d-9e0f-1a2b3c4d5e6f",
+    leadQueryId: "371a4ac1-915e-4d7f-a636-e83b43abdb89",
     reviewed: false,
     companyName: "Rise & Shine Pastries",
     mapLink: "https://maps.google.com/?q=Rise+and+Shine+Pastries+Lagos",
@@ -483,7 +483,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(307),
-    leadQueryId: "c1d2e3f4-a5b6-7c8d-9e0f-1a2b3c4d5e6f",
+    leadQueryId: "371a4ac1-915e-4d7f-a636-e83b43abdb89",
     reviewed: false,
     companyName: "The Pastry Corner",
     mapLink: "https://maps.google.com/?q=The+Pastry+Corner+Lagos",
@@ -495,7 +495,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(308),
-    leadQueryId: "c1d2e3f4-a5b6-7c8d-9e0f-1a2b3c4d5e6f",
+    leadQueryId: "371a4ac1-915e-4d7f-a636-e83b43abdb89",
     reviewed: false,
     companyName: "Dough Republic",
     mapLink: "https://maps.google.com/?q=Dough+Republic+Lagos",
@@ -514,7 +514,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(309),
-    leadQueryId: "c1d2e3f4-a5b6-7c8d-9e0f-1a2b3c4d5e6f",
+    leadQueryId: "371a4ac1-915e-4d7f-a636-e83b43abdb89",
     reviewed: false,
     companyName: "Crème de la Crème Cakes",
     mapLink: "https://maps.google.com/?q=Creme+de+la+Creme+Cakes+Lagos",
@@ -533,7 +533,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(310),
-    leadQueryId: "c1d2e3f4-a5b6-7c8d-9e0f-1a2b3c4d5e6f",
+    leadQueryId: "371a4ac1-915e-4d7f-a636-e83b43abdb89",
     reviewed: false,
     companyName: "Baked with Love",
     mapLink: "https://maps.google.com/?q=Baked+with+Love+Lagos",
@@ -554,7 +554,7 @@ export const mockLeads: Lead[] = [
   // ── Pharmacies · Abuja ────────────────────────────────────────────────────
   {
     id: makeId(401),
-    leadQueryId: "d4e5f6a7-b8c9-0d1e-2f3a-4b5c6d7e8f90",
+    leadQueryId: "5ccc6407-dcc3-41c2-a8a1-fea90d513ba2",
     reviewed: false,
     companyName: "MedPlus Pharmacy Abuja",
     mapLink: "https://maps.google.com/?q=MedPlus+Pharmacy+Abuja",
@@ -576,7 +576,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(402),
-    leadQueryId: "d4e5f6a7-b8c9-0d1e-2f3a-4b5c6d7e8f90",
+    leadQueryId: "5ccc6407-dcc3-41c2-a8a1-fea90d513ba2",
     reviewed: false,
     companyName: "HealthPlus Wuse",
     mapLink: "https://maps.google.com/?q=HealthPlus+Wuse+Abuja",
@@ -595,7 +595,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(403),
-    leadQueryId: "d4e5f6a7-b8c9-0d1e-2f3a-4b5c6d7e8f90",
+    leadQueryId: "5ccc6407-dcc3-41c2-a8a1-fea90d513ba2",
     reviewed: false,
     companyName: "Wellspring Pharmacy",
     mapLink: "https://maps.google.com/?q=Wellspring+Pharmacy+Abuja",
@@ -607,7 +607,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(404),
-    leadQueryId: "d4e5f6a7-b8c9-0d1e-2f3a-4b5c6d7e8f90",
+    leadQueryId: "5ccc6407-dcc3-41c2-a8a1-fea90d513ba2",
     reviewed: false,
     companyName: "Lifegate Pharmacy",
     mapLink: "https://maps.google.com/?q=Lifegate+Pharmacy+Abuja",
@@ -619,7 +619,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(405),
-    leadQueryId: "d4e5f6a7-b8c9-0d1e-2f3a-4b5c6d7e8f90",
+    leadQueryId: "5ccc6407-dcc3-41c2-a8a1-fea90d513ba2",
     reviewed: false,
     companyName: "Pharmazone Maitama",
     mapLink: "https://maps.google.com/?q=Pharmazone+Maitama+Abuja",
@@ -641,7 +641,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(406),
-    leadQueryId: "d4e5f6a7-b8c9-0d1e-2f3a-4b5c6d7e8f90",
+    leadQueryId: "5ccc6407-dcc3-41c2-a8a1-fea90d513ba2",
     reviewed: false,
     companyName: "Apex Pharmacy Gwarinpa",
     mapLink: "https://maps.google.com/?q=Apex+Pharmacy+Gwarinpa+Abuja",
@@ -660,7 +660,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(407),
-    leadQueryId: "d4e5f6a7-b8c9-0d1e-2f3a-4b5c6d7e8f90",
+    leadQueryId: "5ccc6407-dcc3-41c2-a8a1-fea90d513ba2",
     reviewed: false,
     companyName: "CarePoint Pharmacy",
     mapLink: "https://maps.google.com/?q=CarePoint+Pharmacy+Abuja",
@@ -672,7 +672,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(408),
-    leadQueryId: "d4e5f6a7-b8c9-0d1e-2f3a-4b5c6d7e8f90",
+    leadQueryId: "5ccc6407-dcc3-41c2-a8a1-fea90d513ba2",
     reviewed: false,
     companyName: "Trusted Care Pharmacy",
     mapLink: "https://maps.google.com/?q=Trusted+Care+Pharmacy+Abuja",
@@ -691,7 +691,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(409),
-    leadQueryId: "d4e5f6a7-b8c9-0d1e-2f3a-4b5c6d7e8f90",
+    leadQueryId: "5ccc6407-dcc3-41c2-a8a1-fea90d513ba2",
     reviewed: false,
     companyName: "Premier Pharmacy Wuse",
     mapLink: "https://maps.google.com/?q=Premier+Pharmacy+Wuse+Abuja",
@@ -710,7 +710,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(410),
-    leadQueryId: "d4e5f6a7-b8c9-0d1e-2f3a-4b5c6d7e8f90",
+    leadQueryId: "5ccc6407-dcc3-41c2-a8a1-fea90d513ba2",
     reviewed: false,
     companyName: "Sigma Pharmacy Asokoro",
     mapLink: "https://maps.google.com/?q=Sigma+Pharmacy+Asokoro+Abuja",
@@ -731,7 +731,7 @@ export const mockLeads: Lead[] = [
   // ── Gyms · Port Harcourt ──────────────────────────────────────────────────
   {
     id: makeId(501),
-    leadQueryId: "e5f6a7b8-c9d0-1e2f-3a4b-5c6d7e8f9a01",
+    leadQueryId: "b7d0973c-5a29-43ff-8e53-aecc48d0284d",
     reviewed: false,
     companyName: "IronCore Gym PH",
     mapLink: "https://maps.google.com/?q=IronCore+Gym+Port+Harcourt",
@@ -750,7 +750,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(502),
-    leadQueryId: "e5f6a7b8-c9d0-1e2f-3a4b-5c6d7e8f9a01",
+    leadQueryId: "b7d0973c-5a29-43ff-8e53-aecc48d0284d",
     reviewed: false,
     companyName: "FitZone Port Harcourt",
     mapLink: "https://maps.google.com/?q=FitZone+Port+Harcourt",
@@ -762,7 +762,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(503),
-    leadQueryId: "e5f6a7b8-c9d0-1e2f-3a4b-5c6d7e8f9a01",
+    leadQueryId: "b7d0973c-5a29-43ff-8e53-aecc48d0284d",
     reviewed: false,
     companyName: "PowerHouse Fitness",
     mapLink: "https://maps.google.com/?q=PowerHouse+Fitness+Port+Harcourt",
@@ -774,7 +774,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(504),
-    leadQueryId: "e5f6a7b8-c9d0-1e2f-3a4b-5c6d7e8f9a01",
+    leadQueryId: "b7d0973c-5a29-43ff-8e53-aecc48d0284d",
     reviewed: false,
     companyName: "Flex Studio PH",
     mapLink: "https://maps.google.com/?q=Flex+Studio+Port+Harcourt",
@@ -796,7 +796,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(505),
-    leadQueryId: "e5f6a7b8-c9d0-1e2f-3a4b-5c6d7e8f9a01",
+    leadQueryId: "b7d0973c-5a29-43ff-8e53-aecc48d0284d",
     reviewed: false,
     companyName: "Elite Fitness Club",
     mapLink: "https://maps.google.com/?q=Elite+Fitness+Club+Port+Harcourt",
@@ -815,7 +815,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(506),
-    leadQueryId: "e5f6a7b8-c9d0-1e2f-3a4b-5c6d7e8f9a01",
+    leadQueryId: "b7d0973c-5a29-43ff-8e53-aecc48d0284d",
     reviewed: false,
     companyName: "PH CrossFit Hub",
     mapLink: "https://maps.google.com/?q=PH+CrossFit+Hub+Port+Harcourt",
@@ -827,7 +827,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(507),
-    leadQueryId: "e5f6a7b8-c9d0-1e2f-3a4b-5c6d7e8f9a01",
+    leadQueryId: "b7d0973c-5a29-43ff-8e53-aecc48d0284d",
     reviewed: false,
     companyName: "BodyWork Gym",
     mapLink: "https://maps.google.com/?q=BodyWork+Gym+Port+Harcourt",
@@ -846,7 +846,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(508),
-    leadQueryId: "e5f6a7b8-c9d0-1e2f-3a4b-5c6d7e8f9a01",
+    leadQueryId: "b7d0973c-5a29-43ff-8e53-aecc48d0284d",
     reviewed: false,
     companyName: "Titan Gym PH",
     mapLink: "https://maps.google.com/?q=Titan+Gym+Port+Harcourt",
@@ -858,7 +858,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(509),
-    leadQueryId: "e5f6a7b8-c9d0-1e2f-3a4b-5c6d7e8f9a01",
+    leadQueryId: "b7d0973c-5a29-43ff-8e53-aecc48d0284d",
     reviewed: false,
     companyName: "SweatBox Fitness",
     mapLink: "https://maps.google.com/?q=SweatBox+Fitness+Port+Harcourt",
@@ -877,7 +877,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(510),
-    leadQueryId: "e5f6a7b8-c9d0-1e2f-3a4b-5c6d7e8f9a01",
+    leadQueryId: "b7d0973c-5a29-43ff-8e53-aecc48d0284d",
     reviewed: false,
     companyName: "Horizon Health Club",
     mapLink: "https://maps.google.com/?q=Horizon+Health+Club+Port+Harcourt",
@@ -901,7 +901,7 @@ export const mockLeads: Lead[] = [
   // ── Law firms · Lekki, Lagos ──────────────────────────────────────────────
   {
     id: makeId(601),
-    leadQueryId: "f6a7b8c9-d0e1-2f3a-4b5c-6d7e8f9a0b12",
+    leadQueryId: "dec02d89-4591-45c1-8406-5630e0cd51ef",
     reviewed: false,
     companyName: "Okonkwo & Associates",
     mapLink: "https://maps.google.com/?q=Okonkwo+Associates+Lekki+Lagos",
@@ -920,7 +920,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(602),
-    leadQueryId: "f6a7b8c9-d0e1-2f3a-4b5c-6d7e8f9a0b12",
+    leadQueryId: "dec02d89-4591-45c1-8406-5630e0cd51ef",
     reviewed: false,
     companyName: "Adeyemi Legal Partners",
     mapLink: "https://maps.google.com/?q=Adeyemi+Legal+Partners+Lekki",
@@ -939,7 +939,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(603),
-    leadQueryId: "f6a7b8c9-d0e1-2f3a-4b5c-6d7e8f9a0b12",
+    leadQueryId: "dec02d89-4591-45c1-8406-5630e0cd51ef",
     reviewed: false,
     companyName: "Bello & Co. Solicitors",
     mapLink: "https://maps.google.com/?q=Bello+and+Co+Solicitors+Lekki",
@@ -951,7 +951,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(604),
-    leadQueryId: "f6a7b8c9-d0e1-2f3a-4b5c-6d7e8f9a0b12",
+    leadQueryId: "dec02d89-4591-45c1-8406-5630e0cd51ef",
     reviewed: false,
     companyName: "Chambers of I.O. Nwachukwu",
     mapLink: "https://maps.google.com/?q=Chambers+Nwachukwu+Lekki+Lagos",
@@ -963,7 +963,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(605),
-    leadQueryId: "f6a7b8c9-d0e1-2f3a-4b5c-6d7e8f9a0b12",
+    leadQueryId: "dec02d89-4591-45c1-8406-5630e0cd51ef",
     reviewed: false,
     companyName: "Lex Counsel Lagos",
     mapLink: "https://maps.google.com/?q=Lex+Counsel+Lekki+Lagos",
@@ -982,7 +982,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(606),
-    leadQueryId: "f6a7b8c9-d0e1-2f3a-4b5c-6d7e8f9a0b12",
+    leadQueryId: "dec02d89-4591-45c1-8406-5630e0cd51ef",
     reviewed: false,
     companyName: "Sofunde Osakwe Ogundipe & Belgore",
     mapLink: "https://maps.google.com/?q=SOOB+Lekki+Lagos",
@@ -1001,7 +1001,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(607),
-    leadQueryId: "f6a7b8c9-d0e1-2f3a-4b5c-6d7e8f9a0b12",
+    leadQueryId: "dec02d89-4591-45c1-8406-5630e0cd51ef",
     reviewed: false,
     companyName: "Templars Law Firm",
     mapLink: "https://maps.google.com/?q=Templars+Law+Firm+Lekki+Lagos",
@@ -1013,7 +1013,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(608),
-    leadQueryId: "f6a7b8c9-d0e1-2f3a-4b5c-6d7e8f9a0b12",
+    leadQueryId: "dec02d89-4591-45c1-8406-5630e0cd51ef",
     reviewed: false,
     companyName: "Aluko & Oyebode",
     mapLink: "https://maps.google.com/?q=Aluko+Oyebode+Lagos",
@@ -1032,7 +1032,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(609),
-    leadQueryId: "f6a7b8c9-d0e1-2f3a-4b5c-6d7e8f9a0b12",
+    leadQueryId: "dec02d89-4591-45c1-8406-5630e0cd51ef",
     reviewed: false,
     companyName: "G. Elias & Co.",
     mapLink: "https://maps.google.com/?q=G+Elias+and+Co+Lagos",
@@ -1044,7 +1044,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(610),
-    leadQueryId: "f6a7b8c9-d0e1-2f3a-4b5c-6d7e8f9a0b12",
+    leadQueryId: "dec02d89-4591-45c1-8406-5630e0cd51ef",
     reviewed: false,
     companyName: "Ajumogobia & Okeke",
     mapLink: "https://maps.google.com/?q=Ajumogobia+Okeke+Lagos",
@@ -1065,7 +1065,7 @@ export const mockLeads: Lead[] = [
   // ── Real estate agents · Abuja ────────────────────────────────────────────
   {
     id: makeId(701),
-    leadQueryId: "a7b8c9d0-e1f2-3a4b-5c6d-7e8f9a0b1c23",
+    leadQueryId: "c2743fac-0f92-4af4-8f89-7d3233893556",
     reviewed: false,
     companyName: "Abuja Homes Realty",
     mapLink: "https://maps.google.com/?q=Abuja+Homes+Realty",
@@ -1087,7 +1087,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(702),
-    leadQueryId: "a7b8c9d0-e1f2-3a4b-5c6d-7e8f9a0b1c23",
+    leadQueryId: "c2743fac-0f92-4af4-8f89-7d3233893556",
     reviewed: false,
     companyName: "Capital City Properties",
     mapLink: "https://maps.google.com/?q=Capital+City+Properties+Abuja",
@@ -1106,7 +1106,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(703),
-    leadQueryId: "a7b8c9d0-e1f2-3a4b-5c6d-7e8f9a0b1c23",
+    leadQueryId: "c2743fac-0f92-4af4-8f89-7d3233893556",
     reviewed: false,
     companyName: "Prime Land Abuja",
     mapLink: "https://maps.google.com/?q=Prime+Land+Abuja",
@@ -1118,7 +1118,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(704),
-    leadQueryId: "a7b8c9d0-e1f2-3a4b-5c6d-7e8f9a0b1c23",
+    leadQueryId: "c2743fac-0f92-4af4-8f89-7d3233893556",
     reviewed: false,
     companyName: "Haven Realtors",
     mapLink: "https://maps.google.com/?q=Haven+Realtors+Abuja",
@@ -1130,7 +1130,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(705),
-    leadQueryId: "a7b8c9d0-e1f2-3a4b-5c6d-7e8f9a0b1c23",
+    leadQueryId: "c2743fac-0f92-4af4-8f89-7d3233893556",
     reviewed: false,
     companyName: "Apex Realty Group",
     mapLink: "https://maps.google.com/?q=Apex+Realty+Group+Abuja",
@@ -1149,7 +1149,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(706),
-    leadQueryId: "a7b8c9d0-e1f2-3a4b-5c6d-7e8f9a0b1c23",
+    leadQueryId: "c2743fac-0f92-4af4-8f89-7d3233893556",
     reviewed: false,
     companyName: "Luxury Nest Abuja",
     mapLink: "https://maps.google.com/?q=Luxury+Nest+Abuja",
@@ -1171,7 +1171,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(707),
-    leadQueryId: "a7b8c9d0-e1f2-3a4b-5c6d-7e8f9a0b1c23",
+    leadQueryId: "c2743fac-0f92-4af4-8f89-7d3233893556",
     reviewed: false,
     companyName: "FlatBridge Homes",
     mapLink: "https://maps.google.com/?q=FlatBridge+Homes+Abuja",
@@ -1183,7 +1183,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(708),
-    leadQueryId: "a7b8c9d0-e1f2-3a4b-5c6d-7e8f9a0b1c23",
+    leadQueryId: "c2743fac-0f92-4af4-8f89-7d3233893556",
     reviewed: false,
     companyName: "Remax Abuja Central",
     mapLink: "https://maps.google.com/?q=Remax+Abuja+Central",
@@ -1202,7 +1202,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(709),
-    leadQueryId: "a7b8c9d0-e1f2-3a4b-5c6d-7e8f9a0b1c23",
+    leadQueryId: "c2743fac-0f92-4af4-8f89-7d3233893556",
     reviewed: false,
     companyName: "Solid Rock Properties",
     mapLink: "https://maps.google.com/?q=Solid+Rock+Properties+Abuja",
@@ -1221,7 +1221,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(710),
-    leadQueryId: "a7b8c9d0-e1f2-3a4b-5c6d-7e8f9a0b1c23",
+    leadQueryId: "c2743fac-0f92-4af4-8f89-7d3233893556",
     reviewed: false,
     companyName: "Greenview Estates",
     mapLink: "https://maps.google.com/?q=Greenview+Estates+Abuja",
@@ -1235,7 +1235,7 @@ export const mockLeads: Lead[] = [
   // ── Car dealerships · Ibadan ──────────────────────────────────────────────
   {
     id: makeId(801),
-    leadQueryId: "b8c9d0e1-f2a3-4b5c-6d7e-8f9a0b1c2d34",
+    leadQueryId: "d72cf59a-ce02-4227-8ab2-e0ba721daf96",
     reviewed: false,
     companyName: "Ibadan Motors Hub",
     mapLink: "https://maps.google.com/?q=Ibadan+Motors+Hub",
@@ -1254,7 +1254,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(802),
-    leadQueryId: "b8c9d0e1-f2a3-4b5c-6d7e-8f9a0b1c2d34",
+    leadQueryId: "d72cf59a-ce02-4227-8ab2-e0ba721daf96",
     reviewed: false,
     companyName: "Premier Auto Ibadan",
     mapLink: "https://maps.google.com/?q=Premier+Auto+Ibadan",
@@ -1266,7 +1266,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(803),
-    leadQueryId: "b8c9d0e1-f2a3-4b5c-6d7e-8f9a0b1c2d34",
+    leadQueryId: "d72cf59a-ce02-4227-8ab2-e0ba721daf96",
     reviewed: false,
     companyName: "Odua Car Sales",
     mapLink: "https://maps.google.com/?q=Odua+Car+Sales+Ibadan",
@@ -1278,7 +1278,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(804),
-    leadQueryId: "b8c9d0e1-f2a3-4b5c-6d7e-8f9a0b1c2d34",
+    leadQueryId: "d72cf59a-ce02-4227-8ab2-e0ba721daf96",
     reviewed: false,
     companyName: "Trans-Ibadan Autos",
     mapLink: "https://maps.google.com/?q=Trans-Ibadan+Autos",
@@ -1300,7 +1300,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(805),
-    leadQueryId: "b8c9d0e1-f2a3-4b5c-6d7e-8f9a0b1c2d34",
+    leadQueryId: "d72cf59a-ce02-4227-8ab2-e0ba721daf96",
     reviewed: false,
     companyName: "Bodija Auto Market",
     mapLink: "https://maps.google.com/?q=Bodija+Auto+Market+Ibadan",
@@ -1312,7 +1312,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(806),
-    leadQueryId: "b8c9d0e1-f2a3-4b5c-6d7e-8f9a0b1c2d34",
+    leadQueryId: "d72cf59a-ce02-4227-8ab2-e0ba721daf96",
     reviewed: false,
     companyName: "Dugbe Motors",
     mapLink: "https://maps.google.com/?q=Dugbe+Motors+Ibadan",
@@ -1331,7 +1331,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(807),
-    leadQueryId: "b8c9d0e1-f2a3-4b5c-6d7e-8f9a0b1c2d34",
+    leadQueryId: "d72cf59a-ce02-4227-8ab2-e0ba721daf96",
     reviewed: false,
     companyName: "Sango Auto Dealers",
     mapLink: "https://maps.google.com/?q=Sango+Auto+Dealers+Ibadan",
@@ -1353,7 +1353,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(808),
-    leadQueryId: "b8c9d0e1-f2a3-4b5c-6d7e-8f9a0b1c2d34",
+    leadQueryId: "d72cf59a-ce02-4227-8ab2-e0ba721daf96",
     reviewed: false,
     companyName: "Ringroad Car Mart",
     mapLink: "https://maps.google.com/?q=Ringroad+Car+Mart+Ibadan",
@@ -1365,7 +1365,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(809),
-    leadQueryId: "b8c9d0e1-f2a3-4b5c-6d7e-8f9a0b1c2d34",
+    leadQueryId: "d72cf59a-ce02-4227-8ab2-e0ba721daf96",
     reviewed: false,
     companyName: "Challenge Auto Ibadan",
     mapLink: "https://maps.google.com/?q=Challenge+Auto+Ibadan",
@@ -1384,7 +1384,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(810),
-    leadQueryId: "b8c9d0e1-f2a3-4b5c-6d7e-8f9a0b1c2d34",
+    leadQueryId: "d72cf59a-ce02-4227-8ab2-e0ba721daf96",
     reviewed: false,
     companyName: "Oluyole Motors",
     mapLink: "https://maps.google.com/?q=Oluyole+Motors+Ibadan",
@@ -1405,7 +1405,7 @@ export const mockLeads: Lead[] = [
   // ── Dental clinics · Enugu ────────────────────────────────────────────────
   {
     id: makeId(901),
-    leadQueryId: "c9d0e1f2-a3b4-5c6d-7e8f-9a0b1c2d3e45",
+    leadQueryId: "db0caaed-f3c3-4d6c-8db7-9ed44f1711e6",
     reviewed: false,
     companyName: "SmilePlus Dental Enugu",
     mapLink: "https://maps.google.com/?q=SmilePlus+Dental+Enugu",
@@ -1427,7 +1427,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(902),
-    leadQueryId: "c9d0e1f2-a3b4-5c6d-7e8f-9a0b1c2d3e45",
+    leadQueryId: "db0caaed-f3c3-4d6c-8db7-9ed44f1711e6",
     reviewed: false,
     companyName: "BrightSmile Clinic",
     mapLink: "https://maps.google.com/?q=BrightSmile+Clinic+Enugu",
@@ -1439,7 +1439,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(903),
-    leadQueryId: "c9d0e1f2-a3b4-5c6d-7e8f-9a0b1c2d3e45",
+    leadQueryId: "db0caaed-f3c3-4d6c-8db7-9ed44f1711e6",
     reviewed: false,
     companyName: "Enugu Dental Centre",
     mapLink: "https://maps.google.com/?q=Enugu+Dental+Centre",
@@ -1451,7 +1451,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(904),
-    leadQueryId: "c9d0e1f2-a3b4-5c6d-7e8f-9a0b1c2d3e45",
+    leadQueryId: "db0caaed-f3c3-4d6c-8db7-9ed44f1711e6",
     reviewed: false,
     companyName: "Pearl Dental Specialists",
     mapLink: "https://maps.google.com/?q=Pearl+Dental+Specialists+Enugu",
@@ -1463,7 +1463,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(905),
-    leadQueryId: "c9d0e1f2-a3b4-5c6d-7e8f-9a0b1c2d3e45",
+    leadQueryId: "db0caaed-f3c3-4d6c-8db7-9ed44f1711e6",
     reviewed: false,
     companyName: "AidaDent Enugu",
     mapLink: "https://maps.google.com/?q=AidaDent+Enugu",
@@ -1482,7 +1482,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(906),
-    leadQueryId: "c9d0e1f2-a3b4-5c6d-7e8f-9a0b1c2d3e45",
+    leadQueryId: "db0caaed-f3c3-4d6c-8db7-9ed44f1711e6",
     reviewed: false,
     companyName: "Lifecare Dental Clinic",
     mapLink: "https://maps.google.com/?q=Lifecare+Dental+Clinic+Enugu",
@@ -1502,7 +1502,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(907),
-    leadQueryId: "c9d0e1f2-a3b4-5c6d-7e8f-9a0b1c2d3e45",
+    leadQueryId: "db0caaed-f3c3-4d6c-8db7-9ed44f1711e6",
     reviewed: false,
     companyName: "Dentcare Plus Enugu",
     mapLink: "https://maps.google.com/?q=Dentcare+Plus+Enugu",
@@ -1521,7 +1521,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(908),
-    leadQueryId: "c9d0e1f2-a3b4-5c6d-7e8f-9a0b1c2d3e45",
+    leadQueryId: "db0caaed-f3c3-4d6c-8db7-9ed44f1711e6",
     reviewed: false,
     companyName: "WhiteCoat Dental Surgery",
     mapLink: "https://maps.google.com/?q=WhiteCoat+Dental+Surgery+Enugu",
@@ -1533,7 +1533,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(909),
-    leadQueryId: "c9d0e1f2-a3b4-5c6d-7e8f-9a0b1c2d3e45",
+    leadQueryId: "db0caaed-f3c3-4d6c-8db7-9ed44f1711e6",
     reviewed: false,
     companyName: "Fountain Dental Care",
     mapLink: "https://maps.google.com/?q=Fountain+Dental+Care+Enugu",
@@ -1552,7 +1552,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(910),
-    leadQueryId: "c9d0e1f2-a3b4-5c6d-7e8f-9a0b1c2d3e45",
+    leadQueryId: "db0caaed-f3c3-4d6c-8db7-9ed44f1711e6",
     reviewed: false,
     companyName: "Crown Dental Studio",
     mapLink: "https://maps.google.com/?q=Crown+Dental+Studio+Enugu",
@@ -1573,7 +1573,7 @@ export const mockLeads: Lead[] = [
   // ── Event halls · Kano ────────────────────────────────────────────────────
   {
     id: makeId(1001),
-    leadQueryId: "d0e1f2a3-b4c5-6d7e-8f9a-0b1c2d3e4f56",
+    leadQueryId: "8af4bc0e-7d8a-43a7-bd89-fc919fce525b",
     reviewed: false,
     companyName: "Royal Prestige Hall",
     mapLink: "https://maps.google.com/?q=Royal+Prestige+Hall+Kano",
@@ -1592,7 +1592,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(1002),
-    leadQueryId: "d0e1f2a3-b4c5-6d7e-8f9a-0b1c2d3e4f56",
+    leadQueryId: "8af4bc0e-7d8a-43a7-bd89-fc919fce525b",
     reviewed: false,
     companyName: "Kano Grand Events Centre",
     mapLink: "https://maps.google.com/?q=Kano+Grand+Events+Centre",
@@ -1611,7 +1611,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(1003),
-    leadQueryId: "d0e1f2a3-b4c5-6d7e-8f9a-0b1c2d3e4f56",
+    leadQueryId: "8af4bc0e-7d8a-43a7-bd89-fc919fce525b",
     reviewed: false,
     companyName: "Durbar Event Plaza",
     mapLink: "https://maps.google.com/?q=Durbar+Event+Plaza+Kano",
@@ -1623,7 +1623,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(1004),
-    leadQueryId: "d0e1f2a3-b4c5-6d7e-8f9a-0b1c2d3e4f56",
+    leadQueryId: "8af4bc0e-7d8a-43a7-bd89-fc919fce525b",
     reviewed: false,
     companyName: "Pinnacle Conference Hall",
     mapLink: "https://maps.google.com/?q=Pinnacle+Conference+Hall+Kano",
@@ -1635,7 +1635,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(1005),
-    leadQueryId: "d0e1f2a3-b4c5-6d7e-8f9a-0b1c2d3e4f56",
+    leadQueryId: "8af4bc0e-7d8a-43a7-bd89-fc919fce525b",
     reviewed: false,
     companyName: "Emir's Palace Banquet Hall",
     mapLink: "https://maps.google.com/?q=Emirs+Palace+Banquet+Hall+Kano",
@@ -1657,7 +1657,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(1006),
-    leadQueryId: "d0e1f2a3-b4c5-6d7e-8f9a-0b1c2d3e4f56",
+    leadQueryId: "8af4bc0e-7d8a-43a7-bd89-fc919fce525b",
     reviewed: false,
     companyName: "Arewa Events Centre",
     mapLink: "https://maps.google.com/?q=Arewa+Events+Centre+Kano",
@@ -1669,7 +1669,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(1007),
-    leadQueryId: "d0e1f2a3-b4c5-6d7e-8f9a-0b1c2d3e4f56",
+    leadQueryId: "8af4bc0e-7d8a-43a7-bd89-fc919fce525b",
     reviewed: false,
     companyName: "Victory Hall Kano",
     mapLink: "https://maps.google.com/?q=Victory+Hall+Kano",
@@ -1691,7 +1691,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(1008),
-    leadQueryId: "d0e1f2a3-b4c5-6d7e-8f9a-0b1c2d3e4f56",
+    leadQueryId: "8af4bc0e-7d8a-43a7-bd89-fc919fce525b",
     reviewed: false,
     companyName: "Golden Gate Banquets",
     mapLink: "https://maps.google.com/?q=Golden+Gate+Banquets+Kano",
@@ -1710,7 +1710,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(1009),
-    leadQueryId: "d0e1f2a3-b4c5-6d7e-8f9a-0b1c2d3e4f56",
+    leadQueryId: "8af4bc0e-7d8a-43a7-bd89-fc919fce525b",
     reviewed: false,
     companyName: "Crescent Event Suites",
     mapLink: "https://maps.google.com/?q=Crescent+Event+Suites+Kano",
@@ -1722,7 +1722,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: makeId(1010),
-    leadQueryId: "d0e1f2a3-b4c5-6d7e-8f9a-0b1c2d3e4f56",
+    leadQueryId: "8af4bc0e-7d8a-43a7-bd89-fc919fce525b",
     reviewed: false,
     companyName: "Bayero Event Hall",
     mapLink: "https://maps.google.com/?q=Bayero+Event+Hall+Kano",

@@ -34,7 +34,7 @@
 - [x] **[Web]** Implement refresh logic to api fetch helper
 - [x] **[Web]** Implement fetch for leads endpoints
 - [x] **[DB]** Seed an admin/member user (Code available)
-- [ ] **[Web]** use useState to persist guest leads data
+- [x] **[Web]** use react query cache to persist guest leads data
 - [ ] **[Web]** Add logout btn with guest/member logic
 - [ ] **[Worker]** Implement async cold email
 - [ ] **[Web]** Implement Suspense or loading.tsx for async pages

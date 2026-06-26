@@ -2,7 +2,7 @@ import type { LeadQuery, LeadQueryForm } from "@/lib/schema/lead-schema";
 
 export const mockLeadQueries = [
   {
-    id: "a3f1c2d4-e5b6-7890-abcd-ef1234567890",
+    id: "f55d5806-55f8-41a4-afa6-7bd5e719ea05",
     keyword: "Coffee shops",
     location: "Abuja",
     status: "processing",
@@ -11,7 +11,7 @@ export const mockLeadQueries = [
     updatedAt: "2026-06-03T14:22:10Z",
   },
   {
-    id: "b7e8d9f0-1a2b-3c4d-5e6f-7a8b9c0d1e2f",
+    id: "3118a180-cacf-4448-93c3-4392f87b2746",
     keyword: "Hotels",
     location: "Austin, TX",
     status: "pending",
@@ -20,7 +20,7 @@ export const mockLeadQueries = [
     updatedAt: "2026-05-28T09:45:33Z",
   },
   {
-    id: "c1d2e3f4-a5b6-7c8d-9e0f-1a2b3c4d5e6f",
+    id: "371a4ac1-915e-4d7f-a636-e83b43abdb89",
     keyword: "Bakeries",
     location: "Lagos",
     status: "successful",
@@ -29,7 +29,7 @@ export const mockLeadQueries = [
     updatedAt: "2026-04-10T12:00:00Z",
   },
   {
-    id: "d4e5f6a7-b8c9-0d1e-2f3a-4b5c6d7e8f90",
+    id: "5ccc6407-dcc3-41c2-a8a1-fea90d513ba2",
     keyword: "Pharmacies",
     location: "Abuja",
     status: "successful",
@@ -38,7 +38,7 @@ export const mockLeadQueries = [
     updatedAt: "2026-05-18T11:30:00Z",
   },
   {
-    id: "e5f6a7b8-c9d0-1e2f-3a4b-5c6d7e8f9a01",
+    id: "b7d0973c-5a29-43ff-8e53-aecc48d0284d",
     keyword: "Gyms",
     location: "Port Harcourt",
     status: "pending",
@@ -47,7 +47,7 @@ export const mockLeadQueries = [
     updatedAt: "2026-06-01T07:45:00Z",
   },
   {
-    id: "f6a7b8c9-d0e1-2f3a-4b5c-6d7e8f9a0b12",
+    id: "dec02d89-4591-45c1-8406-5630e0cd51ef",
     keyword: "Law firms",
     location: "Lekki, Lagos",
     status: "processing",
@@ -56,7 +56,7 @@ export const mockLeadQueries = [
     updatedAt: "2026-06-02T16:00:00Z",
   },
   {
-    id: "a7b8c9d0-e1f2-3a4b-5c6d-7e8f9a0b1c23",
+    id: "c2743fac-0f92-4af4-8f89-7d3233893556",
     keyword: "Real estate agents",
     location: "Abuja",
     status: "successful",
@@ -65,7 +65,7 @@ export const mockLeadQueries = [
     updatedAt: "2026-04-20T08:55:00Z",
   },
   {
-    id: "b8c9d0e1-f2a3-4b5c-6d7e-8f9a0b1c2d34",
+    id: "d72cf59a-ce02-4227-8ab2-e0ba721daf96",
     keyword: "Car dealerships",
     location: "Ibadan",
     status: "failed",
@@ -74,7 +74,7 @@ export const mockLeadQueries = [
     updatedAt: "2026-05-18T15:42:00Z",
   },
   {
-    id: "c9d0e1f2-a3b4-5c6d-7e8f-9a0b1c2d3e45",
+    id: "db0caaed-f3c3-4d6c-8db7-9ed44f1711e6",
     keyword: "Dental clinics",
     location: "Enugu",
     status: "successful",
@@ -83,7 +83,7 @@ export const mockLeadQueries = [
     updatedAt: "2026-04-02T09:10:00Z",
   },
   {
-    id: "d0e1f2a3-b4c5-6d7e-8f9a-0b1c2d3e4f56",
+    id: "8af4bc0e-7d8a-43a7-bd89-fc919fce525b",
     keyword: "Event halls",
     location: "Kano",
     status: "processing",
