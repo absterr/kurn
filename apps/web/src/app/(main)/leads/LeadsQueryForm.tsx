@@ -4,6 +4,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { useLeads } from "@/lib/LeadsProvider";
+import {
+  createMockLeadQuery,
+  isDuplicate,
+} from "@/lib/mock-data/mock-lead-queries";
 import { addLeadQueryHandler } from "@/lib/queries/lead-queries";
 import {
   type LeadQuery,
@@ -12,9 +17,11 @@ import {
 } from "@/lib/schema/lead-schema";
 
 export default function LeadsQueryForm({ role }: { role: string }) {
+  const { guestQueries, setGuestQueries } = useLeads();
   const queryClient = useQueryClient();
   const {
     register,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm<LeadQueryForm>({
@@ -33,6 +40,7 @@ export default function LeadsQueryForm({ role }: { role: string }) {
         newLeadQuery,
       ]);
 
+      reset();
       toast.success("Lead query added");
     },
     onError: (err) => {
@@ -47,11 +55,16 @@ export default function LeadsQueryForm({ role }: { role: string }) {
         break;
 
       case "guest":
-        // do nothing yet
+        if (isDuplicate(body, guestQueries)) {
+          toast.error("Query with this keyword and location already exists");
+          break;
+        }
+        setGuestQueries((prev) => [...prev, createMockLeadQuery(body)]);
+        toast.success("Lead query added");
         break;
 
       default:
-        // do nothing yet
+        // do nothing
         break;
     }
   };

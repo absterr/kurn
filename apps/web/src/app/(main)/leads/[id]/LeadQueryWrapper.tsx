@@ -11,15 +11,16 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useLeads } from "@/lib/LeadsProvider";
+import { getLeadQuery } from "@/lib/mock-data/mock-lead-queries";
+import { getLeadsByQueryId } from "@/lib/mock-data/mock-leads";
 import { getLeadsByQueryIdHandler } from "@/lib/queries/lead-queries";
 import type { Lead, LeadQuery } from "@/lib/schema/lead-schema";
 import { cn } from "@/lib/utils";
-import { getLeadQuery } from "../mockLeadQueries";
 import LeadDetails from "./LeadDetails";
 import LeadHeader from "./LeadHeader";
 import LeadItem from "./LeadItem";
 import LeadQueryDetails from "./LeadQueryDetails";
-import { getLeadsByQueryId } from "./mockLeads";
 
 const useMediaQuery = (query: string) => {
   const [matches, setMatches] = useState(
@@ -45,6 +46,7 @@ export default function LeadQueryWrapper({
   id: string;
   role: string;
 }) {
+  const { guestQueries } = useLeads();
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const queryClient = useQueryClient();
   const isDesktop = useMediaQuery("(min-width: 1280px)");
@@ -53,7 +55,7 @@ export default function LeadQueryWrapper({
   const leadQuery =
     role === "member"
       ? leadQueries?.find((q) => q.id === id)
-      : getLeadQuery(id);
+      : getLeadQuery(id, guestQueries);
 
   const { data = [] } = useQuery({
     queryKey: ["leads", id],

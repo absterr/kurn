@@ -3,12 +3,13 @@ import { useQuery } from "@tanstack/react-query";
 import { MapPin } from "lucide-react";
 import Link from "next/link";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useLeads } from "@/lib/LeadsProvider";
 import { getLeadQueriesHandler } from "@/lib/queries/lead-queries";
 import type { LeadQuery } from "@/lib/schema/lead-schema";
 import { cn, formatDate } from "@/lib/utils";
-import { mockLeadQueries } from "./mockLeadQueries";
 
 export default function LeadsQueries({ role }: { role: string }) {
+  const { guestQueries } = useLeads();
   const { data: fetchedLeadsQueries = [] } = useQuery({
     queryKey: ["leadQueries"],
     queryFn: getLeadQueriesHandler,
@@ -17,7 +18,7 @@ export default function LeadsQueries({ role }: { role: string }) {
     enabled: role === "member",
   });
 
-  const leadQueries = role === "member" ? fetchedLeadsQueries : mockLeadQueries;
+  const leadQueries = role === "member" ? fetchedLeadsQueries : guestQueries;
 
   // min-h-0: constrains grid child so descendants with h-full have a real boundary
   return (
