@@ -5,11 +5,11 @@ import {
   leadSchema,
 } from "../schema/lead-schema";
 
-const apiLeadsRoute = "/v1/leads" as const;
+const API_LEADS_ROUTE = "/v1/leads" as const;
 
 export const getLeadQueriesHandler = async () => {
   try {
-    const res = await apiFetch(apiLeadsRoute, { method: "GET" });
+    const res = await apiFetch(API_LEADS_ROUTE, { method: "GET" });
     const data = leadQuerySchema.array().parse(res);
     return data;
   } catch (err) {
@@ -19,7 +19,7 @@ export const getLeadQueriesHandler = async () => {
 
 export const addLeadQueryHandler = async (body: LeadQueryForm) => {
   try {
-    const res = await apiFetch(apiLeadsRoute, { method: "POST", body });
+    const res = await apiFetch(API_LEADS_ROUTE, { method: "POST", body });
     const data = leadQuerySchema.parse(res);
     return data;
   } catch (err) {
@@ -29,7 +29,7 @@ export const addLeadQueryHandler = async (body: LeadQueryForm) => {
 
 export const getLeadsByQueryIdHandler = async (queryId: string) => {
   try {
-    const res = await apiFetch(`${apiLeadsRoute}/${queryId}`, {
+    const res = await apiFetch(`${API_LEADS_ROUTE}/${queryId}`, {
       method: "GET",
     });
     const data = leadSchema.array().parse(res);
