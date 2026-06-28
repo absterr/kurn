@@ -1,4 +1,5 @@
 import { Search } from "lucide-react";
+import UserInfo from "./UserInfo";
 
 const Topbar = () => {
   return (
@@ -17,19 +18,7 @@ const Topbar = () => {
           </span>
         </div>
 
-        <div className="flex items-center gap-2 sm:gap-3 pl-3 sm:pl-6">
-          <div className="text-right hidden sm:block">
-            <p className="font-semibold text-foreground/80 text-sm md:text-base">
-              John Doe
-            </p>
-            <p className="text-xs md:text-sm text-foreground/60">
-              johndoe@example.com
-            </p>
-          </div>
-          <div className="p-2 md:p-3.5 rounded-full bg-linear-to-br from-green-700 to-green-500 font-semibold text-xs md:text-sm text-background">
-            JD
-          </div>
-        </div>
+        <UserInfo />
       </div>
     </div>
   );
