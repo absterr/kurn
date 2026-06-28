@@ -80,7 +80,7 @@ export class GoogleMapsScraper {
 
       if (isList) {
         const feed = await page.$('.m6QErb[role="feed"]');
-        const maxResults = 8;
+        const maxResults = 10;
         const prevNames = new Set<string>();
         let prevCardCount = 0;
         let idleScrolls = 0;
