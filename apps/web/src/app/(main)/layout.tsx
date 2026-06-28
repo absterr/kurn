@@ -1,7 +1,7 @@
 import Sidebar from "./_Sidebar";
 import { SidebarProvider } from "./_Sidebar/SidebarProvider";
+import Topbar from "./_Topbar";
 import QueryProvider from "./QueryProvider";
-import Topbar from "./Topbar";
 
 export default function MainLayout({
   children,

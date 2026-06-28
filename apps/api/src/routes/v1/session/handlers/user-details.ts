@@ -1,9 +1,9 @@
 import type { Context } from "hono";
 import { getCookie } from "hono/cookie";
 import { HTTPException } from "hono/http-exception";
-import env from "@/config/env.js";
+import jwt from "jsonwebtoken";
 import { makeDB } from "@/db/index.js";
-import { type AccessTokenPayload, verifyUserToken } from "@/lib/user-token.js";
+import type { AccessTokenPayload } from "@/lib/user-token.js";
 
 export const getUserDetails = async (ctx: Context) => {
   const accessToken = getCookie(ctx, "accessToken");
@@ -17,15 +17,10 @@ export const getUserDetails = async (ctx: Context) => {
       }
     | AccessTokenPayload;
 
-  const { error, payload } = verifyUserToken<AccessToken>({
-    token: accessToken,
-    secret: env.ACCESS_SECRET,
-  });
+  const payload = jwt.decode(accessToken) as AccessToken | null;
 
   if (!payload) {
-    const message =
-      error === "jwt expired" ? "Session expired" : "Invalid token";
-    throw new HTTPException(401, { message });
+    throw new HTTPException(401, { message: "Invalid or expired token" });
   }
 
   if (payload.role === "guest") {
