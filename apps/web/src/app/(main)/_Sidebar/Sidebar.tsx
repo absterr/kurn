@@ -3,52 +3,39 @@ import {
   BriefcaseBusiness,
   ChevronRight,
   LayoutDashboard,
+  LogOut,
   TextSearch,
 } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useTransition } from "react";
+import { toast } from "sonner";
 import { ThemeSwitch } from "@/app/_Theme/ThemeSwitch";
 import AppIcon from "@/components/icons/AppIcon";
+import { logoutHandler } from "@/lib/queries/session-queries";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "./SidebarProvider";
 
-const NavItem = ({
-  icon,
-  label,
-  href,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  href: string;
-}) => {
-  const pathname = usePathname();
-  const { isCollapsed, toggle } = useSidebar();
-  const isActive = pathname === href;
-
-  return (
-    <Link
-      href={href}
-      onClick={() => {
-        const media = window.matchMedia("(max-width: 640px)");
-        if (media.matches && !isCollapsed) {
-          toggle();
-        }
-      }}
-      className={cn(
-        "flex items-center gap-3 px-4 py-2 rounded-lg text-sm font-medium  transition-colors",
-        isActive
-          ? "text-foreground"
-          : "text-muted-foreground hover:text-foreground",
-      )}
-    >
-      <div className="shrink-0">{icon}</div>
-      {!isCollapsed && <span className="truncate">{label}</span>}
-    </Link>
-  );
-};
-
 export default function Sidebar() {
   const { isCollapsed, toggle } = useSidebar();
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+
+  const handleLogout = () => {
+    startTransition(async () => {
+      toast.loading("Logging out...");
+      const { error } = await logoutHandler();
+      toast.dismiss();
+
+      if (error) {
+        toast.error(error);
+        return;
+      }
+
+      router.replace("/login");
+      toast.success("Logout successful");
+    });
+  };
 
   return (
     <>
@@ -99,6 +86,18 @@ export default function Sidebar() {
               label="Jobs"
               href="/jobs"
             />
+            <hr />
+            <button
+              type="button"
+              disabled={isPending}
+              onClick={handleLogout}
+              className="flex items-center gap-3 px-4 py-2 rounded-lg text-sm font-medium cursor-pointer text-muted-foreground hover:text-foreground"
+            >
+              <div className="shrink-0">
+                <LogOut size={20} />
+              </div>
+              {!isCollapsed && <span className="truncate">Log out</span>}
+            </button>
           </nav>
         </div>
         <div
@@ -130,3 +129,38 @@ export default function Sidebar() {
     </>
   );
 }
+
+const NavItem = ({
+  icon,
+  label,
+  href,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  href: string;
+}) => {
+  const pathname = usePathname();
+  const { isCollapsed, toggle } = useSidebar();
+  const isActive = pathname === href;
+
+  return (
+    <Link
+      href={href}
+      onClick={() => {
+        const media = window.matchMedia("(max-width: 640px)");
+        if (media.matches && !isCollapsed) {
+          toggle();
+        }
+      }}
+      className={cn(
+        "flex items-center gap-3 px-4 py-2 rounded-lg text-sm font-medium transition-colors",
+        isActive
+          ? "text-foreground"
+          : "text-muted-foreground hover:text-foreground",
+      )}
+    >
+      <div className="shrink-0">{icon}</div>
+      {!isCollapsed && <span className="truncate">{label}</span>}
+    </Link>
+  );
+};

@@ -1,6 +1,6 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { getUserDetailsHandler } from "@/lib/queries/user-queries";
+import { getUserDetailsHandler } from "@/lib/queries/session-queries";
 
 export const useUser = () => {
   return useQuery({
