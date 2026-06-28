@@ -3,6 +3,7 @@ import { HTTPException } from "hono/http-exception";
 import { authMiddleware } from "@/lib/middleware.js";
 import { refreshTokenHandler } from "./handlers/index.js";
 import { logoutGuest, logoutUser } from "./handlers/logout.js";
+import { getUserDetails } from "./handlers/user-details.js";
 
 export const sessionV1Router = new Hono();
 sessionV1Router.use("/logout/user", authMiddleware);
@@ -20,6 +21,16 @@ sessionV1Router.get("/logout/user", async (ctx) => {
 sessionV1Router.get("/logout/guest", async (ctx) => {
   try {
     const result = await logoutGuest(ctx);
+    return ctx.json(result, 200);
+  } catch (err) {
+    if (err instanceof HTTPException) throw err;
+    return ctx.json({ error: "An unexpected error occurred" }, 500);
+  }
+});
+
+sessionV1Router.get("/user", async (ctx) => {
+  try {
+    const result = await getUserDetails(ctx);
     return ctx.json(result, 200);
   } catch (err) {
     if (err instanceof HTTPException) throw err;

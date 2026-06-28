@@ -36,9 +36,9 @@
 - [x] **[DB]** Seed an admin/member user (Code available)
 - [x] **[Web]** use react query cache to persist guest leads data
 - [ ] **[Web]** Add logout btn with guest/member logic
-- [ ] **[Worker]** Implement async cold email
 - [ ] **[Web]** Implement Suspense or loading.tsx for async pages
 - [ ] **[Web]** Add not-found and error pages
+- [ ] **[Worker]** Implement async cold email
 - [ ] **[API]** Implement social login enpoints and integrate with frontend
 - [ ] **[Worker]** Implement API key rotation
 - [ ] **[Web]** Implement member dashboard pages
@@ -70,10 +70,11 @@
 
 ### Worker
 
-- Possible to filter search queries to determine whether it was a specific lead query or a group — by the number of results and the similarity between the search query and name of lead from results
+- Can implement a scoring system
 - Can also end query search status if it repeatedly generates the same results (e.g. for when the result is a specific lead)
 - Can improve emails to prevent them from entering spam and preferably landing in primary inbox
 - Can rotate API keys with backup API keys in prod, provided they're all available in env
+- [x] Possible to filter search queries to determine whether it was a specific lead query or a group — by the number of results and the similarity between the search query and name of lead from results
 
 ---
 
