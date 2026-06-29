@@ -59,7 +59,7 @@ export default function LeadQueryWrapper({
     queryFn: () => getLeadsByQueryIdHandler(id),
     staleTime: 1000 * 60,
     gcTime: 1000 * 60 * 5,
-    enabled: role === "member" && !!leadQuery,
+    enabled: role === "member" && leadQuery !== undefined,
   });
 
   if (!leadQuery) {

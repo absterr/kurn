@@ -26,7 +26,7 @@ export default async function Leads() {
     queryFn: getLeadQueriesHandler,
     staleTime: 1000 * 60,
     gcTime: 1000 * 60 * 5,
-    initialData: role === "member" ? undefined : mockLeadQueries,
+    initialData: role === "guest" ? mockLeadQueries : undefined,
   });
 
   return (
