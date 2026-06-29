@@ -16,6 +16,7 @@ import { getLeadsByQueryId } from "@/lib/mock-data/mock-leads";
 import { getLeadsByQueryIdHandler } from "@/lib/queries/lead-queries";
 import type { Lead, LeadQuery } from "@/lib/schema/lead-schema";
 import { cn } from "@/lib/utils";
+import LeadsListSkeleton from "../LeadsListSkeleton";
 import LeadDetails from "./LeadDetails";
 import LeadHeader from "./LeadHeader";
 import LeadItem from "./LeadItem";
@@ -53,7 +54,7 @@ export default function LeadQueryWrapper({
     queryClient.getQueryData<LeadQuery[]>(["leadQueries"]) ?? [];
   const leadQuery = getLeadQuery(id, leadQueries);
 
-  const { data = [] } = useQuery({
+  const { data = [], isLoading } = useQuery({
     queryKey: ["leads", id],
     queryFn: () => getLeadsByQueryIdHandler(id),
     staleTime: 1000 * 60,
@@ -92,13 +93,17 @@ export default function LeadQueryWrapper({
           ) : (
             <ScrollArea className="min-h-0 w-full">
               <div className="flex flex-col lg:pr-6">
-                {leads.map((lead) => (
-                  <LeadItem
-                    key={lead.id}
-                    lead={lead}
-                    onClickAction={() => setSelectedLead(lead)}
-                  />
-                ))}
+                {isLoading ? (
+                  <LeadsListSkeleton />
+                ) : (
+                  leads.map((lead) => (
+                    <LeadItem
+                      key={lead.id}
+                      lead={lead}
+                      onClickAction={() => setSelectedLead(lead)}
+                    />
+                  ))
+                )}
               </div>
             </ScrollArea>
           )}

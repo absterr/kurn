@@ -3,7 +3,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import EmptyState from "@/components/EmptyState";
-import LeadQueryWrapper from "./LeadQueryWrapper";
+import LeadQueryWrapper from "./_LeadQueryWrapper";
 
 export default async function LeadQuery({
   params,

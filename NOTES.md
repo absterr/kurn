@@ -37,7 +37,7 @@
 - [x] **[Web]** use react query cache to persist guest leads data
 - [x] **[Web]** Add logout btn with guest/member logic
 - [x] **[Web]** Add not-found and error pages
-- [ ] **[Web]** Implement Suspense or loading.tsx for async pages
+- [x] **[Web]** Implement Suspense or loading.tsx for async pages
 - [ ] **[Worker]** Implement async cold email
 - [ ] **[API]** Implement social login enpoints and integrate with frontend
 - [ ] **[Web]** Implement member dashboard pages
