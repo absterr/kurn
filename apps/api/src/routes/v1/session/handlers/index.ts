@@ -1,2 +1,2 @@
-export * from "./logout.js";
+export * from "./payload.js";
 export * from "./refresh-token.js";
