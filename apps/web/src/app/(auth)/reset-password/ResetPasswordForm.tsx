@@ -60,9 +60,16 @@ const ResetPasswordForm = ({ token }: { token: string }) => {
       <Button
         type="submit"
         disabled={isPending}
-        className="w-full h-12 rounded-xl bg-foreground text-background hover:bg-foreground/80 hover:cursor-pointer font-medium text-sm md:text-base transition-colors"
+        className="w-full h-12 rounded-xl hover:bg-foreground/80 cursor-pointer font-medium text-sm md:text-base transition-colors"
       >
-        {isPending ? <LoadingSpinner /> : "Reset Password"}
+        {isPending ? (
+          <LoadingSpinner
+            size={5}
+            className="text-background/40 fill-background"
+          />
+        ) : (
+          "Reset Password"
+        )}
       </Button>
     </form>
   );

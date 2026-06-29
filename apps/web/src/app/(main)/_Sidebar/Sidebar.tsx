@@ -86,7 +86,9 @@ export default function Sidebar() {
               label="Jobs"
               href="/jobs"
             />
-            <hr />
+            <div className="px-3">
+              <hr />
+            </div>
             <button
               type="button"
               disabled={isPending}
