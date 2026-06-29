@@ -35,13 +35,13 @@
 - [x] **[Web]** Implement fetch for leads endpoints
 - [x] **[DB]** Seed an admin/member user (Code available)
 - [x] **[Web]** use react query cache to persist guest leads data
-- [ ] **[Web]** Add logout btn with guest/member logic
+- [x] **[Web]** Add logout btn with guest/member logic
+- [x] **[Web]** Add not-found and error pages
 - [ ] **[Web]** Implement Suspense or loading.tsx for async pages
-- [ ] **[Web]** Add not-found and error pages
 - [ ] **[Worker]** Implement async cold email
 - [ ] **[API]** Implement social login enpoints and integrate with frontend
-- [ ] **[Worker]** Implement API key rotation
 - [ ] **[Web]** Implement member dashboard pages
+- [ ] **[Worker]** Implement API key rotation
 - [ ] **[Worker]** Deliberate and plan the job module flow (take ideas from career-ops)
 - [ ] **[Worker]** Implement basic job module
 - [ ] **[API]** Implement job endpoints
