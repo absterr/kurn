@@ -4,6 +4,7 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "seed-admin": "bun scripts/seed-admin.ts",
     "db:setup": "bun scripts/setup-triggers.ts",
     "db:clear": "bun scripts/clear-triggers.ts",
     "db:generate": "bunx drizzle-kit generate",
