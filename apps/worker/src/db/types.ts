@@ -26,6 +26,8 @@ export type JsonPrimitive = boolean | number | string | null;
 
 export type JsonValue = JsonArray | JsonObject | JsonPrimitive;
 
+export type LeadQueueName = "lead-audit" | "lead-enrichment" | "lead-search";
+
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
 export type UserRole = "admin" | "member";
@@ -76,6 +78,15 @@ export interface LeadQueries {
   status: Generated<string>;
   updatedAt: Generated<Timestamp>;
   userId: string;
+}
+
+export interface LeadQueue {
+  createdAt: Generated<Timestamp>;
+  id: Generated<string>;
+  leadQueryId: string;
+  payload: Json;
+  queueName: LeadQueueName;
+  updatedAt: Generated<Timestamp>;
 }
 
 export interface Leads {
@@ -130,6 +141,7 @@ export interface DB {
   accounts: Accounts;
   invites: Invites;
   leadQueries: LeadQueries;
+  leadQueue: LeadQueue;
   leads: Leads;
   sessions: Sessions;
   users: Users;
