@@ -23,6 +23,14 @@ export const leadQueueNameEnum = pgEnum("lead_queue_name", [
   "lead-enrichment",
 ]);
 
+export const leadQueueStatusEnum = pgEnum("lead_queue_status", [
+  "pending",
+  "audited",
+  "auditing",
+  "enriched",
+  "enriching",
+]);
+
 const leadQueryStatuses = [
   "cancelled",
   "completed",
@@ -97,6 +105,7 @@ export const leadQueue = pgTable("lead_queue", {
     .notNull()
     .references(() => leadQueries.id, { onDelete: "cascade" }),
   name: leadQueueNameEnum("queue_name").notNull(),
+  status: leadQueueStatusEnum("queue_status").notNull().default("pending"),
   payload: jsonb("payload").notNull(),
   ...timestamps,
 });
