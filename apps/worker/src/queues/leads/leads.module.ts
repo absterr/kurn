@@ -11,17 +11,28 @@ import { AuditLeadsModule } from "./providers/audit-leads";
 import { EnrichLeadsService } from "./providers/enrich-leads";
 import { GoogleMapsScraper } from "./providers/google-maps.scraper";
 
+const defaultJobOptions = {
+  removeOnComplete: true,
+  removeOnFail: {
+    age: 6 * 60 * 60,
+    count: 10,
+  },
+};
+
 @Module({
   imports: [
     BullModule.registerQueue(
       {
         name: "lead-search",
+        defaultJobOptions,
       },
       {
         name: "lead-audit",
+        defaultJobOptions,
       },
       {
         name: "lead-enrichment",
+        defaultJobOptions,
       },
     ),
     DatabaseModule,

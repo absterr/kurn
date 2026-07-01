@@ -1,9 +1,9 @@
-import { InjectQueue, Processor, WorkerHost } from "@nestjs/bullmq";
+import { Processor, WorkerHost } from "@nestjs/bullmq";
 import { Inject } from "@nestjs/common";
-import { Job, Queue } from "bullmq";
+import { Job } from "bullmq";
 import { Kysely } from "kysely";
 import { KYSELY_DB } from "@/db/db.module";
-import { DB } from "@/db/types";
+import { DB, JsonValue } from "@/db/types";
 import { Lead } from "@/utils/shared-types";
 import { GoogleMapsScraper } from "../providers/google-maps.scraper";
 
@@ -18,7 +18,6 @@ export class LeadSearchProcessor extends WorkerHost {
   constructor(
     @Inject(KYSELY_DB) private readonly db: Kysely<DB>,
     private readonly googleMapsScraper: GoogleMapsScraper,
-    @InjectQueue("lead-audit") private readonly leadAuditQueue: Queue,
   ) {
     super();
   }
@@ -47,20 +46,16 @@ export class LeadSearchProcessor extends WorkerHost {
       const dedupLeads = await this.deduplicateLeads(leadQueryId, leads);
       if (dedupLeads.length === 0) throw new Error("No new leads found");
 
-      await this.leadAuditQueue.add(
-        "lead-audit",
-        {
-          leadQueryId,
-          dedupLeads,
-        },
-        {
-          attempts: 3,
-          backoff: {
-            type: "fixed",
-            delay: 5000,
-          },
-        },
-      );
+      await this.db
+        .insertInto("leadQueue")
+        .values(
+          dedupLeads.map((lead) => ({
+            leadQueryId,
+            queueName: "lead-search",
+            payload: lead as Lead & Record<string, JsonValue>,
+          })),
+        )
+        .execute();
     } catch (err) {
       const isLastAttempt = job.attemptsMade >= (job.opts.attempts ?? 1);
 

@@ -8,8 +8,9 @@ import { DB } from "@/db/types";
 import { AuditedLead } from "@/utils/audit-types";
 import { EnrichLeadsService } from "../providers/enrich-leads";
 
-interface AuditLeadsJobData {
+interface EnrichLeadsJobData {
   leadQueryId: string;
+  queuedJobIds: string[];
   auditedLeads: AuditedLead[];
 }
 
@@ -22,8 +23,8 @@ export class LeadEnrichmentProcessor extends WorkerHost {
     super();
   }
 
-  async process(job: Job<AuditLeadsJobData>) {
-    const { leadQueryId, auditedLeads } = job.data;
+  async process(job: Job<EnrichLeadsJobData>) {
+    const { leadQueryId, queuedJobIds, auditedLeads } = job.data;
     const limit = pLimit(3);
 
     try {
@@ -50,12 +51,10 @@ export class LeadEnrichmentProcessor extends WorkerHost {
       );
 
       await this.db.transaction().execute(async (tx) => {
-        for (const lead of diagnosedLeads) {
-          await tx
-            .insertInto("leads")
-            .values({ leadQueryId, ...lead })
-            .execute();
-        }
+        await tx
+          .insertInto("leads")
+          .values(diagnosedLeads.map((lead) => ({ leadQueryId, ...lead })))
+          .execute();
 
         await tx
           .updateTable("leadQueries")
@@ -76,6 +75,15 @@ export class LeadEnrichmentProcessor extends WorkerHost {
       }
 
       throw err;
+    } finally {
+      const batchSize = 50;
+      for (let i = 0; i < queuedJobIds.length; i += batchSize) {
+        const batch = queuedJobIds.slice(i, i + batchSize);
+        await this.db
+          .deleteFrom("leadQueue")
+          .where("id", "in", batch)
+          .execute();
+      }
     }
   }
 }
