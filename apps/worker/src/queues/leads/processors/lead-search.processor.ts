@@ -1,6 +1,6 @@
-import { Processor, WorkerHost } from "@nestjs/bullmq";
+import { InjectQueue, Processor, WorkerHost } from "@nestjs/bullmq";
 import { Inject } from "@nestjs/common";
-import { Job } from "bullmq";
+import { Job, Queue } from "bullmq";
 import { Kysely } from "kysely";
 import { KYSELY_DB } from "@/db/db.module";
 import { DB, JsonValue } from "@/db/types";
@@ -17,6 +17,7 @@ interface LeadSearchJobData {
 export class LeadSearchProcessor extends WorkerHost {
   constructor(
     @Inject(KYSELY_DB) private readonly db: Kysely<DB>,
+    @InjectQueue("lead-audit") private readonly leadAuditQueue: Queue,
     private readonly googleMapsScraper: GoogleMapsScraper,
   ) {
     super();
@@ -56,6 +57,14 @@ export class LeadSearchProcessor extends WorkerHost {
           })),
         )
         .execute();
+
+      await this.leadAuditQueue.add("lead-audit", leadQueryId, {
+        attempts: 3,
+        backoff: {
+          type: "fixed",
+          delay: 5000,
+        },
+      });
     } catch (err) {
       const isLastAttempt = job.attemptsMade >= (job.opts.attempts ?? 1);
 

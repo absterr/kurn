@@ -8,12 +8,6 @@ import { DB } from "@/db/types";
 import { AuditedLead } from "@/utils/audit-types";
 import { EnrichLeadsService } from "../providers/enrich-leads";
 
-interface EnrichLeadsJobData {
-  leadQueryId: string;
-  queuedJobIds: string[];
-  auditedLeads: AuditedLead[];
-}
-
 @Processor("lead-enrichment")
 export class LeadEnrichmentProcessor extends WorkerHost {
   constructor(
@@ -23,13 +17,24 @@ export class LeadEnrichmentProcessor extends WorkerHost {
     super();
   }
 
-  async process(job: Job<EnrichLeadsJobData>) {
-    const { leadQueryId, queuedJobIds, auditedLeads } = job.data;
+  async process(job: Job<string>) {
+    const leadQueryId = job.data;
     const limit = pLimit(3);
+
+    const auditedLeads = await this.db
+      .updateTable("leadQueue")
+      .where("leadQueryId", "=", leadQueryId)
+      .where("queueStatus", "=", "audited")
+      .set({ queueStatus: "enriching" })
+      .returning(["payload", "id"])
+      .execute();
+
+    const queuedJobIds = auditedLeads.map((lead) => lead.id);
+    const payloads = auditedLeads.map((lead) => lead.payload) as AuditedLead[];
 
     try {
       const diagnosedLeads = await Promise.all(
-        auditedLeads.map((lead) =>
+        payloads.map((lead) =>
           limit(async () => {
             const auditDiagnosis =
               await this.enrichLeadsService.diagnoseLead(lead);
@@ -62,6 +67,12 @@ export class LeadEnrichmentProcessor extends WorkerHost {
           .where("id", "=", leadQueryId)
           .where("status", "!=", "exhausted")
           .execute();
+
+        const batchSize = 50;
+        for (let i = 0; i < queuedJobIds.length; i += batchSize) {
+          const batch = queuedJobIds.slice(i, i + batchSize);
+          await tx.deleteFrom("leadQueue").where("id", "in", batch).execute();
+        }
       });
     } catch (err) {
       const isLastAttempt = job.attemptsMade >= (job.opts.attempts ?? 1);
@@ -72,18 +83,19 @@ export class LeadEnrichmentProcessor extends WorkerHost {
           .set({ status: "failed" })
           .where("id", "=", leadQueryId)
           .execute();
+
+        const batchSize = 50;
+        for (let i = 0; i < queuedJobIds.length; i += batchSize) {
+          const batch = queuedJobIds.slice(i, i + batchSize);
+          await this.db
+            .updateTable("leadQueue")
+            .where("id", "in", batch)
+            .set({ queueStatus: "audited" })
+            .execute();
+        }
       }
 
       throw err;
-    } finally {
-      const batchSize = 50;
-      for (let i = 0; i < queuedJobIds.length; i += batchSize) {
-        const batch = queuedJobIds.slice(i, i + batchSize);
-        await this.db
-          .deleteFrom("leadQueue")
-          .where("id", "in", batch)
-          .execute();
-      }
     }
   }
 }
