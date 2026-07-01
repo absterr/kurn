@@ -26,7 +26,7 @@ export class QueueService {
 
       if (awaitingQueries.length === 0) return;
 
-      await this.leadsService.queueLeadQueries(awaitingQueries);
+      await this.leadsService.queueLeadSearch(awaitingQueries);
 
       this.logger.log(`Queued ${awaitingQueries.length} awaiting lead queries`);
     } catch (error) {
