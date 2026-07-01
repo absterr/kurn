@@ -4,6 +4,7 @@ import {
   boolean,
   check,
   jsonb,
+  pgEnum,
   pgTable,
   unique,
   uniqueIndex,
@@ -15,6 +16,12 @@ import { users } from "./user.tables";
 
 const enumCheck = (column: AnyPgColumn, values: readonly string[]) =>
   sql`${column} IN (${sql.raw(values.map((v) => `'${v}'`).join(", "))})`;
+
+export const leadQueueNameEnum = pgEnum("lead_queue_name", [
+  "lead-search",
+  "lead-audit",
+  "lead-enrichment",
+]);
 
 const leadQueryStatuses = [
   "cancelled",
@@ -83,3 +90,13 @@ export const leads = pgTable(
     ),
   ],
 );
+
+export const leadQueue = pgTable("lead_queue", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  leadQueryId: uuid("lead_query_id")
+    .notNull()
+    .references(() => leadQueries.id, { onDelete: "cascade" }),
+  name: leadQueueNameEnum("queue_name").notNull(),
+  payload: jsonb("payload").notNull(),
+  ...timestamps,
+});
