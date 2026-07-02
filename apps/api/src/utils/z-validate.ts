@@ -1,5 +1,6 @@
 import { zValidator } from "@hono/zod-validator";
 import type { ZodType } from "zod";
+import { formatZodIssues } from "./format-zod.js";
 
 export const zValidate = <T extends ZodType>(
   target: "json" | "query" | "param",
@@ -7,6 +8,7 @@ export const zValidate = <T extends ZodType>(
 ) =>
   zValidator(target, schema, (result, ctx) => {
     if (!result.success) {
-      return ctx.json({ error: result.error.issues }, 400);
+      const error = formatZodIssues(result.error.issues);
+      return ctx.json({ error }, 400);
     }
   });

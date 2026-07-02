@@ -2,7 +2,7 @@ import { HTTPException } from "hono/http-exception";
 import type { z } from "zod";
 import env from "@/config/env.js";
 import { makeDB } from "@/db/index.js";
-import { sendEmail } from "@/lib/sendEmail.js";
+import { sendEmail } from "@/lib/send-email.js";
 import { fifteenMinsFromNow } from "@/utils/date.js";
 import { PASSWORD_RESET_TEMPLATE } from "@/utils/email-templates.js";
 import { generateToken } from "@/utils/hash.js";
