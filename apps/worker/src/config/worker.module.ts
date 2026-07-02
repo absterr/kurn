@@ -1,5 +1,6 @@
 import { BullModule } from "@nestjs/bullmq";
 import { Module } from "@nestjs/common";
+import Redis from "ioredis";
 import { EnvModule } from "./env/env.module";
 import { EnvProvider } from "./env/env.provider";
 
@@ -10,10 +11,9 @@ import { EnvProvider } from "./env/env.provider";
       imports: [EnvModule],
       inject: [EnvProvider],
       useFactory: (env: EnvProvider) => ({
-        connection: {
-          host: env.get("REDIS_HOST"),
-          port: env.get("REDIS_PORT"),
-        },
+        connection: new Redis(env.get("REDIS_URL"), {
+          maxRetriesPerRequest: null,
+        }),
       }),
     }),
   ],
