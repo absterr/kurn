@@ -5,7 +5,7 @@ import { Kysely } from "kysely";
 import pLimit from "p-limit";
 import { KYSELY_DB } from "@/db/db.module";
 import { DB } from "@/db/types";
-import { AuditedLead } from "@/utils/audit-types";
+import { AuditedLead } from "@/queues/leads/leads.schema";
 import { EnrichLeadsService } from "../providers/enrich-leads";
 
 @Processor("lead-enrichment")

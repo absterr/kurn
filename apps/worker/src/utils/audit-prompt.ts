@@ -1,6 +1,9 @@
 import * as fs from "node:fs/promises";
 import { Part } from "@google/genai";
-import { ViewportAuditResult, WebsiteAuditResult } from "./audit-types";
+import {
+  ViewportAuditResult,
+  WebsiteAuditResult,
+} from "@/queues/leads/leads.schema";
 
 export interface LeadContext {
   companyName: string;

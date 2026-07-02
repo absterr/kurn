@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import pLimit from "p-limit";
-import { Lead } from "@/utils/shared-types";
+import { Lead } from "@/queues/leads/leads.schema";
 import { WebsiteAuditService } from "./website-audit.service";
 
 @Injectable()

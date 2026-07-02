@@ -1,13 +1,3 @@
-import {
-  IsArray,
-  IsEnum,
-  IsIn,
-  IsOptional,
-  IsString,
-  Matches,
-  MinLength,
-} from "class-validator";
-
 const EXPERIENCE_LEVEL = [
   "Internship",
   "Entry level",
@@ -36,36 +26,36 @@ export enum CronInterval {
   H24 = "24h",
 }
 
-export class JobsDto {
-  // @IsUUID()
-  // userId: string;
+// export class JobsDto {
+//   // @IsUUID()
+//   // userId: string;
 
-  @IsString()
-  @MinLength(1)
-  position: string;
+//   @IsString()
+//   @MinLength(1)
+//   position: string;
 
-  @IsString()
-  @IsIn(TIMEFRAME_POSTED)
-  timeframePosted: TimeframePosted;
+//   @IsString()
+//   @IsIn(TIMEFRAME_POSTED)
+//   timeframePosted: TimeframePosted;
 
-  @IsString()
-  @IsEnum(CronInterval)
-  cronInterval: CronInterval;
+//   @IsString()
+//   @IsEnum(CronInterval)
+//   cronInterval: CronInterval;
 
-  @IsArray()
-  @IsString({ each: true })
-  @IsIn(WORKPLACE_TYPE, { each: true })
-  @IsOptional()
-  workplaceType: WorkplaceType[];
+//   @IsArray()
+//   @IsString({ each: true })
+//   @IsIn(WORKPLACE_TYPE, { each: true })
+//   @IsOptional()
+//   workplaceType: WorkplaceType[];
 
-  @IsArray()
-  @IsString({ each: true })
-  @IsIn(EXPERIENCE_LEVEL, { each: true })
-  @IsOptional()
-  experienceLevel: ExperienceLevel[];
+//   @IsArray()
+//   @IsString({ each: true })
+//   @IsIn(EXPERIENCE_LEVEL, { each: true })
+//   @IsOptional()
+//   experienceLevel: ExperienceLevel[];
 
-  @Matches(/^([01]\d|2[0-3]):([0-5]\d)$/, {
-    message: "Time must be in HH:mm (24h) format",
-  })
-  startAt: string;
-}
+//   @Matches(/^([01]\d|2[0-3]):([0-5]\d)$/, {
+//     message: "Time must be in HH:mm (24h) format",
+//   })
+//   startAt: string;
+// }

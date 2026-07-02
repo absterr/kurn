@@ -7,14 +7,17 @@ import {
   Part,
   Schema,
 } from "@google/genai";
-import { Injectable, Type as NestType } from "@nestjs/common";
-import { plainToInstance } from "class-transformer";
-import { validateOrReject } from "class-validator";
+import { Injectable } from "@nestjs/common";
+import { ZodType } from "zod";
 import { EnvProvider } from "@/config/env/env.provider";
+import { AuditedLead } from "@/queues/leads/leads.schema";
 import { buildAuditDiagnosisPrompt } from "@/utils/audit-prompt";
-import { AuditedLead } from "@/utils/audit-types";
 import { EMAIL_SYSTEM_PROMPT } from "@/utils/email-prompt";
-import { GeneratedAuditDto, GeneratedEmailDto } from "./enrich-leads.dto";
+import { formatZodIssues } from "@/utils/format-zod";
+import {
+  generatedAuditSchema,
+  generatedEmailSchema,
+} from "./enrich-leads.schema";
 
 export interface LeadAuditDetails {
   companyName: string;
@@ -68,7 +71,7 @@ export class EnrichLeadsService {
 
       const parsedDiagnosis = await this.parseModelResponse(
         response,
-        GeneratedAuditDto,
+        generatedAuditSchema,
       );
 
       auditDiagnosis.push(...parsedDiagnosis.auditDiagnosis);
@@ -113,7 +116,10 @@ export class EnrichLeadsService {
       resEmailSchema,
     );
 
-    const emailDto = await this.parseModelResponse(response, GeneratedEmailDto);
+    const emailDto = await this.parseModelResponse(
+      response,
+      generatedEmailSchema,
+    );
     const emailDraft = JSON.stringify(emailDto);
     return emailDraft;
   }
@@ -134,9 +140,9 @@ export class EnrichLeadsService {
     });
   }
 
-  private async parseModelResponse<T>(
+  private parseModelResponse<T>(
     modelResponse: GenerateContentResponse,
-    dtoClass: NestType<T>,
+    schema: ZodType<T>,
   ) {
     const result = modelResponse.text;
     if (!result) throw new Error("Failed to generate response");
@@ -148,10 +154,13 @@ export class EnrichLeadsService {
       throw new Error("Invalid JSON response");
     }
 
-    const dto = plainToInstance(dtoClass, parsed);
-    await validateOrReject(dto as Record<string, string>);
+    const validation = schema.safeParse(parsed);
+    if (!validation.success) {
+      const formatted = formatZodIssues(validation.error.issues);
+      throw new Error(`Invalid model response shape:\n${formatted}`);
+    }
 
-    return dto;
+    return validation.data;
   }
 
   private async deleteScreenshot(screenshotPath: string) {
