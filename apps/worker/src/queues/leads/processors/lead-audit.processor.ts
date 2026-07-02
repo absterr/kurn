@@ -1,13 +1,11 @@
 import { InjectQueue, Processor, WorkerHost } from "@nestjs/bullmq";
 import { Inject } from "@nestjs/common";
 import { Job, Queue } from "bullmq";
-import { plainToInstance } from "class-transformer";
-import { validate } from "class-validator";
 import { Kysely } from "kysely";
 import { KYSELY_DB } from "@/db/db.module";
 import { DB, JsonValue } from "@/db/types";
-import { AuditedLead } from "@/utils/audit-types";
-import { LeadValidationListDto } from "@/utils/shared-types";
+import { AuditedLead, leadArrSchema } from "@/queues/leads/leads.schema";
+import { formatZodIssues } from "@/utils/format-zod";
 import { AuditLeadsService } from "../providers/audit-leads";
 
 @Processor("lead-audit")
@@ -36,19 +34,19 @@ export class LeadAuditProcessor extends WorkerHost {
     const queuedJobIds = pendingLeads.map((lead) => lead.id);
     const payloads = pendingLeads.map((lead) => lead.payload);
 
-    const validationInstance = plainToInstance(LeadValidationListDto, {
-      leads: payloads,
-    });
-    const errors = await validate(validationInstance);
+    const parsed = leadArrSchema.safeParse(payloads);
 
-    if (errors.length > 0) {
-      throw new Error("Queue payload structural mismatch detected.");
+    if (!parsed.success) {
+      const formatted = formatZodIssues(parsed.error.issues);
+      throw new Error(
+        `Queue payload structural mismatch detected.\n${formatted}`,
+      );
     }
 
+    const leadsData = parsed.data;
+
     try {
-      const auditedLeads = await this.auditLeadsService.auditLeads(
-        validationInstance.leads,
-      );
+      const auditedLeads = await this.auditLeadsService.auditLeads(leadsData);
 
       const updateRows = queuedJobIds.map((id, index) => ({
         id,

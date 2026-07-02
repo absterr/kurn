@@ -1,5 +1,5 @@
 import { Page } from "playwright";
-import { CoreWebVitals } from "@/utils/audit-types";
+import { CoreWebVitals } from "@/queues/leads/leads.schema";
 
 declare global {
   interface Window {

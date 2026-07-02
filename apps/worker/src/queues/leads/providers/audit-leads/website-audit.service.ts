@@ -7,7 +7,7 @@ import {
   ViewportAuditResult,
   ViewportName,
   WebsiteAuditResult,
-} from "@/utils/audit-types";
+} from "@/queues/leads/leads.schema";
 import { PerformanceAuditService } from "./performance-audit.service";
 import { UiAuditService } from "./ui-audit.service";
 

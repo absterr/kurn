@@ -4,7 +4,7 @@ import { Job, Queue } from "bullmq";
 import { Kysely } from "kysely";
 import { KYSELY_DB } from "@/db/db.module";
 import { DB, JsonValue } from "@/db/types";
-import { Lead } from "@/utils/shared-types";
+import { Lead } from "@/queues/leads/leads.schema";
 import { GoogleMapsScraper } from "../providers/google-maps.scraper";
 
 interface LeadSearchJobData {

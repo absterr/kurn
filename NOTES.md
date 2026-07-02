@@ -4,6 +4,7 @@
 
 > Ordered by priority (highest → lowest)
 
+- [] **[Worker]** Migrate from class-validators to Joi or Zod
 - [ ] **[API]** Implement social login enpoints and integrate with frontend
 - [ ] **[Web]** Implement member dashboard pages
 

@@ -1,15 +1,13 @@
-import { plainToInstance } from "class-transformer";
-import { validateSync } from "class-validator";
-import { EnvironmentVariables } from "./env-vars";
+import { formatZodIssues } from "@/utils/format-zod";
+import { envSchema } from "./env.schema";
 
 export default function validate(config: Record<string, unknown>) {
-  const validatedConfig = plainToInstance(EnvironmentVariables, config, {
-    enableImplicitConversion: true,
-  });
-  const errors = validateSync(validatedConfig, {
-    skipMissingProperties: false,
-  });
+  const parsed = envSchema.safeParse(config);
 
-  if (errors.length > 0) throw new Error(errors.toString());
-  return validatedConfig;
+  if (!parsed.success) {
+    const formatted = formatZodIssues(parsed.error.issues);
+    throw new Error(`Config validation error:\n${formatted}`);
+  }
+
+  return parsed.data;
 }
