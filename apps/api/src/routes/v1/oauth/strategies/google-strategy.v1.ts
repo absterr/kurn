@@ -2,7 +2,7 @@ import { HTTPException } from "hono/http-exception";
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import env from "@/config/env.js";
-import { makeDB } from "@/db/index.js";
+import { CALLBACK_URL_PREFIX, getAccount } from "./get-account.js";
 
 export default function v1GoogleStrategyInit() {
   passport.use(
@@ -10,7 +10,7 @@ export default function v1GoogleStrategyInit() {
       {
         clientID: env.GOOGLE_CLIENT_ID,
         clientSecret: env.GOOGLE_CLIENT_SECRET,
-        callbackURL: "/api/v1/oauth/callback/google",
+        callbackURL: `${CALLBACK_URL_PREFIX}/google`,
         passReqToCallback: true,
       },
       async (req, _, __, profile, done) => {
@@ -30,103 +30,15 @@ export default function v1GoogleStrategyInit() {
             });
           }
 
-          const existingUser = await makeDB()
-            .selectFrom("users")
-            .where("email", "=", email)
-            .selectAll()
-            .executeTakeFirst();
+          const userAccount = await getAccount({
+            provider: "google",
+            name,
+            email,
+            accountId: googleId,
+            role,
+          });
 
-          if (existingUser) {
-            const existingGoogleAccount = await makeDB()
-              .selectFrom("accounts")
-              .where("userId", "=", existingUser.id)
-              .where("providerId", "=", "google")
-              .where("accountId", "=", googleId)
-              .where("role", "=", role)
-              .selectAll()
-              .executeTakeFirst();
-
-            if (existingGoogleAccount) {
-              return done(null, existingGoogleAccount);
-            }
-
-            const userAccounts = await makeDB()
-              .selectFrom("accounts")
-              .where("userId", "=", existingUser.id)
-              .where("role", "=", role)
-              .selectAll()
-              .executeTakeFirst();
-
-            if (!userAccounts) {
-              const invite = await makeDB()
-                .selectFrom("invites")
-                .where("email", "=", email)
-                .where("role", "=", role)
-                .where("expiresAt", ">", new Date())
-                .selectAll()
-                .executeTakeFirst();
-
-              if (!invite) {
-                throw new HTTPException(403, {
-                  message: `User does not have ${role} access`,
-                });
-              }
-            }
-
-            const newAccount = await makeDB()
-              .insertInto("accounts")
-              .values({
-                providerId: "google",
-                userId: existingUser.id,
-                accountId: googleId,
-                role,
-              })
-              .returningAll()
-              .executeTakeFirstOrThrow();
-
-            return done(null, newAccount);
-          }
-
-          const invite = await makeDB()
-            .selectFrom("invites")
-            .where("email", "=", email)
-            .where("role", "=", role)
-            .where("expiresAt", ">", new Date())
-            .selectAll()
-            .executeTakeFirst();
-
-          if (!invite) {
-            throw new HTTPException(401, {
-              message: "No valid invitation found for this email.",
-            });
-          }
-
-          const newUserAccount = await makeDB()
-            .transaction()
-            .execute(async (tx) => {
-              const user = await tx
-                .insertInto("users")
-                .values({
-                  name,
-                  email,
-                  emailVerified: true,
-                })
-                .returningAll()
-                .executeTakeFirstOrThrow();
-
-              return tx
-                .insertInto("accounts")
-                .values({
-                  providerId: "google",
-                  userId: user.id,
-                  accountId: googleId,
-                  role,
-                })
-                .returningAll()
-                .executeTakeFirstOrThrow();
-            });
-
-          return done(null, newUserAccount);
+          return done(null, userAccount);
         } catch (err) {
           return done(err, undefined);
         }

@@ -7,7 +7,7 @@ import type { Selectable } from "kysely";
 import passport from "passport";
 import z from "zod";
 import type { Accounts } from "@/db/types.js";
-import grantUserSession from "@/lib/grant-session.js";
+import { grantUserSession } from "@/lib/grant-session.js";
 import { unauthenticatedMiddleware } from "@/lib/middleware.js";
 import { authRateLimit } from "@/lib/rate-limit.js";
 import { zValidate } from "@/utils/z-validate.js";

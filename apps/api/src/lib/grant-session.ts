@@ -7,11 +7,11 @@ import { oneWeekFromNow } from "@/utils/date.js";
 import { setAuthCookies } from "./cookies.js";
 import { signUserToken } from "./user-token.js";
 
-export default async function grantUserSession(
+export const grantUserSession = async (
   ctx: Context,
   account: Selectable<Accounts>,
   userAgent?: string,
-) {
+) => {
   const session = await makeDB()
     .insertInto("sessions")
     .values({
@@ -40,4 +40,4 @@ export default async function grantUserSession(
   });
 
   setAuthCookies({ ctx, accessToken, refreshToken });
-}
+};

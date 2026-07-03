@@ -2,7 +2,7 @@ import type { Context } from "hono";
 import { HTTPException } from "hono/http-exception";
 import type { z } from "zod";
 import { makeDB } from "@/db/index.js";
-import grantUserSession from "@/lib/grant-session.js";
+import { grantUserSession } from "@/lib/grant-session.js";
 import { comparePassword } from "@/utils/hash.js";
 import type { loginSchema } from "../auth.v1.schema.js";
 
