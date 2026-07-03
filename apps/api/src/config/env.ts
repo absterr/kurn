@@ -1,22 +1,7 @@
 import { config } from "dotenv";
-import { z } from "zod";
+import { type Env, envSchema } from "./env-schema.js";
 
 config({ path: [".env", ".env.local"] });
-
-const envSchema = z.object({
-  API_PORT: z.coerce.number().default(8080),
-  API_ENV: z.enum(["development", "production"]).default("development"),
-  WEB_ORIGIN: z.url(),
-  DATABASE_URL: z.url(),
-  ACCESS_SECRET: z.string(),
-  REFRESH_SECRET: z.string(),
-  USER_GMAIL: z.email(),
-  GOOGLE_CLIENT_ID: z.string(),
-  GOOGLE_CLIENT_SECRET: z.string(),
-  GOOGLE_REFRESH_TOKEN: z.string(),
-  UPSTASH_REDIS_REST_URL: z.string(),
-  UPSTASH_REDIS_REST_TOKEN: z.string(),
-});
 
 const env = envSchema.parse(process.env);
 
@@ -26,7 +11,7 @@ for (const [key, value] of Object.entries(env)) {
 
 declare global {
   namespace NodeJS {
-    interface ProcessEnv extends z.infer<typeof envSchema> {}
+    interface ProcessEnv extends Env {}
   }
 }
 

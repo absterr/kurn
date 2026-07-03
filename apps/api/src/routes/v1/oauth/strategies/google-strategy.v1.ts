@@ -1,4 +1,5 @@
 import { HTTPException } from "hono/http-exception";
+import { getQueryParam } from "hono/utils/url";
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import env from "@/config/env.js";
@@ -15,7 +16,7 @@ export default function v1GoogleStrategyInit() {
       },
       async (req, _, __, profile, done) => {
         try {
-          const role = req.query.state;
+          const role = getQueryParam(req.url ?? "", "state");
           if (role !== "member" && role !== "admin") {
             throw new HTTPException(400, { message: "Invalid role" });
           }

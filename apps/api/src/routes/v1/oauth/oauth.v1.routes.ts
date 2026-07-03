@@ -1,6 +1,6 @@
 import type { HttpBindings } from "@hono/node-server";
 import { RESPONSE_ALREADY_SENT } from "@hono/node-server/utils/response";
-import { Hono } from "hono";
+import { type Context, Hono } from "hono";
 import { createMiddleware } from "hono/factory";
 import { HTTPException } from "hono/http-exception";
 import type { Selectable } from "kysely";
@@ -23,28 +23,10 @@ const oauthRateLimiter = createMiddleware(async (ctx, next) => {
   await next();
 });
 
-type Env = {
-  Bindings: HttpBindings;
-};
-
-export const oauthV1Router = new Hono<Env>();
-oauthV1Router.use("*", unauthenticatedMiddleware, oauthRateLimiter);
-
-oauthV1Router.get("/google", zValidate("query", roleSchema), async (ctx) => {
-  const { role } = ctx.req.valid("query");
-
-  passport.authenticate("google", { scope: ["profile", "email"], state: role })(
-    ctx.env.incoming,
-    ctx.env.outgoing,
-  );
-
-  return RESPONSE_ALREADY_SENT;
-});
-
-oauthV1Router.get("/callback/google", (ctx) => {
-  return new Promise<Response>((resolve, reject) => {
+const authenticateCallback = (ctx: Context, provider: string) =>
+  new Promise<Response>((resolve, reject) => {
     passport.authenticate(
-      "google",
+      provider,
       async (err: unknown, account: Selectable<Accounts>) => {
         if (err) {
           if (err instanceof HTTPException) {
@@ -64,4 +46,40 @@ oauthV1Router.get("/callback/google", (ctx) => {
       },
     )(ctx.env.incoming, ctx.env.outgoing);
   });
+
+type Env = {
+  Bindings: HttpBindings;
+};
+
+export const oauthV1Router = new Hono<Env>();
+oauthV1Router.use("*", unauthenticatedMiddleware, oauthRateLimiter);
+
+oauthV1Router.get("/google", zValidate("query", roleSchema), async (ctx) => {
+  const { role } = ctx.req.valid("query");
+
+  passport.authenticate("google", { scope: ["profile", "email"], state: role })(
+    ctx.env.incoming,
+    ctx.env.outgoing,
+  );
+
+  return RESPONSE_ALREADY_SENT;
 });
+
+oauthV1Router.get("/callback/google", (ctx) =>
+  authenticateCallback(ctx, "google"),
+);
+
+oauthV1Router.get("/github", zValidate("query", roleSchema), async (ctx) => {
+  const { role } = ctx.req.valid("query");
+
+  passport.authenticate("github", { scope: ["profile", "email"], state: role })(
+    ctx.env.incoming,
+    ctx.env.outgoing,
+  );
+
+  return RESPONSE_ALREADY_SENT;
+});
+
+oauthV1Router.get("/callback/github", (ctx) =>
+  authenticateCallback(ctx, "github"),
+);
