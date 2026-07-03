@@ -1,11 +1,8 @@
 import type { Context } from "hono";
 import { HTTPException } from "hono/http-exception";
 import type { z } from "zod";
-import env from "@/config/env.js";
 import { makeDB } from "@/db/index.js";
-import { setAuthCookies } from "@/lib/cookies.js";
-import { signUserToken } from "@/lib/user-token.js";
-import { oneWeekFromNow } from "@/utils/date.js";
+import grantUserSession from "@/lib/grant-session.js";
 import { comparePassword } from "@/utils/hash.js";
 import type { loginSchema } from "../auth.v1.schema.js";
 
@@ -46,33 +43,6 @@ export const credentialLoginHandler = async (
   if (!isCorrectPassword)
     throw new HTTPException(401, { message: "Invalid email or password" });
 
-  const session = await makeDB()
-    .insertInto("sessions")
-    .values({
-      accountId: userAccount.id,
-      userAgent,
-      expiresAt: oneWeekFromNow(),
-    })
-    .returningAll()
-    .executeTakeFirstOrThrow();
-
-  const accessToken = signUserToken({
-    payload: {
-      accountId: session.accountId,
-      role: userAccount.role,
-      sessionId: session.id,
-      userId: foundUser.id,
-    },
-    options: { expiresIn: "15m" },
-    secret: env.ACCESS_SECRET,
-  });
-
-  const refreshToken = signUserToken({
-    payload: { sessionId: session.id, version: session.version },
-    options: { expiresIn: "7d" },
-    secret: env.REFRESH_SECRET,
-  });
-
-  setAuthCookies({ ctx, accessToken, refreshToken });
+  await grantUserSession(ctx, userAccount, userAgent);
   return { message: "Login successful" };
 };

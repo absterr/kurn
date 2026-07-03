@@ -7,6 +7,7 @@ import type { Selectable } from "kysely";
 import passport from "passport";
 import z from "zod";
 import type { Accounts } from "@/db/types.js";
+import grantUserSession from "@/lib/grant-session.js";
 import { unauthenticatedMiddleware } from "@/lib/middleware.js";
 import { authRateLimit } from "@/lib/rate-limit.js";
 import { zValidate } from "@/utils/z-validate.js";
@@ -57,9 +58,8 @@ oauthV1Router.get("/callback/google", (ctx) => {
           );
         }
 
-        // create JWT
-        // set cookie
-
+        // We should find a way to get the user agent from the request
+        await grantUserSession(ctx, account);
         resolve(ctx.json({ message: "Authentication successful" }));
       },
     )(ctx.env.incoming, ctx.env.outgoing);
