@@ -4,6 +4,7 @@ import { HTTPException } from "hono/http-exception";
 import { logger } from "hono/logger";
 import env from "./config/env.js";
 import routes from "./routes/index.js";
+import passportInit from "./utils/passport-init.js";
 
 const app = new Hono().basePath("/api");
 const WEB_ORIGIN = env.WEB_ORIGIN;
@@ -16,6 +17,8 @@ const corsOptions = {
 
 app.use("*", cors(corsOptions));
 app.use("*", logger());
+
+passportInit();
 
 app.route("/", routes);
 

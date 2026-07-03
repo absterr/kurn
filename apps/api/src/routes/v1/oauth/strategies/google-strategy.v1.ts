@@ -4,13 +4,13 @@ import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import env from "@/config/env.js";
 import { makeDB } from "@/db/index.js";
 
-export default function googleStrategyInit() {
+export default function v1GoogleStrategyInit() {
   passport.use(
     new GoogleStrategy(
       {
         clientID: env.GOOGLE_CLIENT_ID,
         clientSecret: env.GOOGLE_CLIENT_SECRET,
-        callbackURL: "/auth/callback/google",
+        callbackURL: "/api/v1/oauth/callback/google",
         passReqToCallback: true,
       },
       async (req, _, __, profile, done) => {
