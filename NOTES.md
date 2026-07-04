@@ -4,7 +4,7 @@
 
 > Ordered by priority (highest → lowest)
 
-- [ ] **[API]** Implement social login enpoints and integrate with frontend
+- [x] **[API]** Implement social login enpoints and integrate with frontend
 - [ ] **[Web]** Implement member dashboard pages
 
 - [ ] **[Worker]** Implement API key rotation

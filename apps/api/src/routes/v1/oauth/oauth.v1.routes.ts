@@ -42,8 +42,13 @@ const authenticateCallback = (ctx: Context, provider: string) =>
 
         // We should find a way to get the user agent from the request
         // We should probably also redirect to the frontend URL
+
         await grantUserSession(ctx, account);
-        resolve(ctx.json({ message: "Authentication successful" }));
+        const redirectUrl =
+          account.role === "member"
+            ? `${process.env.FRONTEND_URL}/dashboard`
+            : `${process.env.FRONTEND_URL}/`;
+        resolve(ctx.redirect(redirectUrl, 302));
       },
     )(ctx.env.incoming, ctx.env.outgoing);
   });
