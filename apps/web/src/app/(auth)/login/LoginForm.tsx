@@ -7,19 +7,13 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
-import GithubIcon from "@/components/icons/GithubIcon";
-import GoogleIcon from "@/components/icons/GoogleIcon";
 import LoadingSpinner from "@/components/icons/LoadingSpinner";
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { loginHandler } from "@/lib/queries/auth-queries";
 import { loginSchema } from "@/lib/schema/auth-schema";
 import { useRole } from "../_Role/role-provider";
 import GuestLoginBtn from "../GuestLoginBtn";
+import SocialLoginBtn from "../SocialLoginBtn";
 
 const LoginForm = () => {
   const { role } = useRole();
@@ -49,26 +43,9 @@ const LoginForm = () => {
     });
   };
 
-  const socialLoginList = [
-    { name: "Google", icon: GoogleIcon },
-    { name: "Github", icon: GithubIcon },
-  ];
-
   return (
     <>
-      <div className="flex gap-2 items-center justify-center">
-        {socialLoginList.map(({ name, icon: Icon }) => (
-          <Tooltip key={name} delayDuration={200}>
-            <TooltipTrigger asChild>
-              <Button className="bg-foreground hover:bg-foreground/80 dark:bg-foreground/5 dark:hover:bg-foreground/10 cursor-pointer py-5 px-12">
-                <Icon />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>Sign in with {name}</TooltipContent>
-          </Tooltip>
-        ))}
-      </div>
-
+      <SocialLoginBtn isPending={isPending} startTransition={startTransition} />
       <div className="flex items-center gap-4 py-5">
         <div className="flex-1 border-t border-foreground/20"></div>
         <span className="text-foreground/50 text-xs md:text-sm">or</span>

@@ -41,6 +41,7 @@ const authenticateCallback = (ctx: Context, provider: string) =>
         }
 
         // We should find a way to get the user agent from the request
+        // We should probably also redirect to the frontend URL
         await grantUserSession(ctx, account);
         resolve(ctx.json({ message: "Authentication successful" }));
       },
