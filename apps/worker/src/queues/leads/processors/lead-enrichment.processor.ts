@@ -8,7 +8,7 @@ import { DB } from "@/db/types";
 import { AuditedLead } from "@/queues/leads/leads.schema";
 import { EnrichLeadsService } from "../providers/enrich-leads";
 
-@Processor("lead-enrichment")
+@Processor("lead-enrichment", { concurrency: 1 })
 export class LeadEnrichmentProcessor extends WorkerHost {
   constructor(
     @Inject(KYSELY_DB) private readonly db: Kysely<DB>,

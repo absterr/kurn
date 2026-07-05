@@ -1,5 +1,6 @@
 import { BullModule } from "@nestjs/bullmq";
 import { Module } from "@nestjs/common";
+import { DefaultJobOptions } from "bullmq";
 import { EnvModule } from "@/config/env/env.module";
 import { DatabaseModule } from "@/db/db.module";
 import { SharedModule } from "@/lib/shared/shared.module";
@@ -11,7 +12,7 @@ import { AuditLeadsModule } from "./providers/audit-leads";
 import { EnrichLeadsService } from "./providers/enrich-leads";
 import { GoogleMapsScraper } from "./providers/google-maps.scraper";
 
-const defaultJobOptions = {
+const defaultJobOptions: DefaultJobOptions = {
   removeOnComplete: true,
   removeOnFail: {
     age: 6 * 60 * 60,

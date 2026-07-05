@@ -24,6 +24,7 @@ const SocialLoginBtn = ({
 }) => {
   const { role } = useRole();
   const resolverRef = useRef<(() => void) | null>(null);
+
   useEffect(() => {
     const handlePageShow = (e: PageTransitionEvent) => {
       if (e.persisted && resolverRef.current) {

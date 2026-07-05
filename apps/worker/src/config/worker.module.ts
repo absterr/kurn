@@ -12,7 +12,7 @@ import { EnvProvider } from "./env/env.provider";
       inject: [EnvProvider],
       useFactory: (env: EnvProvider) => ({
         connection: new Redis(env.get("REDIS_URL"), {
-          maxRetriesPerRequest: null,
+          maxRetriesPerRequest: 3,
         }),
       }),
     }),

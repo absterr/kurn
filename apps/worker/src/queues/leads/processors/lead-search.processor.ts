@@ -13,7 +13,7 @@ interface LeadSearchJobData {
   location: string;
 }
 
-@Processor("lead-search")
+@Processor("lead-search", { concurrency: 1 })
 export class LeadSearchProcessor extends WorkerHost {
   constructor(
     @Inject(KYSELY_DB) private readonly db: Kysely<DB>,
