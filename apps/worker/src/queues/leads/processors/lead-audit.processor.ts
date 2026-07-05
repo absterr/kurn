@@ -8,7 +8,11 @@ import { AuditedLead, leadArrSchema } from "@/queues/leads/leads.schema";
 import { formatZodIssues } from "@/utils/format-zod";
 import { AuditLeadsService } from "../providers/audit-leads";
 
-@Processor("lead-audit", { concurrency: 1 })
+@Processor("lead-audit", {
+  concurrency: 1,
+  drainDelay: 1800,
+  stalledInterval: 1_800_000,
+})
 export class LeadAuditProcessor extends WorkerHost {
   constructor(
     @Inject(KYSELY_DB) private readonly db: Kysely<DB>,
