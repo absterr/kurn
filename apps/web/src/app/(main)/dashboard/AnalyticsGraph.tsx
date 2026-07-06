@@ -35,16 +35,14 @@ export default function AnalyticsGraph() {
 
   return (
     <div className="xl:max-w-xl rounded-2xl sm:rounded-3xl border p-4 sm:p-6">
-      <h3 className="text-base sm:text-lg font-medium pb-2">
-        Project Analytics
-      </h3>
+      <h3 className="text-base sm:text-lg font-medium pb-2">Analytics</h3>
       <div className="w-full" style={{ aspectRatio: `${viewW} / ${viewH}` }}>
         <svg
           viewBox={`0 0 ${viewW} ${viewH}`}
           className="w-full h-full"
           preserveAspectRatio="xMidYMid meet"
         >
-          <title>Analytics Graph </title>
+          <title>Analytics Graph</title>
           <defs>
             <pattern
               id="hatch-analytics"

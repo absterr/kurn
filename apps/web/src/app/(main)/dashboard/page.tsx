@@ -1,4 +1,5 @@
 import AnalyticsGraph from "./AnalyticsGraph";
+import ProgressGauge from "./ProgressGauge";
 import Stats from "./Stats";
 
 export default function Dashboard() {
@@ -9,6 +10,7 @@ export default function Dashboard() {
         <Stats />
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-3 sm:gap-5">
           <AnalyticsGraph />
+          <ProgressGauge />
         </div>
       </div>
     </div>
