@@ -35,7 +35,7 @@ export const mockLeads: Lead[] = [
   {
     id: makeId(101),
     leadQueryId: "f55d5806-55f8-41a4-afa6-7bd5e719ea05",
-    reviewed: false,
+    reviewed: true,
     companyName: "Brewed Awakenings",
     mapLink: "https://maps.google.com/?q=Brewed+Awakenings+Abuja",
     address: "12 Ademola Adetokunbo Cres, Wuse 2, Abuja",
@@ -54,7 +54,7 @@ export const mockLeads: Lead[] = [
   {
     id: makeId(102),
     leadQueryId: "f55d5806-55f8-41a4-afa6-7bd5e719ea05",
-    reviewed: false,
+    reviewed: true,
     companyName: "The Roast Room",
     mapLink: "https://maps.google.com/?q=The+Roast+Room+Abuja",
     address: "Plot 3 Gana St, Maitama, Abuja",
@@ -73,7 +73,7 @@ export const mockLeads: Lead[] = [
   {
     id: makeId(103),
     leadQueryId: "f55d5806-55f8-41a4-afa6-7bd5e719ea05",
-    reviewed: false,
+    reviewed: true,
     companyName: "Sip & Co.",
     mapLink: "https://maps.google.com/?q=Sip+and+Co+Abuja",
     address: "7 Faskari Rd, Area 3, Garki, Abuja",
@@ -85,7 +85,7 @@ export const mockLeads: Lead[] = [
   {
     id: makeId(104),
     leadQueryId: "f55d5806-55f8-41a4-afa6-7bd5e719ea05",
-    reviewed: false,
+    reviewed: true,
     companyName: "Café Nura",
     mapLink: "https://maps.google.com/?q=Cafe+Nura+Abuja",
     address: "15 Aguiyi Ironsi St, Maitama, Abuja",
@@ -97,7 +97,7 @@ export const mockLeads: Lead[] = [
   {
     id: makeId(105),
     leadQueryId: "f55d5806-55f8-41a4-afa6-7bd5e719ea05",
-    reviewed: false,
+    reviewed: true,
     companyName: "Kafe Kwik",
     mapLink: "https://maps.google.com/?q=Kafe+Kwik+Abuja",
     address: "22 Libreville St, Wuse 2, Abuja",
@@ -109,7 +109,7 @@ export const mockLeads: Lead[] = [
   {
     id: makeId(106),
     leadQueryId: "f55d5806-55f8-41a4-afa6-7bd5e719ea05",
-    reviewed: false,
+    reviewed: true,
     companyName: "Drip Coffee House",
     mapLink: "https://maps.google.com/?q=Drip+Coffee+House+Abuja",
     address: "5 Parakou Cres, Wuse 2, Abuja",
@@ -128,7 +128,7 @@ export const mockLeads: Lead[] = [
   {
     id: makeId(107),
     leadQueryId: "f55d5806-55f8-41a4-afa6-7bd5e719ea05",
-    reviewed: false,
+    reviewed: true,
     companyName: "Morning Ritual Café",
     mapLink: "https://maps.google.com/?q=Morning+Ritual+Cafe+Abuja",
     address: "9 Herbert Macaulay Way, CBD, Abuja",
@@ -150,7 +150,7 @@ export const mockLeads: Lead[] = [
   {
     id: makeId(108),
     leadQueryId: "f55d5806-55f8-41a4-afa6-7bd5e719ea05",
-    reviewed: false,
+    reviewed: true,
     companyName: "The Blend Bar",
     mapLink: "https://maps.google.com/?q=The+Blend+Bar+Abuja",
     address: "18 Aminu Kano Cres, Wuse 2, Abuja",
@@ -162,7 +162,7 @@ export const mockLeads: Lead[] = [
   {
     id: makeId(109),
     leadQueryId: "f55d5806-55f8-41a4-afa6-7bd5e719ea05",
-    reviewed: false,
+    reviewed: true,
     companyName: "Grind & Grace",
     mapLink: "https://maps.google.com/?q=Grind+and+Grace+Abuja",
     address: "3 Bangui St, Wuse 2, Abuja",
@@ -184,7 +184,7 @@ export const mockLeads: Lead[] = [
   {
     id: makeId(110),
     leadQueryId: "f55d5806-55f8-41a4-afa6-7bd5e719ea05",
-    reviewed: false,
+    reviewed: true,
     companyName: "Cuppa Lounge",
     mapLink: "https://maps.google.com/?q=Cuppa+Lounge+Abuja",
     address: "11 Yedseram St, Maitama, Abuja",
@@ -208,7 +208,7 @@ export const mockLeads: Lead[] = [
   {
     id: makeId(201),
     leadQueryId: "3118a180-cacf-4448-93c3-4392f87b2746",
-    reviewed: false,
+    reviewed: true,
     companyName: "Lone Star Inn",
     mapLink: "https://maps.google.com/?q=Lone+Star+Inn+Austin+TX",
     address: "600 Guadalupe St, Austin, TX 78701",
@@ -230,7 +230,7 @@ export const mockLeads: Lead[] = [
   {
     id: makeId(202),
     leadQueryId: "3118a180-cacf-4448-93c3-4392f87b2746",
-    reviewed: false,
+    reviewed: true,
     companyName: "Austin Palms Hotel",
     mapLink: "https://maps.google.com/?q=Austin+Palms+Hotel+TX",
     address: "1200 S Congress Ave, Austin, TX 78704",
@@ -249,7 +249,7 @@ export const mockLeads: Lead[] = [
   {
     id: makeId(203),
     leadQueryId: "3118a180-cacf-4448-93c3-4392f87b2746",
-    reviewed: false,
+    reviewed: true,
     companyName: "The Capitol View Suites",
     mapLink: "https://maps.google.com/?q=Capitol+View+Suites+Austin",
     address: "300 W 6th St, Austin, TX 78701",
@@ -261,7 +261,7 @@ export const mockLeads: Lead[] = [
   {
     id: makeId(204),
     leadQueryId: "3118a180-cacf-4448-93c3-4392f87b2746",
-    reviewed: false,
+    reviewed: true,
     companyName: "Barton Creek Lodge",
     mapLink: "https://maps.google.com/?q=Barton+Creek+Lodge+Austin",
     address: "8212 Barton Club Dr, Austin, TX 78735",
@@ -273,7 +273,7 @@ export const mockLeads: Lead[] = [
   {
     id: makeId(205),
     leadQueryId: "3118a180-cacf-4448-93c3-4392f87b2746",
-    reviewed: false,
+    reviewed: true,
     companyName: "6th Street Hotel",
     mapLink: "https://maps.google.com/?q=6th+Street+Hotel+Austin",
     address: "422 E 6th St, Austin, TX 78701",
@@ -295,7 +295,7 @@ export const mockLeads: Lead[] = [
   {
     id: makeId(206),
     leadQueryId: "3118a180-cacf-4448-93c3-4392f87b2746",
-    reviewed: false,
+    reviewed: true,
     companyName: "East Austin Boutique Inn",
     mapLink: "https://maps.google.com/?q=East+Austin+Boutique+Inn",
     address: "1100 E 11th St, Austin, TX 78702",
@@ -307,7 +307,7 @@ export const mockLeads: Lead[] = [
   {
     id: makeId(207),
     leadQueryId: "3118a180-cacf-4448-93c3-4392f87b2746",
-    reviewed: false,
+    reviewed: true,
     companyName: "Travis County Hotel",
     mapLink: "https://maps.google.com/?q=Travis+County+Hotel+Austin",
     address: "500 N IH-35, Austin, TX 78701",
@@ -326,7 +326,7 @@ export const mockLeads: Lead[] = [
   {
     id: makeId(208),
     leadQueryId: "3118a180-cacf-4448-93c3-4392f87b2746",
-    reviewed: false,
+    reviewed: true,
     companyName: "South Lamar Stays",
     mapLink: "https://maps.google.com/?q=South+Lamar+Stays+Austin",
     address: "2525 S Lamar Blvd, Austin, TX 78704",
@@ -345,7 +345,7 @@ export const mockLeads: Lead[] = [
   {
     id: makeId(209),
     leadQueryId: "3118a180-cacf-4448-93c3-4392f87b2746",
-    reviewed: false,
+    reviewed: true,
     companyName: "Domain Suites Austin",
     mapLink: "https://maps.google.com/?q=Domain+Suites+Austin",
     address: "11617 Research Blvd, Austin, TX 78759",
@@ -357,7 +357,7 @@ export const mockLeads: Lead[] = [
   {
     id: makeId(210),
     leadQueryId: "3118a180-cacf-4448-93c3-4392f87b2746",
-    reviewed: false,
+    reviewed: true,
     companyName: "Rainey Street Inn",
     mapLink: "https://maps.google.com/?q=Rainey+Street+Inn+Austin",
     address: "85 Rainey St, Austin, TX 78701",
@@ -378,7 +378,7 @@ export const mockLeads: Lead[] = [
   {
     id: makeId(301),
     leadQueryId: "371a4ac1-915e-4d7f-a636-e83b43abdb89",
-    reviewed: false,
+    reviewed: true,
     companyName: "Sweet Crumbs Bakery",
     mapLink: "https://maps.google.com/?q=Sweet+Crumbs+Bakery+Lagos",
     address: "14 Bode Thomas St, Surulere, Lagos",
@@ -397,7 +397,7 @@ export const mockLeads: Lead[] = [
   {
     id: makeId(302),
     leadQueryId: "371a4ac1-915e-4d7f-a636-e83b43abdb89",
-    reviewed: false,
+    reviewed: true,
     companyName: "Golden Loaf Bakehouse",
     mapLink: "https://maps.google.com/?q=Golden+Loaf+Bakehouse+Lagos",
     address: "7 Adeniyi Jones Ave, Ikeja, Lagos",
@@ -419,7 +419,7 @@ export const mockLeads: Lead[] = [
   {
     id: makeId(303),
     leadQueryId: "371a4ac1-915e-4d7f-a636-e83b43abdb89",
-    reviewed: false,
+    reviewed: true,
     companyName: "Flour Power Cakes",
     mapLink: "https://maps.google.com/?q=Flour+Power+Cakes+Lagos",
     address: "22 Allen Ave, Ikeja, Lagos",
@@ -431,7 +431,7 @@ export const mockLeads: Lead[] = [
   {
     id: makeId(304),
     leadQueryId: "371a4ac1-915e-4d7f-a636-e83b43abdb89",
-    reviewed: false,
+    reviewed: true,
     companyName: "Oven Fresh Lagos",
     mapLink: "https://maps.google.com/?q=Oven+Fresh+Lagos",
     address: "5 Opebi Rd, Ikeja, Lagos",

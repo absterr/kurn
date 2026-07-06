@@ -1,13 +1,18 @@
-export default function ProgressBar() {
+import type { DashboardDetails } from "@/lib/schema/dashboard-schema";
+
+export default function ProgressBar({ data }: { data: DashboardDetails }) {
   const cx = 140;
   const cy = 130;
   const r = 100;
   const sw = 40;
+
   const gaugeStart = 270;
   const gaugeEnd = 450;
   const totalSweep = gaugeEnd - gaugeStart;
-  const completedFrac = 0.15;
-  const inProgressFrac = 0.65;
+
+  const completedFrac = data.completedQueriesPercentage / 100;
+  const inProgressFrac = data.processingQueriesPercentage / 100;
+
   const completedEnd = gaugeStart + totalSweep * completedFrac;
   const inProgressEnd = completedEnd + totalSweep * inProgressFrac;
   const pendingEnd = gaugeEnd;
@@ -71,7 +76,7 @@ export default function ProgressBar() {
               fontWeight={700}
               fill="currentColor"
             >
-              21%
+              {data.completedQueriesPercentage}%
             </text>
             <text
               x={cx}

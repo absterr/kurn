@@ -1,4 +1,5 @@
 import { ArrowUpRight } from "lucide-react";
+import type { DashboardDetails } from "@/lib/schema/dashboard-schema";
 import { cn } from "@/lib/utils";
 
 interface StatCardProps {
@@ -9,25 +10,25 @@ interface StatCardProps {
   isFirst?: boolean;
 }
 
-export default function Stats() {
+export default function Stats({ data }: { data: DashboardDetails }) {
   return (
     <div className="grid grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-5">
       <StatCard
         label="Total leads"
-        value={24}
+        value={data.totalLeads}
         trend={<Trend n="5" isFirst />}
         pill={<TrendPill n="5" isFirst />}
         isFirst
       />
       <StatCard
         label="Reviewed leads"
-        value={10}
+        value={data.reviewedLeads}
         trend={<Trend n="6" />}
         pill={<TrendPill n="6" />}
       />
       <StatCard
         label="Processing queries"
-        value={12}
+        value={data.processingQueries}
         trend={
           <span className="pt-2 text-[11px] sm:text-[12.5px] text-foreground/50 flex items-center">
             In Queue
@@ -36,7 +37,7 @@ export default function Stats() {
       />
       <StatCard
         label="Pending queries"
-        value={2}
+        value={data.pendingQueries}
         trend={
           <span className="pt-2 text-[11px] sm:text-[12.5px] text-foreground/50 flex items-center">
             On Hold
