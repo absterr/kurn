@@ -65,23 +65,12 @@ export default function LeadsQueryForm({ role }: { role: string }) {
 
       queryClient.setQueryData(
         ["dashboardDetails"],
-        (old: DashboardDetails) => {
-          const pendingQueries = old.pendingQueries + 1;
-          const successfulQueries = old.successfulQueries;
-          const processingQueries = old.processingQueries;
-
-          const totalQueries =
-            successfulQueries + processingQueries + pendingQueries;
+        (old: DashboardDetails | undefined) => {
+          if (!old) return;
 
           return {
             ...old,
-            pendingQueries,
-
-            successfulQueriesPercentage:
-              (successfulQueries / totalQueries) * 100,
-            processingQueriesPercentage:
-              (processingQueries / totalQueries) * 100,
-            pendingQueriesPercentage: (pendingQueries / totalQueries) * 100,
+            pendingQueries: old.pendingQueries + 1,
           };
         },
       );

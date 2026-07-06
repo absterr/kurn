@@ -8,13 +8,14 @@ import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { getMockDashboardDetails } from "@/lib/mock-data/mock-dashboard-details";
 import { getDashboardDetailsHandler } from "@/lib/queries/dashboard-queries";
+import DashboardSkeleton from "./DashboardSkeleton";
 import DashboardWrapper from "./DashboardWrapper";
 
 export default function DashboardPage() {
   return (
     <div className="p-2 sm:p-4">
       <h1 className="font-medium text-xl sm:text-2xl py-4">Dashboard</h1>
-      <Suspense fallback={<p className="py-4">Loading dashboard...</p>}>
+      <Suspense fallback={<DashboardSkeleton />}>
         <Dashboard />
       </Suspense>
     </div>
