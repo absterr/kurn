@@ -1,5 +1,6 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { getDashboardDetailsHandler } from "@/lib/queries/dashboard-queries";
 import AnalyticsGraph from "./AnalyticsGraph";
 import ProgressGauge from "./ProgressGauge";
@@ -19,12 +20,14 @@ export default function DashboardWrapper({ role }: { role: string }) {
   }
 
   return (
-    <div className="pt-4 flex flex-col gap-y-3 sm:gap-y-5">
-      <Stats data={data} />
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-3 sm:gap-5">
-        <AnalyticsGraph />
-        <ProgressGauge data={data} />
+    <ScrollArea className="h-full">
+      <div className="pt-4 flex flex-col gap-y-3 sm:gap-y-5">
+        <Stats data={data} />
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-3 sm:gap-5">
+          <AnalyticsGraph />
+          <ProgressGauge data={data} />
+        </div>
       </div>
-    </div>
+    </ScrollArea>
   );
 }

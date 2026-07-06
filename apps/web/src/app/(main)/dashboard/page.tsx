@@ -13,11 +13,13 @@ import DashboardWrapper from "./DashboardWrapper";
 
 export default function DashboardPage() {
   return (
-    <div className="p-2 sm:p-4">
+    <div className="p-2 sm:p-4 h-full flex flex-col">
       <h1 className="font-medium text-xl sm:text-2xl py-4">Dashboard</h1>
-      <Suspense fallback={<DashboardSkeleton />}>
-        <Dashboard />
-      </Suspense>
+      <div className="flex-1 min-h-0">
+        <Suspense fallback={<DashboardSkeleton />}>
+          <Dashboard />
+        </Suspense>
+      </div>
     </div>
   );
 }
