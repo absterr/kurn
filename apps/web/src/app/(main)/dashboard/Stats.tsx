@@ -1,9 +1,17 @@
 import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+interface StatCardProps {
+  label: string;
+  value: number;
+  trend: React.ReactNode;
+  pill?: React.ReactNode;
+  isFirst?: boolean;
+}
+
 export default function Stats() {
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
+    <div className="grid grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-5">
       <StatCard
         label="Total leads"
         value={24}
@@ -42,13 +50,7 @@ const StatCard = ({
   trend,
   pill,
   isFirst = false,
-}: {
-  label: string;
-  value: number;
-  trend: React.ReactNode;
-  pill?: React.ReactNode;
-  isFirst?: boolean;
-}) => (
+}: StatCardProps) => (
   <div
     className={`relative rounded-2xl sm:rounded-3xl p-4 sm:p-5 ${
       isFirst ? "bg-[#0f2e1f] text-white" : "border"
