@@ -4,8 +4,6 @@
 
 > Ordered by priority (highest → lowest)
 
-- [ ] **[Web]** Add scrollable to member dashboard page
-
 - [ ] **[Worker]** Implement API key rotation
 - [ ] **[Worker]** Implement async cold email
 - [ ] **[Worker]** Deliberate and plan the job module flow (take ideas from career-ops)
