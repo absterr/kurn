@@ -14,7 +14,7 @@ export function getMockDashboardDetails(): DashboardDetails {
     (query) => query.status === "pending",
   ).length;
 
-  const completedQueries = mockLeadQueries.filter(
+  const successfulQueries = mockLeadQueries.filter(
     (query) => query.status === "successful",
   ).length;
 
@@ -23,11 +23,13 @@ export function getMockDashboardDetails(): DashboardDetails {
   return {
     totalLeads,
     reviewedLeads,
+
     processingQueries,
     pendingQueries,
+    successfulQueries,
 
-    completedQueriesPercentage:
-      totalQueries === 0 ? 0 : (completedQueries / totalQueries) * 100,
+    successfulQueriesPercentage:
+      totalQueries === 0 ? 0 : (successfulQueries / totalQueries) * 100,
 
     processingQueriesPercentage:
       totalQueries === 0 ? 0 : (processingQueries / totalQueries) * 100,

@@ -25,8 +25,8 @@ export const getDashboardDetails = async (memberId: string) => {
 
       sql<number>`
         count(distinct leadQueries.id)
-        filter (where leadQueries.status = 'completed')
-      `.as("completedQueries"),
+        filter (where leadQueries.status = 'successful')
+      `.as("successfulQueries"),
 
       sql<number>`count(distinct leadQueries.id)`.as("totalQueries"),
     ])
@@ -37,11 +37,13 @@ export const getDashboardDetails = async (memberId: string) => {
   return {
     totalLeads: result.totalLeads,
     reviewedLeads: result.reviewedLeads,
+
     processingQueries: result.processingQueries,
     pendingQueries: result.pendingQueries,
+    successfulQueries: result.successfulQueries,
 
-    completedQueriesPercentage:
-      totalQueries === 0 ? 0 : (result.completedQueries / totalQueries) * 100,
+    successfulQueriesPercentage:
+      totalQueries === 0 ? 0 : (result.successfulQueries / totalQueries) * 100,
 
     processingQueriesPercentage:
       totalQueries === 0 ? 0 : (result.processingQueries / totalQueries) * 100,

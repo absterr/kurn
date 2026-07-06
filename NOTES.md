@@ -4,7 +4,8 @@
 
 > Ordered by priority (highest → lowest)
 
-- [ ] **[Web]** Implement member dashboard pages
+- [ ] **[Web]** Implement member dashboard suspense UI
+- [ ] **[Web]** Add scrollable to member dashboard page
 
 - [ ] **[Worker]** Implement API key rotation
 - [ ] **[Worker]** Implement async cold email

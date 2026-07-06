@@ -10,11 +10,11 @@ export default function ProgressBar({ data }: { data: DashboardDetails }) {
   const gaugeEnd = 450;
   const totalSweep = gaugeEnd - gaugeStart;
 
-  const completedFrac = data.completedQueriesPercentage / 100;
+  const successfulFrac = data.successfulQueriesPercentage / 100;
   const inProgressFrac = data.processingQueriesPercentage / 100;
 
-  const completedEnd = gaugeStart + totalSweep * completedFrac;
-  const inProgressEnd = completedEnd + totalSweep * inProgressFrac;
+  const successfulEnd = gaugeStart + totalSweep * successfulFrac;
+  const inProgressEnd = successfulEnd + totalSweep * inProgressFrac;
   const pendingEnd = gaugeEnd;
 
   return (
@@ -53,7 +53,7 @@ export default function ProgressBar({ data }: { data: DashboardDetails }) {
             />
 
             <path
-              d={describeArc(cx, cy, r, completedEnd, inProgressEnd)}
+              d={describeArc(cx, cy, r, successfulEnd, inProgressEnd)}
               fill="none"
               stroke="#173c2c"
               strokeWidth={sw}
@@ -61,7 +61,7 @@ export default function ProgressBar({ data }: { data: DashboardDetails }) {
             />
 
             <path
-              d={describeArc(cx, cy, r, gaugeStart, completedEnd)}
+              d={describeArc(cx, cy, r, gaugeStart, successfulEnd)}
               fill="none"
               stroke="#8fe0ac"
               strokeWidth={sw}
@@ -76,7 +76,7 @@ export default function ProgressBar({ data }: { data: DashboardDetails }) {
               fontWeight={700}
               fill="currentColor"
             >
-              {data.completedQueriesPercentage}%
+              {data.successfulQueriesPercentage}%
             </text>
             <text
               x={cx}

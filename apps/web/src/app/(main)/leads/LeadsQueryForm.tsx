@@ -42,13 +42,7 @@ export default function LeadsQueryForm({ role }: { role: string }) {
         newLeadQuery,
       ]);
 
-      queryClient.setQueryData(
-        ["dashboardDetails"],
-        (old: DashboardDetails) => ({
-          ...old,
-          pendingQueries: old.pendingQueries + 1,
-        }),
-      );
+      queryClient.invalidateQueries({ queryKey: ["dashboardDetails"] });
 
       reset();
       toast.success("Lead query added");
@@ -71,10 +65,25 @@ export default function LeadsQueryForm({ role }: { role: string }) {
 
       queryClient.setQueryData(
         ["dashboardDetails"],
-        (old: DashboardDetails) => ({
-          ...old,
-          pendingQueries: old.pendingQueries + 1,
-        }),
+        (old: DashboardDetails) => {
+          const pendingQueries = old.pendingQueries + 1;
+          const successfulQueries = old.successfulQueries;
+          const processingQueries = old.processingQueries;
+
+          const totalQueries =
+            successfulQueries + processingQueries + pendingQueries;
+
+          return {
+            ...old,
+            pendingQueries,
+
+            successfulQueriesPercentage:
+              (successfulQueries / totalQueries) * 100,
+            processingQueriesPercentage:
+              (processingQueries / totalQueries) * 100,
+            pendingQueriesPercentage: (pendingQueries / totalQueries) * 100,
+          };
+        },
       );
 
       toast.success("Lead query added");
