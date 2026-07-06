@@ -71,7 +71,7 @@ export default function ProgressBar() {
               fontWeight={700}
               fill="currentColor"
             >
-              41%
+              21%
             </text>
             <text
               x={cx}

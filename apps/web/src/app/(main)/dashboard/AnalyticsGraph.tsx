@@ -34,7 +34,7 @@ export default function AnalyticsGraph() {
   const baseline = 190;
 
   return (
-    <div className="xl:max-w-xl rounded-2xl sm:rounded-3xl border p-4 sm:p-6">
+    <div className="xl:max-w-2xl rounded-2xl sm:rounded-3xl border p-4 sm:p-6">
       <h3 className="text-base sm:text-lg font-medium pb-2">Analytics</h3>
       <div className="w-full" style={{ aspectRatio: `${viewW} / ${viewH}` }}>
         <svg

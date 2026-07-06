@@ -28,15 +28,18 @@ export default function Stats() {
       <StatCard
         label="Processing queries"
         value={12}
-        trend={<Trend n="2" />}
-        pill={<TrendPill n="2" />}
+        trend={
+          <span className="pt-2 text-[11px] sm:text-[12.5px] text-foreground/50 flex items-center">
+            In Queue
+          </span>
+        }
       />
       <StatCard
         label="Pending queries"
         value={2}
         trend={
           <span className="pt-2 text-[11px] sm:text-[12.5px] text-foreground/50 flex items-center">
-            On Queue
+            On Hold
           </span>
         }
       />
@@ -108,7 +111,7 @@ const Trend = ({ n, isFirst = false }: { n: string; isFirst?: boolean }) => (
   <div className="pt-2 hidden sm:flex flex-wrap items-center gap-1.5 text-[11px] sm:text-[12.5px]">
     <TrendPill n={n} isFirst={isFirst} />
     <span className={cn(isFirst ? "text-white/70" : "text-foreground/50")}>
-      Increased from last month
+      Increased from last week
     </span>
   </div>
 );
