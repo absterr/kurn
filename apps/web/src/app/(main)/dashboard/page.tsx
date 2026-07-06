@@ -1,12 +1,14 @@
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { getMockDashboardDetails } from "@/lib/mock-data/mock-dashboard-details";
 import { getDashboardDetailsHandler } from "@/lib/queries/dashboard-queries";
-import type { DashboardDetails } from "@/lib/schema/dashboard-schema";
-import AnalyticsGraph from "./AnalyticsGraph";
-import ProgressGauge from "./ProgressGauge";
-import Stats from "./Stats";
+import DashboardWrapper from "./DashboardWrapper";
 
 export default function DashboardPage() {
   return (
@@ -27,24 +29,20 @@ const Dashboard = async () => {
     redirect("/login");
   }
 
-  let details: DashboardDetails;
-  if (role === "member") {
-    const result = await getDashboardDetailsHandler();
-    if (!result.data) {
-      throw new Error("Unable to fetch dashboard details at the moment");
-    }
-    details = result.data;
-  } else {
-    details = getMockDashboardDetails();
-  }
+  const queryClient = new QueryClient();
+  const mockDetails = getMockDashboardDetails();
+
+  await queryClient.prefetchQuery({
+    queryKey: ["dashboardDetails"],
+    queryFn: getDashboardDetailsHandler,
+    staleTime: 1000 * 60,
+    gcTime: 1000 * 60 * 5,
+    initialData: role === "guest" ? mockDetails : undefined,
+  });
 
   return (
-    <div className="pt-4 flex flex-col gap-y-3 sm:gap-y-5">
-      <Stats data={details} />
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-3 sm:gap-5">
-        <AnalyticsGraph />
-        <ProgressGauge data={details} />
-      </div>
-    </div>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <DashboardWrapper role={role} />
+    </HydrationBoundary>
   );
 };

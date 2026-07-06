@@ -9,6 +9,7 @@ import {
   isDuplicate,
 } from "@/lib/mock-data/mock-lead-queries";
 import { addLeadQueryHandler } from "@/lib/queries/lead-queries";
+import type { DashboardDetails } from "@/lib/schema/dashboard-schema";
 import {
   type LeadQuery,
   type LeadQueryForm,
@@ -41,6 +42,14 @@ export default function LeadsQueryForm({ role }: { role: string }) {
         newLeadQuery,
       ]);
 
+      queryClient.setQueryData(
+        ["dashboardDetails"],
+        (old: DashboardDetails) => ({
+          ...old,
+          pendingQueries: old.pendingQueries + 1,
+        }),
+      );
+
       reset();
       toast.success("Lead query added");
     },
@@ -59,6 +68,15 @@ export default function LeadsQueryForm({ role }: { role: string }) {
         ...old,
         createMockLeadQuery(body),
       ]);
+
+      queryClient.setQueryData(
+        ["dashboardDetails"],
+        (old: DashboardDetails) => ({
+          ...old,
+          pendingQueries: old.pendingQueries + 1,
+        }),
+      );
+
       toast.success("Lead query added");
       reset();
       return;
